@@ -2,17 +2,27 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools"
     tools:context=".MainActivity">
     <group android:checkableBehavior="single">
+
         <item
-            android:id="@+id/navigation_item_home"
-            android:icon="@drawable/my_upload_32"
-            android:title="首页" />
+            android:id="@+id/navigation_item_message"
+            android:icon="@drawable/ic_message"
+            android:title="消息"/>
         <item
-            android:id="@+id/navigation_item_blog"
-            android:icon="@drawable/my_info_32"
-            android:title="个人信息" />
+            android:id="@+id/navigation_item_userInfo"
+            android:icon="@drawable/ic_user_info"
+            android:title="个人信息"
+            />
+        <item
+            android:id="@+id/navigation_item_like"
+            android:icon="@drawable/ic_like"
+            android:title="我的有意" />
+        <item
+            android:id="@+id/navigation_item_history"
+            android:icon="@drawable/ic_history"
+            android:title="浏览历史" />
         <item
             android:id="@+id/navigation_item_about"
-            android:icon="@drawable/my_message_32"
+            android:icon="@drawable/ic_about"
             android:title="关于" />
     </group>
 </menu>
