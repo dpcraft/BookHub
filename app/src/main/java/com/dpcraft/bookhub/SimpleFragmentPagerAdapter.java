@@ -22,7 +22,14 @@ public class SimpleFragmentPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-        return PageFragment.newInstance(position + 1);
+        if(position == 0) {
+            return SellFragment.newInstance();
+        } else if(position == 1) {
+            return RequestFragment.newInstance();
+        }else{
+                return PageFragment.newInstance(position + 1);
+        }
+
     }
 
     @Override
