@@ -9,39 +9,67 @@ import android.view.ViewGroup;
 /**
  * Created by DPC on 2017/2/11.
  */
-public class SellRecyclerAdapter extends RecyclerView.Adapter<SellRecyclerAdapter.ViewHolder> {
+public class SellRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+    public static final int ITEM_TYPE_HEADER = 0;
+    public static final int ITEM_TYPE_CONTENT = 1;
+
     private LayoutInflater mInflater;
-    private String[]mTitle = null;
+    private int ItemNum = 20;
     public SellRecyclerAdapter(Context context){
         this.mInflater = LayoutInflater.from(context);
-        this.mTitle = new String[20];
-        for(int i = 0;i < 20;i++){
-            int index = i+ 1;
-            mTitle[i]="item" + index;
+    }
+    //判断当前Item是否为HeadView
+    public boolean isHeadView(int position){
+        return position == 0;
+    }
+    @Override
+    public int getItemViewType(int position){
+        if(isHeadView(position)){
+            return ITEM_TYPE_HEADER;
+        }else{
+            return ITEM_TYPE_CONTENT;
         }
     }
+
     //item显示类型
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent,int viewType){
-        View view = mInflater.inflate(R.layout.item_sell_recycler_layout,parent,false);
-        ViewHolder viewHolder = new ViewHolder(view);
-        return viewHolder;
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent,int viewType){
+        if(viewType == ITEM_TYPE_HEADER){
+            return new HeaderViewHolder(mInflater.inflate(R.layout.item_recycler_header,parent,false));
+        }else {
+            return new ContentViewHolder(mInflater.inflate(R.layout.item_sell_recycler_layout,parent,false));
+        }
     }
     //数据绑定显示
     @Override
-    public void onBindViewHolder(ViewHolder holder,int postion){
-        //holder.item_tv.setText(mTitle[postion]);
-    }
-    @Override
-    public int getItemCount(){
-        return mTitle.length;
+    public void onBindViewHolder(RecyclerView.ViewHolder holder,int position){
+        //holder.item_tv.setText(mTitle[position]);
+        if (holder instanceof HeaderViewHolder) {
+        }
+        else{
+            //((ContentViewHolder) holder).textView.setText(texts[position - mHeaderCount]);
+             }
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
+    //每次加载的item数
+    @Override
+    public int getItemCount(){
+        return ItemNum ;
+    }
+
+    public class ContentViewHolder extends RecyclerView.ViewHolder{
        // public TextView item_tv;
-        public ViewHolder(View view){
+        public ContentViewHolder(View view){
             super(view);
            // item_tv =(TextView)view.findViewById(R.id.item_tv);
         }
     }
+    public class HeaderViewHolder extends RecyclerView.ViewHolder{
+        // public TextView item_tv;
+        public HeaderViewHolder(View view){
+            super(view);
+            // item_tv =(TextView)view.findViewById(R.id.item_tv);
+        }
+    }
+
 }
