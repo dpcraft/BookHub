@@ -1,10 +1,13 @@
 package com.dpcraft.bookhub;
 
+import android.animation.ObjectAnimator;
+import android.animation.PropertyValuesHolder;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Build;
 import android.os.Handler;
+//import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
@@ -18,8 +21,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.support.v4.app.FragmentActivity;
+import com.oguzdev.circularfloatingactionmenu.library.FloatingActionButton;
+import com.oguzdev.circularfloatingactionmenu.library.FloatingActionMenu;
+import com.oguzdev.circularfloatingactionmenu.library.SubActionButton;
 
 public class MainActivity extends FragmentActivity {
 
@@ -28,6 +35,7 @@ public class MainActivity extends FragmentActivity {
     private TabLayout tabLayout;
     private SimpleFragmentPagerAdapter pagerAdapter;
     private ViewPager viewPager;
+   // private FloatingActionButton floatingActionButton;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -48,18 +56,68 @@ public class MainActivity extends FragmentActivity {
             }
         });
         tabLayout = (TabLayout)findViewById(R.id.tab_layout);
-        /*
-        tabLayout.addTab(tabLayout.newTab().setText("买书租书"));
-        tabLayout.addTab(tabLayout.newTab().setText("求书"));
-        tabLayout.addTab(tabLayout.newTab().setText("读书心得"));
-        */
         pagerAdapter = new SimpleFragmentPagerAdapter(getSupportFragmentManager(), this);
         viewPager = (ViewPager) findViewById(R.id.viewpager);
         viewPager.setAdapter(pagerAdapter);
         tabLayout.setupWithViewPager(viewPager);
+       // floatingActionButton = (FloatingActionButton)findViewById(R.id.fab_add);
 
+        //FloatingActionMenu的使用
+       final ImageView fabIcon = new ImageView(this); // Create an icon
+        fabIcon.setImageDrawable(getResources().getDrawable(R.drawable.ic_add));
+        FloatingActionButton actionButton = new FloatingActionButton.Builder(this)
+                .setContentView(fabIcon)
+                .setBackgroundDrawable(getResources().getDrawable(R.drawable.fab_shape))
+                .build();
 
+        //子按钮
+        SubActionButton.Builder itemBuilder = new SubActionButton.Builder(this);
 
+        ImageView itemIcon = new ImageView(this);
+        itemIcon.setImageDrawable(getResources().getDrawable(R.drawable.ic_add));
+        SubActionButton button1 = itemBuilder.setContentView(itemIcon).setBackgroundDrawable(getResources()
+                .getDrawable(R.drawable.mbt_shape)).build();
+
+        ImageView itemIcon2 = new ImageView(this);
+        itemIcon2.setImageDrawable(getResources().getDrawable(R.drawable.ic_add));
+        SubActionButton button2 = itemBuilder.setContentView(itemIcon2).setBackgroundDrawable(getResources()
+                .getDrawable(R.drawable.fab_shape)).build();
+
+        ImageView itemIcon3 = new ImageView(this);
+        itemIcon3.setImageDrawable(getResources().getDrawable(R.drawable.ic_add));
+        SubActionButton button3 = itemBuilder.setContentView(itemIcon3).setBackgroundDrawable(getResources()
+                .getDrawable(R.drawable.fab_shape)).build();
+
+        FloatingActionMenu actionMenu = new FloatingActionMenu.Builder(this)
+                .addSubActionView(button1)
+                .addSubActionView(button2)
+                .addSubActionView(button3)
+                // ...
+                .attachTo(actionButton)
+                .build();
+
+        actionMenu.setStateChangeListener(new FloatingActionMenu.MenuStateChangeListener() {
+            @Override
+            public void onMenuOpened(FloatingActionMenu menu) {
+                // 增加按钮中的+号图标顺时针旋转45度
+                // Rotate the icon of rightLowerButton 45 degrees clockwise
+                fabIcon.setRotation(0);
+                PropertyValuesHolder pvhR = PropertyValuesHolder.ofFloat(View.ROTATION, 45);
+                ObjectAnimator animation = ObjectAnimator.ofPropertyValuesHolder(fabIcon, pvhR);
+                animation.start();
+            }
+
+            @Override
+            public void onMenuClosed(FloatingActionMenu menu) {
+                // 增加按钮中的+号图标逆时针旋转45度
+                // Rotate the icon of rightLowerButton 45 degrees
+                // counter-clockwise
+                fabIcon.setRotation(45);
+                PropertyValuesHolder pvhR = PropertyValuesHolder.ofFloat(View.ROTATION, 0);
+                ObjectAnimator animation = ObjectAnimator.ofPropertyValuesHolder(fabIcon, pvhR);
+                animation.start();
+            }
+        });
     }
     //改变menu字体颜色
     public static void setActivityMenuColor(final Activity activity){
