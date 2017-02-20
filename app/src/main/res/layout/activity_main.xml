@@ -9,9 +9,8 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     tools:context="com.dpcraft.bookhub.MainActivity">
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+
+
 a<LinearLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -27,6 +26,7 @@ a<LinearLayout
         app:titleTextAppearance="@android:style/TextAppearance.Material.Title"
         app:titleTextColor="@color/white">
         <Button
+            android:id="@+id/bt_search"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@color/transparent"
@@ -53,14 +53,14 @@ a<LinearLayout
         android:background="@android:color/white" />
 </LinearLayout>
 
-    </FrameLayout>
+
     <android.support.design.widget.NavigationView
         android:id="@+id/navigation_view"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:elevation="400dp"
         android:layout_gravity="start"
-        app:headerLayout="@layout/navigation_header"
+
         app:menu="@menu/drawer"
         design:itemIconTint="@color/blue_500"/>
 </android.support.v4.widget.DrawerLayout>

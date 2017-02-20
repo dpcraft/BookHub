@@ -2,27 +2,20 @@ package com.dpcraft.bookhub;
 
 import android.animation.ObjectAnimator;
 import android.animation.PropertyValuesHolder;
-import android.annotation.TargetApi;
-import android.app.Activity;
-import android.content.Context;
-import android.os.Build;
-import android.os.Handler;
+import android.content.Intent;
 //import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.util.AttributeSet;
 import android.view.Gravity;
-import android.view.InflateException;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.support.v4.app.FragmentActivity;
 import com.oguzdev.circularfloatingactionmenu.library.FloatingActionButton;
 import com.oguzdev.circularfloatingactionmenu.library.FloatingActionMenu;
@@ -35,6 +28,8 @@ public class MainActivity extends FragmentActivity {
     private TabLayout tabLayout;
     private SimpleFragmentPagerAdapter pagerAdapter;
     private ViewPager viewPager;
+    private NavigationView navigationView;
+
    // private FloatingActionButton floatingActionButton;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +40,7 @@ public class MainActivity extends FragmentActivity {
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
        //透明导航栏
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+
         drawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         //setActivityMenuColor(this);
@@ -55,12 +51,33 @@ public class MainActivity extends FragmentActivity {
 
             }
         });
+
+
+
+        //登录按钮监听
+        navigationView = (NavigationView)findViewById(R.id.navigation_view);
+        View headerLayout = navigationView.inflateHeaderView(R.layout.navigation_header);
+        Button startLoginButton = (Button)headerLayout.findViewById(R.id.bt_start_login);
+        startLoginButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // LoginActivity.actionStart(MainActivity.this, "data1", "data2");
+                Intent intent = new Intent(MainActivity.this,LoginActivity.class);
+                startActivity(intent);
+            }
+        });
+
+
+
+
+
         tabLayout = (TabLayout)findViewById(R.id.tab_layout);
         pagerAdapter = new SimpleFragmentPagerAdapter(getSupportFragmentManager(), this);
         viewPager = (ViewPager) findViewById(R.id.viewpager);
         viewPager.setAdapter(pagerAdapter);
         tabLayout.setupWithViewPager(viewPager);
        // floatingActionButton = (FloatingActionButton)findViewById(R.id.fab_add);
+
 
         //FloatingActionMenu的使用
        final ImageView fabIcon = new ImageView(this); // Create an icon
@@ -92,7 +109,6 @@ public class MainActivity extends FragmentActivity {
                 .addSubActionView(button1)
                 .addSubActionView(button2)
                 .addSubActionView(button3)
-                // ...
                 .attachTo(actionButton)
                 .build();
 
@@ -107,6 +123,7 @@ public class MainActivity extends FragmentActivity {
                 animation.start();
             }
 
+
             @Override
             public void onMenuClosed(FloatingActionMenu menu) {
                 // 增加按钮中的+号图标逆时针旋转45度
@@ -118,9 +135,11 @@ public class MainActivity extends FragmentActivity {
                 animation.start();
             }
         });
+
     }
+
     //改变menu字体颜色
-    public static void setActivityMenuColor(final Activity activity){
+    /*public static void setActivityMenuColor(final Activity activity){
         activity.getLayoutInflater().setFactory(new android.view.LayoutInflater.Factory(){
             public View onCreateView(String name, Context context, AttributeSet attrs){
                 if(name.equalsIgnoreCase("com.android.internal.view.menu.IconMenuItemView")
@@ -147,6 +166,6 @@ public class MainActivity extends FragmentActivity {
                 return null;
             }
         });
-    }
+    }*/
 
 }

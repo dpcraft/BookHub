@@ -27,7 +27,8 @@ public class SimpleFragmentPagerAdapter extends FragmentPagerAdapter {
         } else if(position == 1) {
             return RequestFragment.newInstance();
         }else{
-                return PageFragment.newInstance(position + 1);
+            return CommentFragment.newInstance();
+                //return PageFragment.newInstance(position + 1);
         }
 
     }
