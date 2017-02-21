@@ -26,7 +26,7 @@ a<LinearLayout
         app:titleTextAppearance="@android:style/TextAppearance.Material.Title"
         app:titleTextColor="@color/white">
         <Button
-            android:id="@+id/bt_search"
+            android:id="@+id/btn_search"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@color/transparent"
@@ -56,11 +56,11 @@ a<LinearLayout
 
     <android.support.design.widget.NavigationView
         android:id="@+id/navigation_view"
-        android:layout_width="wrap_content"
+        android:layout_width="260dp"
         android:layout_height="match_parent"
-        android:elevation="400dp"
+        android:elevation="15dp"
         android:layout_gravity="start"
-
+        android:translationZ="200dp"
         app:menu="@menu/drawer"
         design:itemIconTint="@color/blue_500"/>
 </android.support.v4.widget.DrawerLayout>

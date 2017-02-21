@@ -8,6 +8,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
 
 /**
  * Created by DPC on 2017/2/18.
@@ -23,6 +24,17 @@ public class LoginActivity extends Activity {
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         //透明导航栏
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+
+        Button RegisterButton = (Button)findViewById(R.id.btn_register);
+        RegisterButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                RegisterActivity.actionStart(LoginActivity.this, "data1", "data2");
+                // Intent intent = new Intent(MainActivity.this,LoginActivity.class);
+                //startActivity(intent);
+            }
+        });
+
         /*toolbar = (Toolbar) findViewById(R.id.common_toolbar);
         toolbar.setTitle("登录");
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {

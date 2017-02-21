@@ -17,9 +17,14 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.support.v4.app.FragmentActivity;
+import android.widget.Toast;
+
 import com.oguzdev.circularfloatingactionmenu.library.FloatingActionButton;
 import com.oguzdev.circularfloatingactionmenu.library.FloatingActionMenu;
 import com.oguzdev.circularfloatingactionmenu.library.SubActionButton;
+
+import com.wyt.searchbox.SearchFragment;
+import com.wyt.searchbox.custom.IOnSearchClickListener;
 
 public class MainActivity extends FragmentActivity {
 
@@ -29,6 +34,7 @@ public class MainActivity extends FragmentActivity {
     private SimpleFragmentPagerAdapter pagerAdapter;
     private ViewPager viewPager;
     private NavigationView navigationView;
+    private Button searchButton;
 
    // private FloatingActionButton floatingActionButton;
     @Override
@@ -61,9 +67,8 @@ public class MainActivity extends FragmentActivity {
         startLoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // LoginActivity.actionStart(MainActivity.this, "data1", "data2");
-                Intent intent = new Intent(MainActivity.this,LoginActivity.class);
-                startActivity(intent);
+                 LoginActivity.actionStart(MainActivity.this, "data1", "data2");
+
             }
         });
 
@@ -135,6 +140,32 @@ public class MainActivity extends FragmentActivity {
                 animation.start();
             }
         });
+
+        //搜索的dialog实现
+        searchButton = (Button)findViewById(R.id.btn_search);
+        final SearchFragment searchFragment = SearchFragment.newInstance();
+               /* searchFragment.setOnSearchClickListener(new IOnSearchClickListener() {
+            @Override
+            public void OnSearchClick(String keyword) {
+                      //这里处理逻辑
+                Toast.makeText(MainActivity.this, keyword, Toast.LENGTH_SHORT).show();
+            }
+        });*/
+        searchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                searchFragment.show(getSupportFragmentManager(),SearchFragment.TAG);
+
+            }
+        });
+
+
+
+    }
+    @Override
+    protected void onStop(){
+        super.onStop();
+        drawerLayout.closeDrawer(Gravity.LEFT);
 
     }
 

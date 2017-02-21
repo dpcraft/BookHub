@@ -9,7 +9,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:paddingTop="10dp"
+    android:paddingBottom="10dp">
     <ImageView
         android:id="@+id/book_preview_image"
         android:layout_width="wrap_content"
@@ -22,6 +24,12 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:paddingLeft="10dp">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="left"
+            android:src="@drawable/ic_sell"
+            />
         <TextView
             android:id="@+id/tv_preview_book_name"
             android:layout_width="wrap_content"
@@ -29,7 +37,8 @@
             android:paddingTop="10dp"
             android:paddingLeft="10dp"
             android:text="从你的全世界路过"
-            android:textColor="@color/blue_500"/>
+            android:textSize="@dimen/font_normal"
+            android:textColor="@color/black"/>
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -41,7 +50,7 @@
                 android:paddingTop="10dp"
                 android:paddingLeft="10dp"
                 android:text="张嘉佳"
-                android:textColor="@color/blue_500"/>
+                android:textColor="@color/black"/>
             <TextView
                 android:id="@+id/tv_write"
                 android:layout_width="wrap_content"
@@ -49,7 +58,7 @@
                 android:paddingTop="10dp"
                 android:paddingLeft="10dp"
                 android:text="著"
-                android:textColor="@color/black"/>
+                android:textColor="@color/colorPrimary"/>
         </LinearLayout>
         <TextView
             android:id="@+id/tv_preview_book_publishing_house"
@@ -57,6 +66,7 @@
             android:layout_height="wrap_content"
             android:paddingTop="10dp"
             android:paddingLeft="10dp"
+            android:text="湖南文艺出版社"
             android:textColor="@color/black"/>
         <LinearLayout
             android:layout_width="wrap_content"
