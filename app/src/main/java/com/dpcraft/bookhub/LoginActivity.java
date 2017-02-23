@@ -4,17 +4,26 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.EditText;
+
+import com.dpcraft.bookhub.DataClass.User;
+import com.dpcraft.bookhub.NetModule.NetUtils;
 
 /**
  * Created by DPC on 2017/2/18.
  */
 public class LoginActivity extends Activity {
     private Toolbar toolbar;
+    private User user ;
+    private TextInputLayout mUsernameWrapper;
+    private TextInputLayout mPasswordWrapper;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -30,10 +39,34 @@ public class LoginActivity extends Activity {
             @Override
             public void onClick(View view) {
                 RegisterActivity.actionStart(LoginActivity.this, "data1", "data2");
-                // Intent intent = new Intent(MainActivity.this,LoginActivity.class);
-                //startActivity(intent);
+
             }
         });
+        mUsernameWrapper = (TextInputLayout) findViewById(R.id.usernameWrapper);
+        mPasswordWrapper = (TextInputLayout) findViewById(R.id.passwordWrapper);
+        Button LoginButton = (Button)findViewById(R.id.btn_login) ;
+       // final EditText userNameEditText = mUsernameWraper.
+       // final EditText passWordEditText = (EditText)findViewById(R.id.edt_password);
+
+       // Log.i("username",mUsernameWrapper.getEditText().getText().toString().trim());
+        Log.i("loginActivity","start");
+        LoginButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                user = new User();
+                Log.i("username",mUsernameWrapper.getEditText().getText().toString().trim());
+                user.setUserName(mUsernameWrapper.getEditText().getText().toString().trim());
+                user.setPassWord(mPasswordWrapper.getEditText().getText().toString().trim());
+                //user.setUserName("user");
+               // user.setPassWord("password");
+                try{
+                NetUtils.login(user);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+        });
+
 
         /*toolbar = (Toolbar) findViewById(R.id.common_toolbar);
         toolbar.setTitle("登录");
