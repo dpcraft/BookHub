@@ -22,20 +22,24 @@ public class HttpUtil {
                 HttpURLConnection connection = null;
                 try {
                     URL url = new URL(address);
+                    Log.i("dpc","get  start");
                     connection = (HttpURLConnection) url.openConnection();
+                    Log.i("dpc","connection");
                     connection.setRequestMethod("GET");
-                    connection.setConnectTimeout(8000);
-                    connection.setReadTimeout(8000);
+                    connection.setConnectTimeout(1000);
+                    connection.setReadTimeout(1000);
                     connection.setDoInput(true);
                     connection.setDoOutput(true);
                     int code = connection.getResponseCode();
+
+                    Log.i("dpc code",code + "");
                     BufferedReader reader=new BufferedReader(new InputStreamReader(connection.getInputStream(),"utf-8"));
                     StringBuilder response = new StringBuilder();
                     String line;
                     while ((line = reader.readLine()) != null) {
                         response.append(line);
                     }
-                    Log.i("dpc",response.toString());
+                    Log.i("response",response.toString());
 
                     if (listener != null) {
                         listener.onFinish(response.toString(),code);
@@ -43,10 +47,12 @@ public class HttpUtil {
                 }catch (Exception e){
                     if(listener != null){
                         listener.onError(e);
+                        Log.i("error", "error");
                     }
                 }finally {
                     if(connection == null){
                         connection.disconnect();
+                        Log.i("disc", "disc");
                     }
                 }
 

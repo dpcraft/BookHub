@@ -61,7 +61,8 @@ public class NetUtils {
 
          */
 
-        String loginUrl = LOGINURL + "?username=" + user.getUserName() + "&password=" + user.getPassWord();
+        //String loginUrl = LOGINURL + "?username=" + user.getUserName() + "&password=" + user.getPassWord();
+        String loginUrl = "http://www.uestc.edu.cn";
         Log.i("urlString",loginUrl);
         HttpUtil.sendHttpGetRequest(loginUrl, new HttpCallBackListener() {
             @Override
