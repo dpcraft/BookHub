@@ -1,5 +1,7 @@
 package com.dpcraft.bookhub.NetModule;
 
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 
 import com.dpcraft.bookhub.DataClass.User;
@@ -18,7 +20,7 @@ public class NetUtils {
 
         private static String PHOTOURL="http://bookp2p.imwork.net:10142/BooksServer/user/photo";
 
-        public static void signup(User user)throws Exception{
+        public static void signup(User user, final Handler handler)throws Exception{
              /*
 
          * 使用POST方法请求注册操作
@@ -37,6 +39,14 @@ public class NetUtils {
                 @Override
                 public void onFinish(String response, int responseCode) {
                     Log.i("signup code",responseCode+"");
+                    Log.i("response",response.toString());
+                    int code = JSONUtil.parseJSONwithGSON(response).getCode();
+                    String Information = JSONUtil.parseJSONwithGSON(response).getMessage();
+                    Log.i("JSON code",code+"");
+                    Message message = handler.obtainMessage();//创建message的方式，可以更好地被回收
+                    message.what = code;
+                    message.obj = Information;
+                    handler.sendMessage(message);
                 }
 
                 @Override
@@ -62,12 +72,16 @@ public class NetUtils {
          */
 
         //String loginUrl = LOGINURL + "?username=" + user.getUserName() + "&password=" + user.getPassWord();
-        String loginUrl = "http://www.uestc.edu.cn";
-        Log.i("urlString",loginUrl);
-        HttpUtil.sendHttpGetRequest(loginUrl, new HttpCallBackListener() {
+       // String loginUrl = "http://www.uestc.edu.cn";
+       // Log.i("urlString",loginUrl);
+        JSONUtil jsonUtil = new JSONUtil();
+        String str = jsonUtil.packageJson(user);
+        HttpUtil.sendHttpPostRequest(LOGINURL,str,new HttpCallBackListener() {
             @Override
             public void onFinish(String response, int responseCode) {
                 Log.i("Login code", responseCode + "");
+                Log.i("response",response.toString());
+
             }
 
             @Override

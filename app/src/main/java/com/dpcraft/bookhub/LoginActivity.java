@@ -11,7 +11,6 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.EditText;
 
 import com.dpcraft.bookhub.DataClass.User;
 import com.dpcraft.bookhub.NetModule.NetUtils;
@@ -38,7 +37,7 @@ public class LoginActivity extends Activity {
         RegisterButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                RegisterActivity.actionStart(LoginActivity.this, "data1", "data2");
+                SignupActivity.actionStart(LoginActivity.this, "data1", "data2");
 
             }
         });
@@ -50,10 +49,11 @@ public class LoginActivity extends Activity {
 
        // Log.i("username",mUsernameWrapper.getEditText().getText().toString().trim());
         Log.i("loginActivity","start");
+        user = new User();
         LoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                user = new User();
+
                 Log.i("username",mUsernameWrapper.getEditText().getText().toString().trim());
                 user.setUserName(mUsernameWrapper.getEditText().getText().toString().trim());
                 user.setPassWord(mPasswordWrapper.getEditText().getText().toString().trim());

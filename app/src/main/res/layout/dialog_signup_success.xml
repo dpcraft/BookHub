@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="10dp">
+    <ImageView
+        android:id="@+id/iv_signup_success"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="10dp"
+        android:src="@drawable/ic_signup_success" />
+    <TextView
+        android:id="@+id/tv_signup_success"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:gravity="center"
+        android:text="恭喜您注册成功！"
+        android:textColor="@color/red_900"
+        android:textSize="@dimen/font_normal"/>
+
+</LinearLayout>

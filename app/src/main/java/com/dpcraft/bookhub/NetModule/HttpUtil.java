@@ -26,8 +26,8 @@ public class HttpUtil {
                     connection = (HttpURLConnection) url.openConnection();
                     Log.i("dpc","connection");
                     connection.setRequestMethod("GET");
-                    connection.setConnectTimeout(1000);
-                    connection.setReadTimeout(1000);
+                    connection.setConnectTimeout(8000);
+                    connection.setReadTimeout(8000);
                     connection.setDoInput(true);
                     connection.setDoOutput(true);
                     int code = connection.getResponseCode();
@@ -35,11 +35,12 @@ public class HttpUtil {
                     Log.i("dpc code",code + "");
                     BufferedReader reader=new BufferedReader(new InputStreamReader(connection.getInputStream(),"utf-8"));
                     StringBuilder response = new StringBuilder();
-                    String line;
+                   String line;
                     while ((line = reader.readLine()) != null) {
                         response.append(line);
                     }
                     Log.i("response",response.toString());
+
 
                     if (listener != null) {
                         listener.onFinish(response.toString(),code);
@@ -77,12 +78,14 @@ public class HttpUtil {
                     writer.write(stringToWrite);
                     writer.flush();
                     int code=connection.getResponseCode();
-                    BufferedReader reader=new BufferedReader(new InputStreamReader(connection.getInputStream(),"utf-8"));
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream(),"utf-8"));
                     StringBuilder response = new StringBuilder();
                     String line;
                     while ((line = reader.readLine()) != null) {
                         response.append(line);
+
                     }
+
 
                     if (listener != null) {
                         listener.onFinish(response.toString(),code);

@@ -3,6 +3,7 @@ package com.dpcraft.bookhub.NetModule;
 import android.util.Log;
 
 import com.dpcraft.bookhub.DataClass.User;
+import com.google.gson.Gson;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -41,5 +42,10 @@ public class JSONUtil {
             return str;
 
         }
+    public static Response parseJSONwithGSON( String jsonData){
+        Gson gson = new Gson();
+        Response response = gson.fromJson(jsonData,Response.class);
+        return  response;
+    }
 
 }
