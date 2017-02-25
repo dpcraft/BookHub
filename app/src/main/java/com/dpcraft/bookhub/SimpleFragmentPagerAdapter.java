@@ -12,7 +12,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 public class SimpleFragmentPagerAdapter extends FragmentPagerAdapter {
 
     final int PAGE_COUNT = 3;
-    private String tabTitles[] = new String[]{"卖书租书","求书","读书笔记"};
+    private String tabTitles[] = new String[]{"买书租书","求书","读书笔记"};
     private Context context;
 
     public SimpleFragmentPagerAdapter(FragmentManager fm,Context context) {

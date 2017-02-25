@@ -19,6 +19,8 @@ import android.widget.ImageView;
 import android.support.v4.app.FragmentActivity;
 import android.widget.Toast;
 
+import com.lzp.floatingactionbuttonplus.FabTagLayout;
+import com.lzp.floatingactionbuttonplus.FloatingActionButtonPlus;
 import com.oguzdev.circularfloatingactionmenu.library.FloatingActionButton;
 import com.oguzdev.circularfloatingactionmenu.library.FloatingActionMenu;
 import com.oguzdev.circularfloatingactionmenu.library.SubActionButton;
@@ -35,6 +37,7 @@ public class MainActivity extends FragmentActivity {
     private ViewPager viewPager;
     private NavigationView navigationView;
     private Button searchButton;
+    private FloatingActionButtonPlus mFabPlus;
 
    // private FloatingActionButton floatingActionButton;
     @Override
@@ -59,6 +62,30 @@ public class MainActivity extends FragmentActivity {
         });
 
 
+        //FAbPlus 监听
+        mFabPlus = (FloatingActionButtonPlus)findViewById(R.id.FabPlus) ;
+        mFabPlus.setOnItemClickListener(new FloatingActionButtonPlus.OnItemClickListener() {
+            @Override
+            public void onItemClick(FabTagLayout tagView, int position) {
+                    switch (position){
+                    case 0:
+                        Toast.makeText(MainActivity.this,"Click btn 0 = "+ position,Toast.LENGTH_SHORT).show();
+                        break;
+                        case 1:
+                            Toast.makeText(MainActivity.this,"Click btn 1 = "+ position,Toast.LENGTH_SHORT).show();
+                            break;
+                        case 2:
+                            Toast.makeText(MainActivity.this,"Click btn 2 = "+ position,Toast.LENGTH_SHORT).show();
+                            break;
+                        case 3:
+                            Toast.makeText(MainActivity.this,"Click btn 3 = "+ position,Toast.LENGTH_SHORT).show();
+                            break;
+                        default:
+                            break;
+
+                }
+            }
+        });
 
         //登录按钮监听
         navigationView = (NavigationView)findViewById(R.id.navigation_view);
@@ -81,65 +108,6 @@ public class MainActivity extends FragmentActivity {
         viewPager = (ViewPager) findViewById(R.id.viewpager);
         viewPager.setAdapter(pagerAdapter);
         tabLayout.setupWithViewPager(viewPager);
-       // floatingActionButton = (FloatingActionButton)findViewById(R.id.fab_add);
-
-
-        //FloatingActionMenu的使用
-       final ImageView fabIcon = new ImageView(this); // Create an icon
-        fabIcon.setImageDrawable(getResources().getDrawable(R.drawable.ic_add));
-        FloatingActionButton actionButton = new FloatingActionButton.Builder(this)
-                .setContentView(fabIcon)
-                .setBackgroundDrawable(getResources().getDrawable(R.drawable.fab_shape))
-                .build();
-
-        //子按钮
-        SubActionButton.Builder itemBuilder = new SubActionButton.Builder(this);
-
-        ImageView itemIcon = new ImageView(this);
-        itemIcon.setImageDrawable(getResources().getDrawable(R.drawable.ic_add));
-        SubActionButton button1 = itemBuilder.setContentView(itemIcon).setBackgroundDrawable(getResources()
-                .getDrawable(R.drawable.mbt_shape)).build();
-
-        ImageView itemIcon2 = new ImageView(this);
-        itemIcon2.setImageDrawable(getResources().getDrawable(R.drawable.ic_add));
-        SubActionButton button2 = itemBuilder.setContentView(itemIcon2).setBackgroundDrawable(getResources()
-                .getDrawable(R.drawable.fab_shape)).build();
-
-        ImageView itemIcon3 = new ImageView(this);
-        itemIcon3.setImageDrawable(getResources().getDrawable(R.drawable.ic_add));
-        SubActionButton button3 = itemBuilder.setContentView(itemIcon3).setBackgroundDrawable(getResources()
-                .getDrawable(R.drawable.fab_shape)).build();
-
-        FloatingActionMenu actionMenu = new FloatingActionMenu.Builder(this)
-                .addSubActionView(button1)
-                .addSubActionView(button2)
-                .addSubActionView(button3)
-                .attachTo(actionButton)
-                .build();
-
-        actionMenu.setStateChangeListener(new FloatingActionMenu.MenuStateChangeListener() {
-            @Override
-            public void onMenuOpened(FloatingActionMenu menu) {
-                // 增加按钮中的+号图标顺时针旋转45度
-                // Rotate the icon of rightLowerButton 45 degrees clockwise
-                fabIcon.setRotation(0);
-                PropertyValuesHolder pvhR = PropertyValuesHolder.ofFloat(View.ROTATION, 45);
-                ObjectAnimator animation = ObjectAnimator.ofPropertyValuesHolder(fabIcon, pvhR);
-                animation.start();
-            }
-
-
-            @Override
-            public void onMenuClosed(FloatingActionMenu menu) {
-                // 增加按钮中的+号图标逆时针旋转45度
-                // Rotate the icon of rightLowerButton 45 degrees
-                // counter-clockwise
-                fabIcon.setRotation(45);
-                PropertyValuesHolder pvhR = PropertyValuesHolder.ofFloat(View.ROTATION, 0);
-                ObjectAnimator animation = ObjectAnimator.ofPropertyValuesHolder(fabIcon, pvhR);
-                animation.start();
-            }
-        });
 
         //搜索的dialog实现
         searchButton = (Button)findViewById(R.id.btn_search);
