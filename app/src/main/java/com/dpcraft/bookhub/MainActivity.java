@@ -10,6 +10,8 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.style.IconMarginSpan;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
@@ -17,6 +19,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.support.v4.app.FragmentActivity;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.lzp.floatingactionbuttonplus.FabTagLayout;
@@ -28,6 +31,8 @@ import com.oguzdev.circularfloatingactionmenu.library.SubActionButton;
 import com.wyt.searchbox.SearchFragment;
 import com.wyt.searchbox.custom.IOnSearchClickListener;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class MainActivity extends FragmentActivity {
 
     private Toolbar toolbar;
@@ -38,6 +43,11 @@ public class MainActivity extends FragmentActivity {
     private NavigationView navigationView;
     private Button searchButton;
     private FloatingActionButtonPlus mFabPlus;
+    private View headerLayout;
+    private Button startLoginButton;
+    private TextView textViewNavUsername;
+    private Boolean isLogin = false;
+    private CircleImageView circleImageViewNavUserIcon;
 
    // private FloatingActionButton floatingActionButton;
     @Override
@@ -49,9 +59,9 @@ public class MainActivity extends FragmentActivity {
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
        //透明导航栏
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+        initWidget();
 
-        drawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+
         //setActivityMenuColor(this);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -61,9 +71,8 @@ public class MainActivity extends FragmentActivity {
             }
         });
 
-
         //FAbPlus 监听
-        mFabPlus = (FloatingActionButtonPlus)findViewById(R.id.FabPlus) ;
+
         mFabPlus.setOnItemClickListener(new FloatingActionButtonPlus.OnItemClickListener() {
             @Override
             public void onItemClick(FabTagLayout tagView, int position) {
@@ -88,13 +97,13 @@ public class MainActivity extends FragmentActivity {
         });
 
         //登录按钮监听
-        navigationView = (NavigationView)findViewById(R.id.navigation_view);
-        View headerLayout = navigationView.inflateHeaderView(R.layout.navigation_header);
-        Button startLoginButton = (Button)headerLayout.findViewById(R.id.bt_start_login);
+
         startLoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                  LoginActivity.actionStart(MainActivity.this, "data1", "data2");
+                isLogin = true;
+                Log.i("islogin",isLogin.toString());
 
             }
         });
@@ -102,15 +111,13 @@ public class MainActivity extends FragmentActivity {
 
 
 
-
-        tabLayout = (TabLayout)findViewById(R.id.tab_layout);
         pagerAdapter = new SimpleFragmentPagerAdapter(getSupportFragmentManager(), this);
-        viewPager = (ViewPager) findViewById(R.id.viewpager);
+
         viewPager.setAdapter(pagerAdapter);
         tabLayout.setupWithViewPager(viewPager);
 
         //搜索的dialog实现
-        searchButton = (Button)findViewById(R.id.btn_search);
+
         final SearchFragment searchFragment = SearchFragment.newInstance();
                /* searchFragment.setOnSearchClickListener(new IOnSearchClickListener() {
             @Override
@@ -131,40 +138,37 @@ public class MainActivity extends FragmentActivity {
 
     }
     @Override
+    protected void onResume(){
+        super.onResume();
+        if(isLogin){
+            textViewNavUsername.setText("丫丫");
+            textViewNavUsername.setVisibility(View.VISIBLE);
+            circleImageViewNavUserIcon.setImageResource(R.drawable.yy);
+            circleImageViewNavUserIcon.setVisibility(View.VISIBLE);
+            startLoginButton.setVisibility(View.GONE);
+
+        }
+    }
+    @Override
     protected void onStop(){
         super.onStop();
         drawerLayout.closeDrawer(Gravity.LEFT);
 
     }
+    public void initWidget(){
+        drawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        mFabPlus = (FloatingActionButtonPlus)findViewById(R.id.FabPlus) ;
+        navigationView = (NavigationView)findViewById(R.id.navigation_view);
+        headerLayout = navigationView.inflateHeaderView(R.layout.navigation_header);
+        startLoginButton = (Button)headerLayout.findViewById(R.id.bt_start_login);
+        textViewNavUsername = (TextView)headerLayout.findViewById(R.id.tv_nav_username);
+        circleImageViewNavUserIcon = (CircleImageView) headerLayout.findViewById(R.id.civ_nav_usericon);
+        tabLayout = (TabLayout)findViewById(R.id.tab_layout);
+        viewPager = (ViewPager) findViewById(R.id.viewpager);
+        searchButton = (Button)findViewById(R.id.btn_search);
+    }
 
-    //改变menu字体颜色
-    /*public static void setActivityMenuColor(final Activity activity){
-        activity.getLayoutInflater().setFactory(new android.view.LayoutInflater.Factory(){
-            public View onCreateView(String name, Context context, AttributeSet attrs){
-                if(name.equalsIgnoreCase("com.android.internal.view.menu.IconMenuItemView")
-                        ||name.equalsIgnoreCase("com.android.internal.view.menu.ActionMenuItemView")){
-                    try{
-                        LayoutInflater f = activity.getLayoutInflater();
-                        final View view = f.createView(name,null,attrs);
-                        if(view instanceof TextView){
-                            new Handler().post(new Runnable() {
-                                @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
-                                @Override
-                                public void run() {
-                                    ((TextView)view).setTextColor(activity.getResources().getColor(R.color.blue_500));
-                                }
-                            });
-                        }
-                        return view;
-                    }catch (InflateException e){
-                        e.printStackTrace();
-                    }catch (ClassNotFoundException e){
-                        e.printStackTrace();
-                    }
-                }
-                return null;
-            }
-        });
-    }*/
+
 
 }

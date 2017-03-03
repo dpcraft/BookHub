@@ -29,6 +29,8 @@ dependencies {
     compile 'com.wenwenwen888:searchbox:1.0.0'
     compile 'com.google.code.gson:gson:2.6.2'
     compile 'com.lzp.floatingactionbutton:floatingactionbuttonplus:1.0.0'
+    //圆形头像
+    compile 'de.hdodenhof:circleimageview:2.1.0'
 
 
 }
