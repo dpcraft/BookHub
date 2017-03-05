@@ -9,6 +9,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.Toolbar;
 import android.text.style.IconMarginSpan;
 import android.util.Log;
@@ -48,6 +49,8 @@ public class MainActivity extends FragmentActivity {
     private TextView textViewNavUsername;
     private Boolean isLogin = false;
     private CircleImageView circleImageViewNavUserIcon;
+
+    private SwipeRefreshLayout requestSwipeRefreshLayout;
 
    // private FloatingActionButton floatingActionButton;
     @Override
@@ -167,6 +170,7 @@ public class MainActivity extends FragmentActivity {
         tabLayout = (TabLayout)findViewById(R.id.tab_layout);
         viewPager = (ViewPager) findViewById(R.id.viewpager);
         searchButton = (Button)findViewById(R.id.btn_search);
+
     }
 
 
