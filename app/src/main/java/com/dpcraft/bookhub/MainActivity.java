@@ -4,6 +4,7 @@ import android.animation.ObjectAnimator;
 import android.animation.PropertyValuesHolder;
 import android.content.Intent;
 //import android.support.design.widget.FloatingActionButton;
+import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
@@ -14,6 +15,7 @@ import android.support.v7.widget.Toolbar;
 import android.text.style.IconMarginSpan;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -23,6 +25,7 @@ import android.support.v4.app.FragmentActivity;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.dpcraft.bookhub.Application.MyApplication;
 import com.lzp.floatingactionbuttonplus.FabTagLayout;
 import com.lzp.floatingactionbuttonplus.FloatingActionButtonPlus;
 import com.oguzdev.circularfloatingactionmenu.library.FloatingActionButton;
@@ -49,7 +52,7 @@ public class MainActivity extends FragmentActivity {
     private TextView textViewNavUsername;
     private Boolean isLogin = false;
     private CircleImageView circleImageViewNavUserIcon;
-
+    private MyApplication myApplication;
     private SwipeRefreshLayout requestSwipeRefreshLayout;
 
    // private FloatingActionButton floatingActionButton;
@@ -64,8 +67,9 @@ public class MainActivity extends FragmentActivity {
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
         initWidget();
 
-
+        myApplication = (MyApplication)getApplication();
         //setActivityMenuColor(this);
+
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -104,10 +108,48 @@ public class MainActivity extends FragmentActivity {
         startLoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                 drawerLayout.closeDrawer(Gravity.LEFT);
                  LoginActivity.actionStart(MainActivity.this, "data1", "data2");
-                isLogin = true;
-                Log.i("islogin",isLogin.toString());
 
+
+                myApplication.setLoginStatus(true);
+                isLogin = myApplication.isLogin();
+                Log.i(" main activity islogin",isLogin.toString());
+
+
+
+
+            }
+        });
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                int id = item.getItemId();
+                switch (id){
+                    case R.id.navigation_item_message:
+                        //消息点击处理
+                        break;
+                    case R.id.navigation_item_userInfo:
+                        //个人信息
+                        break;
+                    case R.id.navigation_item_like:
+                        //有意
+                        break;
+                    case R.id.navigation_item_history:
+                        //历史
+                        break;
+                    case R.id.navigation_item_about:
+                        //关于
+                        myApplication.setLoginStatus(false);
+                        isLogin = myApplication.isLogin();
+                        Log.i(" main activity islogin",isLogin.toString());
+                        textViewNavUsername.setVisibility(View.GONE);
+                        circleImageViewNavUserIcon.setVisibility(View.GONE);
+                        startLoginButton.setVisibility(View.VISIBLE);
+                        break;
+                }
+                drawerLayout.closeDrawer(Gravity.LEFT);
+                return false;
             }
         });
 
@@ -140,10 +182,12 @@ public class MainActivity extends FragmentActivity {
 
 
     }
+
+
     @Override
     protected void onResume(){
         super.onResume();
-        if(isLogin){
+        if(myApplication.isLogin()){
             textViewNavUsername.setText("丫丫");
             textViewNavUsername.setVisibility(View.VISIBLE);
             circleImageViewNavUserIcon.setImageResource(R.drawable.yy);
@@ -152,12 +196,7 @@ public class MainActivity extends FragmentActivity {
 
         }
     }
-    @Override
-    protected void onStop(){
-        super.onStop();
-        drawerLayout.closeDrawer(Gravity.LEFT);
 
-    }
     public void initWidget(){
         drawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
         toolbar = (Toolbar) findViewById(R.id.toolbar);

@@ -11,8 +11,10 @@ import android.support.v4.app.FragmentPagerAdapter;
 
 public class SimpleFragmentPagerAdapter extends FragmentPagerAdapter {
 
-    final int PAGE_COUNT = 3;
-    private String tabTitles[] = new String[]{"买书租书","求书","读书笔记"};
+   // final int PAGE_COUNT = 3;
+   // private String tabTitles[] = new String[]{"买书租书","求书","读书笔记"};
+    final int PAGE_COUNT = 2;
+    private String tabTitles[] = new String[]{"买书租书","求书"};
     private Context context;
 
     public SimpleFragmentPagerAdapter(FragmentManager fm,Context context) {
@@ -24,12 +26,17 @@ public class SimpleFragmentPagerAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         if(position == 0) {
             return SellFragment.newInstance();
-        } else if(position == 1) {
+        }
+        else {
             return RequestFragment.newInstance();
-        }else{
+        }
+        /*else if(position == 1) {
+            return RequestFragment.newInstance();
+        }
+        else{
             return CommentFragment.newInstance();
                 //return PageFragment.newInstance(position + 1);
-        }
+        }*/
 
     }
 

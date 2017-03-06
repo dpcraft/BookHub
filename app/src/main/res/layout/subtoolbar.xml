@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<android.support.v7.widget.Toolbar
+    android:id="@+id/toolbar"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:elevation="@dimen/tb_elevation"
+    android:background="@color/white"
+    app:navigationIcon="@drawable/ic_menu"
+    app:titleTextAppearance="@android:style/TextAppearance.Material.Title"
+    app:titleTextColor="@color/black"
+    app:layout_scrollFlags="scroll"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    </android.support.v7.widget.Toolbar>

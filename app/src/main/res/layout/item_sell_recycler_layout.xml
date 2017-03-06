@@ -5,39 +5,34 @@
     style="@style/news_summary_card_view"
     android:clickable="true"
     app:cardCornerRadius="1dp"
-    app:cardElevation="5dp">
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    app:cardElevation="1dp">
+<LinearLayout
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingTop="10dp"
-    android:paddingBottom="10dp">
+    >
     <ImageView
         android:id="@+id/book_preview_image"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="98dp"
+        android:layout_height="98dp"
+        android:scaleType="fitCenter"
         android:src="@drawable/image_belonged"
-        android:padding="5dp"
+        android:paddingLeft="25dp"
         />
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:paddingLeft="10dp">
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="left"
-            android:src="@drawable/ic_sell"
-            />
+
         <TextView
             android:id="@+id/tv_preview_book_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingTop="10dp"
+            android:paddingTop="3dp"
             android:paddingLeft="10dp"
             android:text="从你的全世界路过"
-            android:textSize="@dimen/font_normal"
+            android:textSize="@dimen/font_small"
             android:textColor="@color/black"/>
         <LinearLayout
             android:layout_width="wrap_content"
@@ -47,7 +42,7 @@
                 android:id="@+id/tv_preview_book_author"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingTop="10dp"
+                android:paddingTop="3dp"
                 android:paddingLeft="10dp"
                 android:text="张嘉佳"
                 android:textColor="@color/black"/>
@@ -55,7 +50,7 @@
                 android:id="@+id/tv_write"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingTop="10dp"
+                android:paddingTop="3dp"
                 android:paddingLeft="10dp"
                 android:text="著"
                 android:textColor="@color/colorPrimary"/>
@@ -64,7 +59,7 @@
             android:id="@+id/tv_preview_book_publishing_house"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingTop="10dp"
+            android:paddingTop="3dp"
             android:paddingLeft="10dp"
             android:text="湖南文艺出版社"
             android:textColor="@color/black"/>
@@ -72,19 +67,26 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="left"
+                android:paddingLeft="10dp"
+                android:src="@drawable/ic_sell"
+                />
             <TextView
                 android:id="@+id/tv_rmb"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingTop="10dp"
-                android:paddingLeft="10dp"
+                android:paddingTop="3dp"
+                android:paddingLeft="5dp"
                 android:text="￥"
                 android:textColor="@color/red_900"/>
             <TextView
                 android:id="@+id/tv_preview_book_price"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingTop="10dp"
+                android:paddingTop="3dp"
                 android:text="9.99"
                 android:textColor="@color/red_900"/>
         </LinearLayout>

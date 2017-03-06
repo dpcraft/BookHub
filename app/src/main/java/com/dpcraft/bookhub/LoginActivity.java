@@ -12,8 +12,10 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 
+import com.dpcraft.bookhub.Application.MyApplication;
 import com.dpcraft.bookhub.DataClass.User;
 import com.dpcraft.bookhub.NetModule.NetUtils;
+import com.dpcraft.bookhub.UIWidget.SubToolbar;
 
 /**
  * Created by DPC on 2017/2/18.
@@ -23,6 +25,9 @@ public class LoginActivity extends Activity {
     private User user ;
     private TextInputLayout mUsernameWrapper;
     private TextInputLayout mPasswordWrapper;
+   private SubToolbar subToolbar;
+   private MyApplication myApplication ;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -32,6 +37,8 @@ public class LoginActivity extends Activity {
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         //透明导航栏
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+        subToolbar = (SubToolbar)findViewById(R.id.subtoolbar);
+        subToolbar.setTitle("用户登录");
 
         Button RegisterButton = (Button)findViewById(R.id.btn_register);
         RegisterButton.setOnClickListener(new View.OnClickListener() {
@@ -76,6 +83,9 @@ public class LoginActivity extends Activity {
                 finish();
             }
         });*/
+        myApplication = (MyApplication)getApplication();
+        Boolean isLogin = myApplication.isLogin();
+        Log.i(" login activity islogin",isLogin.toString());
     }
     public static void actionStart(Context context, String data1, String data2){
         Intent intent = new Intent(context,LoginActivity.class);
