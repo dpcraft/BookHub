@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 import com.dpcraft.bookhub.DataClass.User;
 import com.dpcraft.bookhub.NetModule.NetUtils;
+import com.dpcraft.bookhub.UIWidget.CustomToolbar;
 import com.dpcraft.bookhub.UIWidget.Dialog;
 import com.dpcraft.bookhub.algorithm.ContainsChinese;
 
@@ -35,6 +36,7 @@ public class SignupActivity extends Activity {
     private TextInputLayout mRePasswordWrapper;
     private TextInputLayout mVerfCodeWrapper;
     private  Button signupButton ;
+    private CustomToolbar customToolbar;
 
 
     private User user;
@@ -61,13 +63,13 @@ public class SignupActivity extends Activity {
     };
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
-        //透明状态栏
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-        //透明导航栏
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+
+
+        customToolbar = (CustomToolbar)findViewById(R.id.ctb_signup);
+        customToolbar.setTitle("用户注册");
 
         user = new User();
         initWidget();

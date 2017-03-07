@@ -63,8 +63,9 @@ a<android.support.design.widget.AppBarLayout
 
     <android.support.design.widget.NavigationView
         android:id="@+id/navigation_view"
-        android:layout_width="match_parent"
+        android:layout_width="260dp"
         android:layout_height="match_parent"
+
         android:elevation="15dp"
         android:layout_gravity="start"
         android:translationZ="200dp"

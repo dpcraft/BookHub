@@ -8,37 +8,35 @@ import android.support.design.widget.TextInputLayout;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.Button;
 
 import com.dpcraft.bookhub.Application.MyApplication;
 import com.dpcraft.bookhub.DataClass.User;
 import com.dpcraft.bookhub.NetModule.NetUtils;
-import com.dpcraft.bookhub.UIWidget.SubToolbar;
+import com.dpcraft.bookhub.UIWidget.CustomToolbar;
 
 /**
  * Created by DPC on 2017/2/18.
  */
 public class LoginActivity extends Activity {
-    private Toolbar toolbar;
     private User user ;
     private TextInputLayout mUsernameWrapper;
     private TextInputLayout mPasswordWrapper;
-   private SubToolbar subToolbar;
+   private CustomToolbar customToolbar;
    private MyApplication myApplication ;
+    private  String nextActivity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        //透明状态栏
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-        //透明导航栏
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
-        subToolbar = (SubToolbar)findViewById(R.id.subtoolbar);
-        subToolbar.setTitle("用户登录");
+
+        customToolbar = (CustomToolbar)findViewById(R.id.ctb_login);
+        customToolbar.setTitle("用户登录");
+        //nextActivity参数获取
+        Intent intent = getIntent();
+        nextActivity = intent.getStringExtra("nextActivity");
 
         Button RegisterButton = (Button)findViewById(R.id.btn_register);
         RegisterButton.setOnClickListener(new View.OnClickListener() {
@@ -51,10 +49,7 @@ public class LoginActivity extends Activity {
         mUsernameWrapper = (TextInputLayout) findViewById(R.id.usernameWrapper);
         mPasswordWrapper = (TextInputLayout) findViewById(R.id.passwordWrapper);
         Button LoginButton = (Button)findViewById(R.id.btn_login) ;
-       // final EditText userNameEditText = mUsernameWraper.
-       // final EditText passWordEditText = (EditText)findViewById(R.id.edt_password);
 
-       // Log.i("username",mUsernameWrapper.getEditText().getText().toString().trim());
         Log.i("loginActivity","start");
         user = new User();
         LoginButton.setOnClickListener(new View.OnClickListener() {
@@ -71,25 +66,38 @@ public class LoginActivity extends Activity {
                 }catch (Exception e){
                     e.printStackTrace();
                 }
+                myApplication.setLoginStatus(true);
+
+                switch (nextActivity){
+                    case "MainActivity":
+                        MainActivity.actionStart(LoginActivity.this,"data1","data2");
+                        finish();
+                        break;
+                    case "SignupActivity":
+                        SignupActivity.actionStart(LoginActivity.this,"data1","data2");
+                        finish();
+                        break;
+                    case "UserInfoActivity":
+                        UserInfoActivity.actionStart(LoginActivity.this,"data1","data2");
+                        finish();
+                        break;
+                        default:
+                            MainActivity.actionStart(LoginActivity.this,"data1","data2");
+                            finish();
+                            break;
+
+                }
             }
         });
 
 
-        /*toolbar = (Toolbar) findViewById(R.id.common_toolbar);
-        toolbar.setTitle("登录");
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });*/
+
         myApplication = (MyApplication)getApplication();
-        Boolean isLogin = myApplication.isLogin();
-        Log.i(" login activity islogin",isLogin.toString());
+        Log.i(" login activity islogin",myApplication.isLogin().toString());
     }
     public static void actionStart(Context context, String data1, String data2){
         Intent intent = new Intent(context,LoginActivity.class);
-        intent.putExtra("para1",data1);
+        intent.putExtra("nextActivity",data1);
         intent.putExtra("para2",data2);
         context.startActivity(intent);
     }

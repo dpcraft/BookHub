@@ -2,6 +2,7 @@ package com.dpcraft.bookhub;
 
 import android.animation.ObjectAnimator;
 import android.animation.PropertyValuesHolder;
+import android.content.Context;
 import android.content.Intent;
 //import android.support.design.widget.FloatingActionButton;
 import android.support.annotation.NonNull;
@@ -50,7 +51,6 @@ public class MainActivity extends FragmentActivity {
     private View headerLayout;
     private Button startLoginButton;
     private TextView textViewNavUsername;
-    private Boolean isLogin = false;
     private CircleImageView circleImageViewNavUserIcon;
     private MyApplication myApplication;
     private SwipeRefreshLayout requestSwipeRefreshLayout;
@@ -58,13 +58,13 @@ public class MainActivity extends FragmentActivity {
    // private FloatingActionButton floatingActionButton;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
+       // requestWindowFeature(Window.FEATURE_NO_TITLE);
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+       setContentView(R.layout.activity_main);
         //透明状态栏
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+       // getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
        //透明导航栏
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+        //getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
         initWidget();
 
         myApplication = (MyApplication)getApplication();
@@ -109,12 +109,11 @@ public class MainActivity extends FragmentActivity {
             @Override
             public void onClick(View view) {
                  drawerLayout.closeDrawer(Gravity.LEFT);
-                 LoginActivity.actionStart(MainActivity.this, "data1", "data2");
+                LoginActivity.actionStart(MainActivity.this, "MainActivity", "data2");
 
 
-                myApplication.setLoginStatus(true);
-                isLogin = myApplication.isLogin();
-                Log.i(" main activity islogin",isLogin.toString());
+//                myApplication.setLoginStatus(true);
+                Log.i(" main activity islogin",myApplication.isLogin().toString());
 
 
 
@@ -131,21 +130,22 @@ public class MainActivity extends FragmentActivity {
                         break;
                     case R.id.navigation_item_userInfo:
                         //个人信息
+                        if(myApplication.isLogin()){
+                            UserInfoActivity.actionStart(MainActivity.this, "data1", "data2");
+                        }else{
+                            LoginActivity.actionStart(MainActivity.this, "UserInfoActivity", "data2");
+                        }
                         break;
                     case R.id.navigation_item_like:
                         //有意
+                        LoginActivity.actionStart(MainActivity.this, "SignupActivity", "data2");
                         break;
                     case R.id.navigation_item_history:
                         //历史
                         break;
                     case R.id.navigation_item_about:
                         //关于
-                        myApplication.setLoginStatus(false);
-                        isLogin = myApplication.isLogin();
-                        Log.i(" main activity islogin",isLogin.toString());
-                        textViewNavUsername.setVisibility(View.GONE);
-                        circleImageViewNavUserIcon.setVisibility(View.GONE);
-                        startLoginButton.setVisibility(View.VISIBLE);
+
                         break;
                 }
                 drawerLayout.closeDrawer(Gravity.LEFT);
@@ -164,13 +164,13 @@ public class MainActivity extends FragmentActivity {
         //搜索的dialog实现
 
         final SearchFragment searchFragment = SearchFragment.newInstance();
-               /* searchFragment.setOnSearchClickListener(new IOnSearchClickListener() {
+               searchFragment.setOnSearchClickListener(new IOnSearchClickListener() {
             @Override
             public void OnSearchClick(String keyword) {
                       //这里处理逻辑
-                Toast.makeText(MainActivity.this, keyword, Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "您搜索了"+ keyword, Toast.LENGTH_SHORT).show();
             }
-        });*/
+        });
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -188,11 +188,19 @@ public class MainActivity extends FragmentActivity {
     protected void onResume(){
         super.onResume();
         if(myApplication.isLogin()){
+            Log.i(" resume  islogin",myApplication.isLogin().toString());
             textViewNavUsername.setText("丫丫");
             textViewNavUsername.setVisibility(View.VISIBLE);
             circleImageViewNavUserIcon.setImageResource(R.drawable.yy);
             circleImageViewNavUserIcon.setVisibility(View.VISIBLE);
             startLoginButton.setVisibility(View.GONE);
+
+        }else {
+
+            Log.i(" resume  islogin",myApplication.isLogin().toString());
+            textViewNavUsername.setVisibility(View.GONE);
+            circleImageViewNavUserIcon.setVisibility(View.GONE);
+            startLoginButton.setVisibility(View.VISIBLE);
 
         }
     }
@@ -211,7 +219,12 @@ public class MainActivity extends FragmentActivity {
         searchButton = (Button)findViewById(R.id.btn_search);
 
     }
-
+    public static void actionStart(Context context, String data1, String data2){
+        Intent intent = new Intent(context,MainActivity.class);
+        intent.putExtra("para1",data1);
+        intent.putExtra("para2",data2);
+        context.startActivity(intent);
+    }
 
 
 }
