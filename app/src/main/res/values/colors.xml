@@ -19,4 +19,9 @@
     <color name="blue_900">#1A237E</color>
     <color name="red_900">#B71C1C</color>
     <color name="grey_400">#BDBDBD</color>
+
+
+    <color name="book_title_mask">#80000000</color>
+
+
 </resources>

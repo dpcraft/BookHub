@@ -19,16 +19,16 @@
 
         </activity>
         <activity android:name=".LoginActivity"
-            android:theme="@style/WhiteStatusBarTheme">
+            android:theme="@style/TransparentStatusBarTheme">
 
         </activity>
         <activity android:name=".SignupActivity"
             android:windowSoftInputMode="stateHidden|adjustResize"
-            android:theme="@style/WhiteStatusBarTheme">
+            android:theme="@style/TransparentStatusBarTheme">
         </activity>
         <activity android:name=".UserInfoActivity"
-            android:theme="@style/WhiteStatusBarTheme"
-            />
+            android:theme="@style/TransparentStatusBarTheme" />
+        <activity android:name=".BookDetailsActivity"/>
     </application>
     <uses-permission android:name="android.permission.INTERNET"/>
 

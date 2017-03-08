@@ -2,6 +2,7 @@
 <resources>
     <style name="TransparentStatusBarTheme" parent="AppTheme">
         <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:windowTranslucentStatus"> true </item>
     </style>
     <style name="WhiteStatusBarTheme" parent="AppTheme">
         <item name="android:statusBarColor">@android:color/white</item>

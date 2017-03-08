@@ -13,8 +13,8 @@
     >
     <ImageView
         android:id="@+id/book_preview_image"
-        android:layout_width="98dp"
-        android:layout_height="98dp"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
         android:scaleType="fitCenter"
         android:src="@drawable/image_belonged"
         android:paddingLeft="25dp"
@@ -23,7 +23,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:paddingLeft="10dp">
+        android:layout_marginLeft="10dp">
 
         <TextView
             android:id="@+id/tv_preview_book_name"
@@ -32,41 +32,40 @@
             android:paddingTop="3dp"
             android:paddingLeft="10dp"
             android:text="从你的全世界路过"
-            android:textSize="@dimen/font_small"
-            android:textColor="@color/black"/>
+            android:textSize="@dimen/font_normal"
+            android:textColor="@color/black"
+            android:textStyle="bold" />
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:paddingTop="10dp">
             <TextView
                 android:id="@+id/tv_preview_book_author"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingTop="3dp"
                 android:paddingLeft="10dp"
                 android:text="张嘉佳"
-                android:textColor="@color/black"/>
+                android:textColor="@color/text_grey"/>
             <TextView
                 android:id="@+id/tv_write"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingTop="3dp"
-                android:paddingLeft="10dp"
-                android:text="著"
-                android:textColor="@color/colorPrimary"/>
+                android:text="/"
+                android:textColor="@color/text_grey"/>
+            <TextView
+                android:id="@+id/tv_preview_book_publishing_house"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="湖南文艺出版社"
+                android:textColor="@color/text_grey"/>
         </LinearLayout>
-        <TextView
-            android:id="@+id/tv_preview_book_publishing_house"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingTop="3dp"
-            android:paddingLeft="10dp"
-            android:text="湖南文艺出版社"
-            android:textColor="@color/black"/>
+
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:paddingTop="10dp">
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

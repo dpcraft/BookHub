@@ -138,7 +138,7 @@ public class MainActivity extends FragmentActivity {
                         break;
                     case R.id.navigation_item_like:
                         //有意
-                        LoginActivity.actionStart(MainActivity.this, "SignupActivity", "data2");
+                        BookDetailsActivity.actionStart(MainActivity.this, "SignupActivity", "data2");
                         break;
                     case R.id.navigation_item_history:
                         //历史
