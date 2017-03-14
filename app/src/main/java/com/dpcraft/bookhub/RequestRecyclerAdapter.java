@@ -20,7 +20,7 @@ public class RequestRecyclerAdapter extends RecyclerView.Adapter<RequestRecycler
     //item显示类型
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent,int viewType){
-        View view = mInflater.inflate(R.layout.item_request_recyler_item,parent,false);
+        View view = mInflater.inflate(R.layout.item_request_recyler,parent,false);
         ViewHolder viewHolder = new ViewHolder(view);
         return viewHolder;
     }

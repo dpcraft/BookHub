@@ -15,8 +15,10 @@ public class SellRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     private LayoutInflater mInflater;
     private int ItemNum = 20;
+    private Context mContext;
     public SellRecyclerAdapter(Context context){
         this.mInflater = LayoutInflater.from(context);
+        mContext = context;
     }
     //判断当前Item是否为HeadView
     public boolean isHeadView(int position){
@@ -35,9 +37,23 @@ public class SellRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent,int viewType){
         if(viewType == ITEM_TYPE_HEADER){
-            return new HeaderViewHolder(mInflater.inflate(R.layout.item_recycler_header,parent,false));
+            HeaderViewHolder headerViewHolder = new HeaderViewHolder(mInflater.inflate(R.layout.item_sell_recycler_header,parent,false));
+
+            return headerViewHolder;
         }else {
-            return new ContentViewHolder(mInflater.inflate(R.layout.item_sell_recycler_layout,parent,false));
+            ContentViewHolder contentViewHolder = new ContentViewHolder(mInflater.inflate(R.layout.item_sell_recycler,parent,false));
+            contentViewHolder.bookListView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+
+                    //*获取书籍详细信息*
+
+
+                    BookDetailsActivity.actionStart(mContext, "data1", "data2");
+                }
+            });
+            return contentViewHolder;
         }
     }
     //数据绑定显示
@@ -58,9 +74,12 @@ public class SellRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     }
 
     public class ContentViewHolder extends RecyclerView.ViewHolder{
+
+        View bookListView;
        // public TextView item_tv;
         public ContentViewHolder(View view){
             super(view);
+            bookListView = view;
            // item_tv =(TextView)view.findViewById(R.id.item_tv);
         }
     }

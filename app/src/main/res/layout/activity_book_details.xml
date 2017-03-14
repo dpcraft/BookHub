@@ -33,6 +33,15 @@
                 app:layout_collapseParallaxMultiplier="0.5"
                 android:src="@drawable/image_bg"
                 android:alpha="0.9 "/>
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="5dp"
+                android:paddingLeft="5dp"
+                android:src="@drawable/ic_back_white"
+                android:background="@color/transparent"
+                android:text="按钮"/>
+
 
             <ImageView
                 android:id="@+id/iv_book_img"
@@ -53,20 +62,20 @@
                 android:background="@color/book_title_mask" />
 
             <android.support.v7.widget.Toolbar
-                android:id="@+id/toolbar"
+                android:id="@+id/tb_bookname"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 android:minHeight="?attr/actionBarSize"
                 app:layout_collapseMode="pin"
                 app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
                 app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-                app:title="从你的全世界路过"/>
+                />
         </android.support.design.widget.CollapsingToolbarLayout>
 
     </android.support.design.widget.AppBarLayout>
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/recyclerView"
+        android:id="@+id/rv_bookdetais"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:minHeight="500dp"
@@ -81,7 +90,7 @@
         android:src="@drawable/ic_heart_white"
         app:borderWidth="0dp"
         android:clickable="true"
-       
+
         app:layout_anchor="@id/appBarLayout"
         app:layout_anchorGravity="bottom|right" />
 </android.support.design.widget.CoordinatorLayout>
