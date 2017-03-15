@@ -60,13 +60,13 @@ public class LoginActivity extends Activity {
                 user.setUserName(mUsernameWrapper.getEditText().getText().toString().trim());
                 user.setPassWord(mPasswordWrapper.getEditText().getText().toString().trim());
                 //user.setUserName("user");
-               // user.setPassWord("password");
+                //user.setPassWord("password");
                 try{
                 NetUtils.login(user);
                 }catch (Exception e){
                     e.printStackTrace();
                 }
-                myApplication.setLoginStatus(true);
+                //myApplication.setLoginStatus(true);
 
                 switch (nextActivity){
                     case "MainActivity":

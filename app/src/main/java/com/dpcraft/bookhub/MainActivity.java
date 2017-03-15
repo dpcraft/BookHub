@@ -1,7 +1,5 @@
 package com.dpcraft.bookhub;
 
-import android.animation.ObjectAnimator;
-import android.animation.PropertyValuesHolder;
 import android.content.Context;
 import android.content.Intent;
 //import android.support.design.widget.FloatingActionButton;
@@ -13,25 +11,21 @@ import android.support.v4.widget.DrawerLayout;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.Toolbar;
-import android.text.style.IconMarginSpan;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.support.v4.app.FragmentActivity;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.dpcraft.bookhub.Application.MyApplication;
+import com.dpcraft.bookhub.DataClass.BookGetRequestInformation;
+import com.dpcraft.bookhub.NetModule.HttpUtil;
+import com.dpcraft.bookhub.NetModule.NetUtils;
 import com.lzp.floatingactionbuttonplus.FabTagLayout;
 import com.lzp.floatingactionbuttonplus.FloatingActionButtonPlus;
-import com.oguzdev.circularfloatingactionmenu.library.FloatingActionButton;
-import com.oguzdev.circularfloatingactionmenu.library.FloatingActionMenu;
-import com.oguzdev.circularfloatingactionmenu.library.SubActionButton;
 
 import com.wyt.searchbox.SearchFragment;
 import com.wyt.searchbox.custom.IOnSearchClickListener;
@@ -43,7 +37,6 @@ public class MainActivity extends FragmentActivity {
     private Toolbar toolbar;
     private DrawerLayout drawerLayout;
     private TabLayout tabLayout;
-    private SimpleFragmentPagerAdapter pagerAdapter;
     private ViewPager viewPager;
     private NavigationView navigationView;
     private Button searchButton;
@@ -54,6 +47,8 @@ public class MainActivity extends FragmentActivity {
     private CircleImageView circleImageViewNavUserIcon;
     private MyApplication myApplication;
     private SwipeRefreshLayout requestSwipeRefreshLayout;
+    private SimpleFragmentPagerAdapter pagerAdapter;
+    private BookGetRequestInformation bookGetRequestInformation;
 
    // private FloatingActionButton floatingActionButton;
     @Override
@@ -138,6 +133,7 @@ public class MainActivity extends FragmentActivity {
                         break;
                     case R.id.navigation_item_like:
                         //有意
+                        initBookList();
                         break;
                     case R.id.navigation_item_history:
                         //历史
@@ -178,6 +174,10 @@ public class MainActivity extends FragmentActivity {
             }
         });
 
+        //初始数据获取
+        bookGetRequestInformation = new BookGetRequestInformation();
+      // initBookList();
+
 
 
     }
@@ -216,6 +216,17 @@ public class MainActivity extends FragmentActivity {
         tabLayout = (TabLayout)findViewById(R.id.tab_layout);
         viewPager = (ViewPager) findViewById(R.id.viewpager);
         searchButton = (Button)findViewById(R.id.btn_search);
+
+    }
+    public void initBookList(){
+        bookGetRequestInformation.setLength("20");
+        Log.i("generateURL()", bookGetRequestInformation.generateURL()) ;
+        try {
+            NetUtils.getBookList(bookGetRequestInformation);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
 
     }
     public static void actionStart(Context context, String data1, String data2){

@@ -22,10 +22,11 @@ public class HttpUtil {
                 HttpURLConnection connection = null;
                 try {
                     URL url = new URL(address);
+                    Log.i("URL",url.toString());
                     Log.i("dpc","get  start");
                     connection = (HttpURLConnection) url.openConnection();
                     Log.i("dpc","connection");
-                    connection.setRequestMethod("GET");
+                    //connection.setRequestMethod("GET");
                     connection.setConnectTimeout(8000);
                     connection.setReadTimeout(8000);
                     connection.setDoInput(true);
@@ -33,12 +34,33 @@ public class HttpUtil {
                     int code = connection.getResponseCode();
 
                     Log.i("dpc code",code + "");
-                    BufferedReader reader=new BufferedReader(new InputStreamReader(connection.getInputStream(),"utf-8"));
+
+                   // BufferedReader reader=new BufferedReader(new InputStreamReader(connection.getInputStream(),"utf-8"));
+                    /*StringBuilder response = new StringBuilder();
+                    String line;*/
+//                    while ((line = reader.readLine()) != null) {
+//                        Log.i("response",response.toString());
+//                        response.append(line);
+//                        Log.i("response",response.toString());
+//
+                  BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream(),"utf-8"));
                     StringBuilder response = new StringBuilder();
-                   String line;
+                    String line;
+                    String resp = "";
+
+                    if(reader.readLine() == null){
+                        Log.i("line=null","line=null");
+                    }else
+
+                    Log.i("pause",code + "");
                     while ((line = reader.readLine()) != null) {
+
+                        resp += line;
                         response.append(line);
+                        Log.i("line=null2","line=null");
+
                     }
+                    Log.i("resp",resp);
                     Log.i("response",response.toString());
 
 

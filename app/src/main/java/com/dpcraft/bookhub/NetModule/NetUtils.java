@@ -4,19 +4,18 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 
+import com.dpcraft.bookhub.DataClass.BookGetRequestInformation;
 import com.dpcraft.bookhub.DataClass.User;
-
-import java.net.ResponseCache;
-import java.net.URL;
 
 /**
  * Created by DPC on 2017/2/23.
  */
 public class NetUtils {
 
-        private static String SIGNUPURL = "http://bookp2p.imwork.net:10142/BooksServer/user";
+        private static String SIGNUPURL = Server.getServerAddress() + "user";
 
-        private static String LOGINURL="http://bookp2p.imwork.net:10142/BooksServer/login";
+        //private static String LOGINURL="http://bookp2p.imwork.net:10142/BooksServer/login";
+        private static String LOGINURL= Server.getServerAddress() + "login";
 
         private static String PHOTOURL="http://bookp2p.imwork.net:10142/BooksServer/user/photo";
 
@@ -90,5 +89,29 @@ public class NetUtils {
 
             }
         });
+    }
+
+
+
+    public static void getBookList(BookGetRequestInformation bookGetRequestInformation) throws Exception {
+
+       // JSONUtil jsonUtil = new JSONUtil();
+        //String str = jsonUtil.packageJson(user);
+        String url =  "https://api.douban.com/v2/book/isbn/9787308083256";//"https://api.douban.com/v2/book/isbn/9787308083256";
+
+       // HttpUtil.sendHttpGetRequest(bookGetRequestInformation.generateURL(), new HttpCallBackListener() {
+        HttpUtil.sendHttpGetRequest(url, new HttpCallBackListener() {
+            @Override
+            public void onFinish(String response, int responseCode) {
+                Log.i("booklistresponse",response.toString());
+            }
+
+            @Override
+            public void onError(Exception e) {
+                Log.i("Login error","");
+
+            }
+        });
+
     }
 }
