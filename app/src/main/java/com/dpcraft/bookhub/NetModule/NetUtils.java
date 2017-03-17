@@ -7,6 +7,11 @@ import android.util.Log;
 import com.dpcraft.bookhub.DataClass.BookGetRequestInformation;
 import com.dpcraft.bookhub.DataClass.User;
 
+import java.io.IOException;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+
 /**
  * Created by DPC on 2017/2/23.
  */
@@ -15,7 +20,7 @@ public class NetUtils {
         private static String SIGNUPURL = Server.getServerAddress() + "user";
 
         //private static String LOGINURL="http://bookp2p.imwork.net:10142/BooksServer/login";
-        private static String LOGINURL= Server.getServerAddress() + "login";
+        private  static String loginURL= Server.getServerAddress() + "login";
 
         private static String PHOTOURL="http://bookp2p.imwork.net:10142/BooksServer/user/photo";
 
@@ -75,7 +80,8 @@ public class NetUtils {
        // Log.i("urlString",loginUrl);
         JSONUtil jsonUtil = new JSONUtil();
         String str = jsonUtil.packageJson(user);
-        HttpUtil.sendHttpPostRequest(LOGINURL,str,new HttpCallBackListener() {
+        Log.i("LOGINURL",loginURL);
+        HttpUtil.sendHttpPostRequest(loginURL,str,new HttpCallBackListener() {
             @Override
             public void onFinish(String response, int responseCode) {
                 Log.i("Login code", responseCode + "");
@@ -93,25 +99,29 @@ public class NetUtils {
 
 
 
-    public static void getBookList(BookGetRequestInformation bookGetRequestInformation) throws Exception {
+    public static void getBookList(BookGetRequestInformation bookGetRequestInformation)  {
 
        // JSONUtil jsonUtil = new JSONUtil();
         //String str = jsonUtil.packageJson(user);
-        String url =  "https://api.douban.com/v2/book/isbn/9787308083256";//"https://api.douban.com/v2/book/isbn/9787308083256";
+        String url = "https://www.sina.com.cn" ;//"https://api.douban.com/v2/book/isbn/9787308083256";
 
-       // HttpUtil.sendHttpGetRequest(bookGetRequestInformation.generateURL(), new HttpCallBackListener() {
-        HttpUtil.sendHttpGetRequest(url, new HttpCallBackListener() {
-            @Override
-            public void onFinish(String response, int responseCode) {
-                Log.i("booklistresponse",response.toString());
-            }
+       HttpUtil.sendHttpGetRequest(bookGetRequestInformation.generateURL(), new Callback() {
+           @Override
+           public void onFailure(Call call, IOException e) {
+               Log.i("onFailure","onFailure");
 
-            @Override
-            public void onError(Exception e) {
-                Log.i("Login error","");
+           }
 
-            }
-        });
+           @Override
+           public void onResponse(Call call, okhttp3.Response response) throws IOException {
+               if (!response.isSuccessful())
+               {
+                   throw new IOException("Unexpected code " + response);
+
+               }
+               Log.i("response", response.body().string());
+           }
+       });
 
     }
 }

@@ -4,18 +4,21 @@ import android.util.Log;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.sql.Connection;
+
+
+import okhttp3.*;
 
 /**
  * Created by DPC on 2017/2/23.
  */
 public class HttpUtil {
-    public static void sendHttpGetRequest(final String address,final HttpCallBackListener listener){
+   public static void sendHttpGetRequest2(final String address,final HttpCallBackListener listener){
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -26,41 +29,19 @@ public class HttpUtil {
                     Log.i("dpc","get  start");
                     connection = (HttpURLConnection) url.openConnection();
                     Log.i("dpc","connection");
-                    //connection.setRequestMethod("GET");
+                    connection.setRequestMethod("GET");
                     connection.setConnectTimeout(8000);
                     connection.setReadTimeout(8000);
                     connection.setDoInput(true);
                     connection.setDoOutput(true);
                     int code = connection.getResponseCode();
-
                     Log.i("dpc code",code + "");
-
-                   // BufferedReader reader=new BufferedReader(new InputStreamReader(connection.getInputStream(),"utf-8"));
-                    /*StringBuilder response = new StringBuilder();
-                    String line;*/
-//                    while ((line = reader.readLine()) != null) {
-//                        Log.i("response",response.toString());
-//                        response.append(line);
-//                        Log.i("response",response.toString());
-//
                   BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream(),"utf-8"));
                     StringBuilder response = new StringBuilder();
                     String line;
-                    String resp = "";
-
-                    if(reader.readLine() == null){
-                        Log.i("line=null","line=null");
-                    }else
-
-                    Log.i("pause",code + "");
                     while ((line = reader.readLine()) != null) {
-
-                        resp += line;
                         response.append(line);
-                        Log.i("line=null2","line=null");
-
                     }
-                    Log.i("resp",resp);
                     Log.i("response",response.toString());
 
 
@@ -82,6 +63,15 @@ public class HttpUtil {
             }
         }).start();
 
+    }
+
+    public static void sendHttpGetRequest(final String address,okhttp3.Callback callback){
+        OkHttpClient client = new OkHttpClient();
+        Request request = new Request.Builder()
+                .url(address)
+                .build();
+        client.newCall(request).enqueue(callback);
+        
     }
     public static void sendHttpPostRequest(final String address,final String stringToWrite,final HttpCallBackListener listener){
         new Thread(new Runnable() {
@@ -107,6 +97,7 @@ public class HttpUtil {
                         response.append(line);
 
                     }
+                    Log.i("Login code", code + "");
 
 
                     if (listener != null) {

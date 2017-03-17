@@ -8,6 +8,6 @@ public class Server {
         return serverAddress;
     }
 
-    private static String serverAddress = "http://112.74.19.3:8080/BooksServer/";
+    private static String serverAddress = "http://112.74.19.3:80/BooksServer/";
 
 }
