@@ -3,9 +3,8 @@ package com.dpcraft.bookhub.NetModule;
 /**
  * Created by DPC on 2017/2/24.
  */
-public class Response {
+public class SignupResponse {
     private int code;
-    //private String data;
     private String message;
     public int getCode(){
         return code;
@@ -13,12 +12,7 @@ public class Response {
     public void setCode(int code){
         this.code = code;
     }
-    /*public String getData(){
-        return data;
-    }
-    public void setData(String data){
-        this.data = data;
-    }*/
+
     public String getMessage(){
         return message;
     }
