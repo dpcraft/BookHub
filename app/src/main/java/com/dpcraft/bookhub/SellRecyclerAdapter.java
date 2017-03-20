@@ -5,6 +5,13 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.dpcraft.bookhub.DataClass.BookDetails;
+import com.dpcraft.bookhub.DataClass.BookPreview;
+
+import java.util.List;
 
 /**
  * Created by DPC on 2017/2/11.
@@ -16,9 +23,12 @@ public class SellRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     private LayoutInflater mInflater;
     private int ItemNum = 20;
     private Context mContext;
-    public SellRecyclerAdapter(Context context){
+    private List<BookPreview> mBookList;
+
+    public SellRecyclerAdapter(Context context,List<BookPreview> bookList){
         this.mInflater = LayoutInflater.from(context);
         mContext = context;
+        mBookList = bookList;
     }
     //判断当前Item是否为HeadView
     public boolean isHeadView(int position){
@@ -61,8 +71,13 @@ public class SellRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     public void onBindViewHolder(RecyclerView.ViewHolder holder,int position){
         //holder.item_tv.setText(mTitle[position]);
         if (holder instanceof HeaderViewHolder) {
+
         }
         else{
+            BookPreview bookPreview = mBookList.get(position);
+
+            //为书名作者等赋值
+
             //((ContentViewHolder) holder).textView.setText(texts[position - mHeaderCount]);
              }
     }
@@ -76,11 +91,18 @@ public class SellRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     public class ContentViewHolder extends RecyclerView.ViewHolder{
 
         View bookListView;
-       // public TextView item_tv;
+        ImageView bookPreviewImage,bookPreviewDealType;
+        TextView bookPreviewName,bookPreviewAuthor,bookPreviewPublishingHouse,bookPreviewPrice;
         public ContentViewHolder(View view){
             super(view);
             bookListView = view;
-           // item_tv =(TextView)view.findViewById(R.id.item_tv);
+            bookPreviewImage = (ImageView)view.findViewById(R.id.book_preview_image);
+            bookPreviewName = (TextView)view.findViewById(R.id.tv_book_preview_name);
+            bookPreviewAuthor = (TextView)view.findViewById(R.id.tv_book_preview_author);
+            bookPreviewPublishingHouse = (TextView)view.findViewById(R.id.tv_book_preview_publishing_house);
+            bookPreviewDealType = (ImageView)view.findViewById(R.id.iv_book_preview_dealtype);
+            bookPreviewPrice = (TextView)view.findViewById(R.id.tv_book_preview_price);
+
         }
     }
     public class HeaderViewHolder extends RecyclerView.ViewHolder{

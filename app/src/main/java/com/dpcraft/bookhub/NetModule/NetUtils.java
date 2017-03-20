@@ -7,19 +7,19 @@ import android.util.Log;
 import com.dpcraft.bookhub.DataClass.BookGetRequestInformation;
 import com.dpcraft.bookhub.DataClass.User;
 
+import org.apache.http.params.HttpParams;
+
 import java.io.IOException;
 
-import okhttp3.Call;
-import okhttp3.Callback;
+import okhttp3.*;
 
 /**
  * Created by DPC on 2017/2/23.
  */
 public class NetUtils {
 
-        private static String SIGNUPURL = Server.getServerAddress() + "user";
+        private static String signupURL = Server.getServerAddress() + "user";
 
-        //private static String LOGINURL="http://bookp2p.imwork.net:10142/BooksServer/login";
         private  static String loginURL= Server.getServerAddress() + "login";
 
         private static String PHOTOURL="http://bookp2p.imwork.net:10142/BooksServer/user/photo";
@@ -37,9 +37,9 @@ public class NetUtils {
 
          */
 
-            JSONUtil jsonUtil = new JSONUtil();
+           JSONUtil jsonUtil = new JSONUtil();
             String str = jsonUtil.packageJson(user);
-            HttpUtil.sendHttpPostRequest(SIGNUPURL, str, new HttpCallBackListener() {
+            HttpUtil.sendHttpPostRequest2(signupURL, str, new HttpCallBackListener() {
                 @Override
                 public void onFinish(String response, int responseCode) {
                     Log.i("signup code",responseCode+"");
@@ -59,15 +59,32 @@ public class NetUtils {
 
                 }
             });
-        }
+           /* HttpUtil.sendHttpPostRequest(signupURL, str, new Callback() {
 
+                @Override
+                public void onFailure(Call call, IOException e) {
+
+                }
+
+                @Override
+                public void onResponse(Call call, okhttp3.Response response) throws IOException {
+
+                    String responseBody = response.body().string();
+                    Log.i("signup code",response.code() + "");
+                    Log.i("response.body",responseBody);
+                    int code = JSONUtil.parseJSONwithGSON(responseBody).getCode();
+                    String Information = JSONUtil.parseJSONwithGSON(responseBody).getMessage();
+                    Log.i("JSON code",code+"");
+                    Message message = handler.obtainMessage();//创建message的方式，可以更好地被回收
+                    message.what = code;
+                    message.obj = Information;
+                    handler.sendMessage(message);
+                }
+            });*/
+        }
     public static void login(User user) throws Exception {
 
         /*
-
-         * 使用GET方法请求登录操作
-
-         * url地址后加username和password
 
          * 如果登录成功会在result中返回JSON格式的code为201
 
@@ -75,13 +92,28 @@ public class NetUtils {
 
          */
 
-        //String loginUrl = LOGINURL + "?username=" + user.getUserName() + "&password=" + user.getPassWord();
-       // String loginUrl = "http://www.uestc.edu.cn";
-       // Log.i("urlString",loginUrl);
+
+
+
         JSONUtil jsonUtil = new JSONUtil();
         String str = jsonUtil.packageJson(user);
-        Log.i("LOGINURL",loginURL);
-        HttpUtil.sendHttpPostRequest(loginURL,str,new HttpCallBackListener() {
+        HttpUtil.sendHttpPostRequest(loginURL, user, new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Log.i("login error", "error" );
+            }
+
+            @Override
+            public void onResponse(Call call, okhttp3.Response response) throws IOException {
+                Log.i("login response",response.code() + "" + " \n" + response.body().string());
+            }
+        });
+
+
+
+
+        /*Log.i("LOGINURL",loginURL);
+        HttpUtil.sendHttpPostRequest2(loginURL,str,new HttpCallBackListener() {
             @Override
             public void onFinish(String response, int responseCode) {
                 Log.i("Login code", responseCode + "");
@@ -94,16 +126,15 @@ public class NetUtils {
                 Log.i("Login error","");
 
             }
-        });
+        });*/
     }
+
+
 
 
 
     public static void getBookList(BookGetRequestInformation bookGetRequestInformation)  {
 
-       // JSONUtil jsonUtil = new JSONUtil();
-        //String str = jsonUtil.packageJson(user);
-        String url = "https://www.sina.com.cn" ;//"https://api.douban.com/v2/book/isbn/9787308083256";
 
        HttpUtil.sendHttpGetRequest(bookGetRequestInformation.generateURL(), new Callback() {
            @Override
@@ -119,7 +150,7 @@ public class NetUtils {
                    throw new IOException("Unexpected code " + response);
 
                }
-               Log.i("response", response.body().string());
+               Log.i("okhttp3.response", response.body().string());
            }
        });
 

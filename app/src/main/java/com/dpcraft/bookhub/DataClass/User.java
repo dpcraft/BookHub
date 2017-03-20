@@ -5,11 +5,11 @@ package com.dpcraft.bookhub.DataClass;
  */
 public class User {
     private int userId;
-    private String userName;
-    private String passWord;
+    private String userName = "";
+    private String passWord = "";
     private String imgPath;
-    private String nickName;
-    private String phoneNum;
+    private String nickName = "";
+    private String phoneNum = "";
     private String weChat;
     private boolean flat;
 

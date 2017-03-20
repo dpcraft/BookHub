@@ -2,10 +2,10 @@ package com.dpcraft.bookhub.NetModule;
 
 import android.util.Log;
 
+import com.dpcraft.bookhub.DataClass.User;
+
 import java.io.BufferedReader;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
+
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
@@ -18,6 +18,11 @@ import okhttp3.*;
  * Created by DPC on 2017/2/23.
  */
 public class HttpUtil {
+    private static String signupURL = Server.getServerAddress() + "user";
+
+    private  static String loginURL= Server.getServerAddress() + "login";
+    public static final MediaType JSON
+            = MediaType.parse("application/json");
    public static void sendHttpGetRequest2(final String address,final HttpCallBackListener listener){
         new Thread(new Runnable() {
             @Override
@@ -71,9 +76,39 @@ public class HttpUtil {
                 .url(address)
                 .build();
         client.newCall(request).enqueue(callback);
-        
+
     }
-    public static void sendHttpPostRequest(final String address,final String stringToWrite,final HttpCallBackListener listener){
+    public static void sendHttpPostRequest(final String address, final User user, final okhttp3.Callback callback){
+        Log.i("post url",address);
+
+        OkHttpClient client = new OkHttpClient();
+        RequestBody requestBody;
+        if(address == signupURL){
+            requestBody = //RequestBody.create(JSON,stringTowrite);
+                    new FormBody.Builder()
+                            .add("username",user.getUserName())
+                            .add("password",user.getPassWord())
+                             .add("nickname",user.getNickName())
+                            .add("phonenum",user.getPhoneNum())
+                            .build();
+        }
+        else {
+         requestBody = //RequestBody.create(JSON,stringTowrite);
+               new FormBody.Builder()
+                .add("username",user.getUserName())
+                .add("password",user.getPassWord())
+                .build();
+        }
+       // Log.i("sendhttppost",stringTowrite);
+        okhttp3.Request request = new okhttp3.Request.Builder()
+                .url(address)
+                .post(requestBody)
+                .build();
+        client.newCall(request).enqueue(callback);
+
+    }
+
+    public static void sendHttpPostRequest2(final String address,final String stringToWrite,final HttpCallBackListener listener){
         new Thread(new Runnable() {
             @Override
             public void run() {

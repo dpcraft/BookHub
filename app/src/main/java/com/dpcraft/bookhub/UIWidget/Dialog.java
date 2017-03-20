@@ -16,7 +16,7 @@ public class Dialog {
   那么下面就可以写成 AlertDialog.Builder
   */
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setTitle("Material Design Dialog");
+        builder.setTitle("注册失败");
         builder.setMessage(message);
         builder.setNegativeButton("取消", null);
         builder.setPositiveButton("确定", null);

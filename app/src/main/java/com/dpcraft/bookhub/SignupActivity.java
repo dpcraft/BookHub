@@ -77,6 +77,7 @@ public class SignupActivity extends Activity {
             @Override
             public void onClick(View view) {
                 user.setUserName(mUsernameWrapper.getEditText().getText().toString().trim());
+                user.setNickName(mUsernameWrapper.getEditText().getText().toString().trim());
                 user.setPassWord(mPasswordWrapper.getEditText().getText().toString().trim());
                 user.setPhoneNum(mPhoneNumberWrapper.getEditText().getText().toString().trim());
                 if(canSignup()) {

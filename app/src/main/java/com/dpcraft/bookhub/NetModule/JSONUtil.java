@@ -42,9 +42,9 @@ public class JSONUtil {
             return str;
 
         }
-    public static Response parseJSONwithGSON( String jsonData){
+    public static SignupResponse parseJSONwithGSON(String jsonData){
         Gson gson = new Gson();
-        Response response = gson.fromJson(jsonData,Response.class);
+        SignupResponse response = gson.fromJson(jsonData,SignupResponse.class);
         return  response;
     }
 

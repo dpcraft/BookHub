@@ -1,16 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".LoginActivity"
+    tools:context=".SignupActivity"
     android:orientation="vertical">
     <com.dpcraft.bookhub.UIWidget.CustomToolbar
         android:id="@+id/ctb_signup"
@@ -40,6 +34,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="请输入用户名"
+            android:text="testuser"
             android:singleLine="true"/>
 
     </android.support.design.widget.TextInputLayout>
@@ -64,6 +59,7 @@
             android:layout_height="wrap_content"
             android:inputType="textPassword"
             android:hint="请输入密码"
+            android:text="123456789"
             android:singleLine="true"/>
 
     </android.support.design.widget.TextInputLayout>
@@ -88,6 +84,7 @@
             android:layout_height="wrap_content"
             android:inputType="textPassword"
             android:hint="确认密码"
+            android:text="123456789"
             android:singleLine="true"/>
     </android.support.design.widget.TextInputLayout>
     <LinearLayout
@@ -113,6 +110,7 @@
                 android:layout_height="wrap_content"
                 android:inputType="phone"
                 android:hint="手机号"
+                android:text="12345678910"
                 android:singleLine="true"/>
         </android.support.design.widget.TextInputLayout>
 
@@ -144,6 +142,7 @@
             android:layout_height="wrap_content"
             android:inputType="phone"
             android:hint="手机验证码"
+            android:text="1234"
             android:singleLine="true"/>
 
     </android.support.design.widget.TextInputLayout>
@@ -159,4 +158,3 @@
     </LinearLayout>
 
 </LinearLayout>
-</ScrollView>

@@ -26,7 +26,7 @@
         android:layout_marginLeft="10dp">
 
         <TextView
-            android:id="@+id/tv_preview_book_name"
+            android:id="@+id/tv_book_preview_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingTop="3dp"
@@ -41,7 +41,7 @@
             android:orientation="horizontal"
             android:paddingTop="10dp">
             <TextView
-                android:id="@+id/tv_preview_book_author"
+                android:id="@+id/tv_book_preview_author"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingLeft="10dp"
@@ -54,7 +54,7 @@
                 android:text="/"
                 android:textColor="@color/text_grey"/>
             <TextView
-                android:id="@+id/tv_preview_book_publishing_house"
+                android:id="@+id/tv_book_preview_publishing_house"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="湖南文艺出版社"
@@ -68,6 +68,7 @@
             android:paddingTop="10dp">
 
             <ImageView
+                android:id="@+id/iv_book_preview_dealtype"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="left"
@@ -83,7 +84,7 @@
                 android:text="￥"
                 android:textColor="@color/red_900"/>
             <TextView
-                android:id="@+id/tv_preview_book_price"
+                android:id="@+id/tv_book_preview_price"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingTop="3dp"
