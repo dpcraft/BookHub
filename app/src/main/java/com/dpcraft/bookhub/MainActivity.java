@@ -3,6 +3,8 @@ package com.dpcraft.bookhub;
 import android.content.Context;
 import android.content.Intent;
 //import android.support.design.widget.FloatingActionButton;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
@@ -48,9 +50,13 @@ public class MainActivity extends FragmentActivity {
     private MyApplication myApplication;
     private SwipeRefreshLayout requestSwipeRefreshLayout;
     private SimpleFragmentPagerAdapter pagerAdapter;
-    private BookGetRequestInformation bookGetRequestInformation;
+
 
    // private FloatingActionButton floatingActionButton;
+
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
        // requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -133,7 +139,7 @@ public class MainActivity extends FragmentActivity {
                         break;
                     case R.id.navigation_item_like:
                         //有意
-                        initBookList();
+
                         break;
                     case R.id.navigation_item_history:
                         //历史
@@ -175,7 +181,7 @@ public class MainActivity extends FragmentActivity {
         });
 
         //初始数据获取
-        bookGetRequestInformation = new BookGetRequestInformation();
+
       // initBookList();
 
 
@@ -218,17 +224,9 @@ public class MainActivity extends FragmentActivity {
         searchButton = (Button)findViewById(R.id.btn_search);
 
     }
-    public void initBookList(){
-        bookGetRequestInformation.setLength("20");
-        Log.i("generateURL()", bookGetRequestInformation.generateURL()) ;
-        try {
-            NetUtils.getBookList(bookGetRequestInformation);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
 
 
-    }
+
     public static void actionStart(Context context, String data1, String data2){
         Intent intent = new Intent(context,MainActivity.class);
         intent.putExtra("para1",data1);

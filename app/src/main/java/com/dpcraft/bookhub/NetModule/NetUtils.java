@@ -5,11 +5,14 @@ import android.os.Message;
 import android.util.Log;
 
 import com.dpcraft.bookhub.DataClass.BookGetRequestInformation;
+import com.dpcraft.bookhub.DataClass.BookPreview;
+import com.dpcraft.bookhub.DataClass.GetBookResponse;
 import com.dpcraft.bookhub.DataClass.User;
 
 import org.apache.http.params.HttpParams;
 
 import java.io.IOException;
+import java.util.List;
 
 import okhttp3.*;
 
@@ -133,7 +136,7 @@ public class NetUtils {
 
 
 
-    public static void getBookList(BookGetRequestInformation bookGetRequestInformation)  {
+    public static void getBookList(BookGetRequestInformation bookGetRequestInformation,final Handler handler)  {
 
 
        HttpUtil.sendHttpGetRequest(bookGetRequestInformation.generateURL(), new Callback() {
@@ -150,7 +153,14 @@ public class NetUtils {
                    throw new IOException("Unexpected code " + response);
 
                }
-               Log.i("okhttp3.response", response.body().string());
+               String responseBody =  response.body().string();
+               Log.i("okhttp3.response",responseBody);
+
+               int code = 201;
+               Message message = handler.obtainMessage();//创建message的方式，可以更好地被回收
+               message.what = code;
+               message.obj = responseBody;
+               handler.sendMessage(message);
            }
        });
 

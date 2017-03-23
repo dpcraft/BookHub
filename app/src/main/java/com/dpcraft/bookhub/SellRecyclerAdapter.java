@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.dpcraft.bookhub.DataClass.BookDetails;
 import com.dpcraft.bookhub.DataClass.BookPreview;
 
 import java.util.List;
@@ -21,7 +20,7 @@ public class SellRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     public static final int ITEM_TYPE_CONTENT = 1;
 
     private LayoutInflater mInflater;
-    private int ItemNum = 20;
+    private int itemNum;
     private Context mContext;
     private List<BookPreview> mBookList;
 
@@ -29,6 +28,7 @@ public class SellRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         this.mInflater = LayoutInflater.from(context);
         mContext = context;
         mBookList = bookList;
+        itemNum = bookList.size() + 1;
     }
     //判断当前Item是否为HeadView
     public boolean isHeadView(int position){
@@ -74,10 +74,20 @@ public class SellRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
         }
         else{
-            BookPreview bookPreview = mBookList.get(position);
+            BookPreview bookPreview = new BookPreview();
+                    bookPreview = mBookList.get(position - 1);
 
             //为书名作者等赋值
+            ((ContentViewHolder)holder).bookPreviewName.setText(bookPreview.getName());
+            ((ContentViewHolder)holder).bookPreviewAuthor.setText(bookPreview.getAuthor());
+            ((ContentViewHolder)holder).bookPreviewPublishingHouse.setText(bookPreview.getPublishHouse());
+            if(bookPreview.getSell()) {
+                ((ContentViewHolder) holder).bookPreviewDealType.setImageResource(R.drawable.ic_sell);
+            }else {
+                ((ContentViewHolder) holder).bookPreviewDealType.setImageResource(R.drawable.ic_rent);
 
+            }
+            ((ContentViewHolder) holder).bookPreviewPrice.setText(bookPreview.getPrice());
             //((ContentViewHolder) holder).textView.setText(texts[position - mHeaderCount]);
              }
     }
@@ -85,7 +95,7 @@ public class SellRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     //每次加载的item数
     @Override
     public int getItemCount(){
-        return ItemNum ;
+        return itemNum;
     }
 
     public class ContentViewHolder extends RecyclerView.ViewHolder{

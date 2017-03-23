@@ -1,31 +1,52 @@
 package com.dpcraft.bookhub.DataClass;
 
+import com.google.gson.annotations.SerializedName;
+
 /**
  * Created by DPC on 2017/3/14.
  */
 public class BookDetails {
+    @SerializedName("bookid")
     private int Id;
     //书籍基本信息
+    @SerializedName("bookname")
     private String Name;
+    @SerializedName("author")
     private String author;
+    @SerializedName("publish")
     private String publishHouse;
-    private String publishDate;
+    //@SerializedName("pubtime")
+    //private String publishDate;
+    @SerializedName("orig")
     private String originPrice;//原价
+    @SerializedName("version")
     private String version;
+    @SerializedName("isbn")
     private String ISBN;
+    @SerializedName("type")
     private String type;
     //租售信息
 
+    @SerializedName("isSell")
     private Boolean isSell;
-    private String endtime;
+
+    //private String endtime;
+
+    @SerializedName("deposit")
     private String deposit;
+    @SerializedName("price")
     private String price;
+    @SerializedName("introduction")
     private String introduction;
+    @SerializedName("userid")
     private String userId;
 
     //交易信息
+    @SerializedName("intention")
     private Boolean intention;
+    @SerializedName("taruserid")
     private String  tarUserId;
+    @SerializedName("selled")
     private Boolean isSold;
     public int getId() {
         return Id;
@@ -59,13 +80,14 @@ public class BookDetails {
         this.publishHouse = publishHouse;
     }
 
-    public String getPublishDate() {
-        return publishDate;
-    }
-
-    public void setPublishDate(String publishDate) {
-        this.publishDate = publishDate;
-    }
+//    public String getPublishDate() {
+//        return publishDate;
+//    }
+//
+//    public void setPublishDate(String publishDate) {
+//
+//        this.publishDate = publishDate;
+//    }
 
     public String getOriginPrice() {
         return originPrice;
@@ -107,13 +129,13 @@ public class BookDetails {
         isSell = sell;
     }
 
-    public String getEndtime() {
-        return endtime;
-    }
-
-    public void setEndtime(String endtime) {
-        this.endtime = endtime;
-    }
+//    public String getEndtime() {
+//        return endtime;
+//    }
+//
+//    public void setEndtime(String endtime) {
+//        this.endtime = endtime;
+//    }
 
     public String getDeposit() {
         return deposit;

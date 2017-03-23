@@ -68,7 +68,7 @@ public class BookDetailsActivity extends Activity {
         mbookDetails.setPublishHouse("湖南文艺出版社");
         mbookDetails.setAuthor("张嘉佳");
         mbookDetails.setName("从你的全世界路过");
-        mbookDetails.setPublishDate("2013-11-1");
+      //  mbookDetails.setPublishDate("2013-11-1");
         mbookDetails.setOriginPrice("36.00");
         mbookDetails.setISBN("9787540458027");
         mbookDetails.setSell(true);
