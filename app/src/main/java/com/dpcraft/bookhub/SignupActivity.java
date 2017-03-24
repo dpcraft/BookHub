@@ -48,13 +48,13 @@ public class SignupActivity extends Activity {
                     //Dialog.showDialog((String)msg.obj,SignupActivity.this);
                     break;
                 case REQUEST_ERROR:
-                    Dialog.showDialog((String)msg.obj,SignupActivity.this);
+                    Dialog.showDialog("注册失败",(String)msg.obj,SignupActivity.this);
                     break;
                 case OPERATION_UNAUTHORIZED:
-                    Dialog.showDialog((String)msg.obj,SignupActivity.this);
+                    Dialog.showDialog("注册失败",(String)msg.obj,SignupActivity.this);
                     break;
                 case OBJECT_EXIST:
-                    Dialog.showDialog((String)msg.obj,SignupActivity.this);
+                    Dialog.showDialog("注册失败",(String)msg.obj,SignupActivity.this);
                     break;
                 default:
                     break;

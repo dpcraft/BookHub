@@ -31,10 +31,10 @@ public class BookDetailsAdapter extends RecyclerView.Adapter<BookDetailsAdapter.
         mContext = context;
         mBookDetails = bookDetails;
         if(bookDetails.getSell()){
-            itemNum = 8;
+            itemNum = 9;
         }
         else {
-            itemNum = 9;
+            itemNum = 10;
         }
     }
 
@@ -78,6 +78,10 @@ public class BookDetailsAdapter extends RecyclerView.Adapter<BookDetailsAdapter.
                     str = "ISBN: " + mBookDetails.getISBN();
                     break;
                 case 7:
+                    str = "介绍：\n" + mBookDetails.getIntroduction();
+                    holder.bookInfoItem.setSingleLine(false);
+                    break;
+                case 8:
                     str = "联系卖家";
                     holder.bookInfoItem.setGravity(Gravity.CENTER);
                     holder.bookInfoItem.setBackgroundColor(mContext.getResources().getColor(R.color.red_900));
@@ -115,6 +119,10 @@ public class BookDetailsAdapter extends RecyclerView.Adapter<BookDetailsAdapter.
                     str = "ISBN: " + mBookDetails.getISBN();
                     break;
                 case 8:
+                    str = "介绍: \n" + mBookDetails.getIntroduction();
+                    holder.bookInfoItem.setSingleLine(false);
+                    break;
+                case 9:
                     str = "联系卖家";
                     holder.bookInfoItem.setGravity(Gravity.CENTER);
                     holder.bookInfoItem.setBackgroundColor(mContext.getResources().getColor(R.color.red_900));

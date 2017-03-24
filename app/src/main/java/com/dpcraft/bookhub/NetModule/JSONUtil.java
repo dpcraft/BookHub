@@ -2,15 +2,13 @@ package com.dpcraft.bookhub.NetModule;
 
 import android.util.Log;
 
-import com.dpcraft.bookhub.DataClass.BookPreview;
 import com.dpcraft.bookhub.DataClass.GetBookResponse;
+import com.dpcraft.bookhub.DataClass.LoginResponse;
 import com.dpcraft.bookhub.DataClass.User;
 import com.google.gson.Gson;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.util.List;
 
 /**
  * Created by DPC on 2017/2/23.
@@ -46,9 +44,14 @@ public class JSONUtil {
             return str;
 
         }
-    public static SignupResponse parseJSONwithGSON(String jsonData){
+    public static SignupResponse parseSignupResponse(String jsonData){
         Gson gson = new Gson();
         SignupResponse response = gson.fromJson(jsonData,SignupResponse.class);
+        return  response;
+    }
+    public static LoginResponse parseLoginResponse(String jsonData){
+        Gson gson = new Gson();
+        LoginResponse response = gson.fromJson(jsonData,LoginResponse.class);
         return  response;
     }
 

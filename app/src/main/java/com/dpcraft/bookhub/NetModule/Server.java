@@ -5,7 +5,9 @@ package com.dpcraft.bookhub.NetModule;
  */
 public class Server {
     public static String getServerAddress() {
+
         return serverAddress;
+
     }
 
     private static String serverAddress = "http://112.74.19.3:80/BooksServer/";

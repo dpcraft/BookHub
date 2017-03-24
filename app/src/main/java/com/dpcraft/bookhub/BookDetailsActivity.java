@@ -8,6 +8,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.Gravity;
 import android.view.View;
 
 import com.dpcraft.bookhub.Adapter.BookDetailsAdapter;
@@ -24,7 +25,7 @@ public class BookDetailsActivity extends Activity {
     private BookDetails mbookDetails;
     private BookDetailsAdapter mbookDetailsAdapter;
     private RecyclerView bookDetailsRecyclerView;
-    private BookDetails mbookDetais;
+
 
 
     @Override
@@ -35,6 +36,13 @@ public class BookDetailsActivity extends Activity {
         initWidget();
         initBookDetails();
         bookNameToolbar.setTitle(mbookDetails.getName());
+        bookNameToolbar.setNavigationIcon(R.drawable.ic_back_white);
+        bookNameToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
         //绑定适配器
         bookDetailsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mbookDetailsAdapter = new BookDetailsAdapter(mbookDetails,this);

@@ -74,8 +74,7 @@ public class SellRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
         }
         else{
-            BookPreview bookPreview = new BookPreview();
-                    bookPreview = mBookList.get(position - 1);
+            BookPreview bookPreview = mBookList.get(position - 1);
 
             //为书名作者等赋值
             ((ContentViewHolder)holder).bookPreviewName.setText(bookPreview.getName());

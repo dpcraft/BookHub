@@ -40,15 +40,15 @@ public class NetUtils {
 
          */
 
-           JSONUtil jsonUtil = new JSONUtil();
+           /*JSONUtil jsonUtil = new JSONUtil();
             String str = jsonUtil.packageJson(user);
             HttpUtil.sendHttpPostRequest2(signupURL, str, new HttpCallBackListener() {
                 @Override
                 public void onFinish(String response, int responseCode) {
                     Log.i("signup code",responseCode+"");
                     Log.i("response",response.toString());
-                    int code = JSONUtil.parseJSONwithGSON(response).getCode();
-                    String Information = JSONUtil.parseJSONwithGSON(response).getMessage();
+                    int code = JSONUtil.parseSignupResponse(response).getCode();
+                    String Information = JSONUtil.parseSignupResponse(response).getMessage();
                     Log.i("JSON code",code+"");
                     Message message = handler.obtainMessage();//创建message的方式，可以更好地被回收
                     message.what = code;
@@ -61,8 +61,8 @@ public class NetUtils {
                     Log.i("signup error","");
 
                 }
-            });
-           /* HttpUtil.sendHttpPostRequest(signupURL, str, new Callback() {
+            });*/
+            HttpUtil.sendHttpPostRequest(signupURL, user, new Callback() {
 
                 @Override
                 public void onFailure(Call call, IOException e) {
@@ -75,17 +75,17 @@ public class NetUtils {
                     String responseBody = response.body().string();
                     Log.i("signup code",response.code() + "");
                     Log.i("response.body",responseBody);
-                    int code = JSONUtil.parseJSONwithGSON(responseBody).getCode();
-                    String Information = JSONUtil.parseJSONwithGSON(responseBody).getMessage();
+                    int code = JSONUtil.parseSignupResponse(responseBody).getCode();
+                    String Information = JSONUtil.parseSignupResponse(responseBody).getMessage();
                     Log.i("JSON code",code+"");
                     Message message = handler.obtainMessage();//创建message的方式，可以更好地被回收
                     message.what = code;
                     message.obj = Information;
                     handler.sendMessage(message);
                 }
-            });*/
+            });
         }
-    public static void login(User user) throws Exception {
+    public static void login(User user,final Handler handler) throws Exception {
 
         /*
 
@@ -95,11 +95,8 @@ public class NetUtils {
 
          */
 
-
-
-
-        JSONUtil jsonUtil = new JSONUtil();
-        String str = jsonUtil.packageJson(user);
+//        JSONUtil jsonUtil = new JSONUtil();
+//        String str = jsonUtil.packageJson(user);
         HttpUtil.sendHttpPostRequest(loginURL, user, new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
@@ -108,7 +105,17 @@ public class NetUtils {
 
             @Override
             public void onResponse(Call call, okhttp3.Response response) throws IOException {
-                Log.i("login response",response.code() + "" + " \n" + response.body().string());
+                String responseBody = response.body().string();
+                Log.i("signup code",response.code() + "");
+                Log.i("response.body",responseBody);
+                int code = JSONUtil.parseSignupResponse(responseBody).getCode();
+                String token = JSONUtil.parseSignupResponse(responseBody).getMessage();
+                Log.i("JSON code",code+"");
+                Message message = handler.obtainMessage();//创建message的方式，可以更好地被回收
+                message.what = code;
+                message.obj = token;
+                handler.sendMessage(message);
+
             }
         });
 

@@ -33,15 +33,6 @@
                 app:layout_collapseParallaxMultiplier="0.5"
                 android:src="@drawable/image_bg"
                 android:alpha="0.9 "/>
-            <ImageButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingTop="5dp"
-                android:paddingLeft="5dp"
-                android:src="@drawable/ic_back_white"
-                android:background="@color/transparent"
-                android:text="按钮"/>
-
 
             <ImageView
                 android:id="@+id/iv_book_img"
