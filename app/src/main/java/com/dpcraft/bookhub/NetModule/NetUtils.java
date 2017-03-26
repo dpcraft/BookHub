@@ -4,10 +4,14 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 
+import com.dpcraft.bookhub.Application.*;
 import com.dpcraft.bookhub.DataClass.BookGetRequestInformation;
 import com.dpcraft.bookhub.DataClass.BookPreview;
 import com.dpcraft.bookhub.DataClass.GetBookResponse;
+import com.dpcraft.bookhub.DataClass.LoginResponse;
 import com.dpcraft.bookhub.DataClass.User;
+import com.dpcraft.bookhub.DataClass.UserInfo;
+import com.dpcraft.bookhub.DataClass.UserInfoResponse;
 
 import org.apache.http.params.HttpParams;
 
@@ -26,6 +30,9 @@ public class NetUtils {
         private  static String loginURL= Server.getServerAddress() + "login";
 
         private static String PHOTOURL="http://bookp2p.imwork.net:10142/BooksServer/user/photo";
+
+
+
 
         public static void signup(User user, final Handler handler)throws Exception{
              /*
@@ -75,8 +82,9 @@ public class NetUtils {
                     String responseBody = response.body().string();
                     Log.i("signup code",response.code() + "");
                     Log.i("response.body",responseBody);
-                    int code = JSONUtil.parseSignupResponse(responseBody).getCode();
-                    String Information = JSONUtil.parseSignupResponse(responseBody).getMessage();
+                    SignupResponse signupResponse = JSONUtil.parseJsonWithGson(responseBody,SignupResponse.class);
+                    int code =signupResponse.getCode();
+                    String Information = signupResponse.getMessage();
                     Log.i("JSON code",code+"");
                     Message message = handler.obtainMessage();//创建message的方式，可以更好地被回收
                     message.what = code;
@@ -106,14 +114,14 @@ public class NetUtils {
             @Override
             public void onResponse(Call call, okhttp3.Response response) throws IOException {
                 String responseBody = response.body().string();
-                Log.i("signup code",response.code() + "");
+                Log.i("login code",response.code() + "");
                 Log.i("response.body",responseBody);
-                int code = JSONUtil.parseSignupResponse(responseBody).getCode();
-                String token = JSONUtil.parseSignupResponse(responseBody).getMessage();
+                int code = JSONUtil.parseJsonWithGson(responseBody,LoginResponse.class).getCode();
                 Log.i("JSON code",code+"");
                 Message message = handler.obtainMessage();//创建message的方式，可以更好地被回收
                 message.what = code;
-                message.obj = token;
+                message.obj = responseBody;
+                Log.i("firstmessge.obj",message.obj.toString());
                 handler.sendMessage(message);
 
             }
@@ -162,7 +170,6 @@ public class NetUtils {
                }
                String responseBody =  response.body().string();
                Log.i("okhttp3.response",responseBody);
-
                int code = 201;
                Message message = handler.obtainMessage();//创建message的方式，可以更好地被回收
                message.what = code;
@@ -170,6 +177,37 @@ public class NetUtils {
                handler.sendMessage(message);
            }
        });
+
+    }
+
+
+    public static void getUserInfo(String token,final Handler handler)  {
+
+
+        HttpUtil.sendHttpGetRequest(Server.getServerAddress() + "user?token=" + token, new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Log.i("onFailure","onFailure");
+
+            }
+
+            @Override
+            public void onResponse(Call call, okhttp3.Response response) throws IOException {
+                if (!response.isSuccessful())
+                {
+                    throw new IOException("Unexpected code " + response);
+
+                }
+                String responseBody =  response.body().string();
+                Log.i("okhttp3.response",responseBody);
+
+                int code = response.code();
+                Message message = handler.obtainMessage();//创建message的方式，可以更好地被回收
+                message.what = code;
+                message.obj = responseBody;
+                handler.sendMessage(message);
+            }
+        });
 
     }
 }

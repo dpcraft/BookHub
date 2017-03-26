@@ -2,7 +2,16 @@ package com.dpcraft.bookhub.UIWidget;
 
 import android.content.Context;
 import android.support.v7.app.AlertDialog;
+import android.util.DisplayMetrics;
+import android.util.Log;
+import android.view.LayoutInflater;
+
+import android.view.View;
 import android.view.Window;
+import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.Toast;
+
 import com.dpcraft.bookhub.R;
 
 import java.util.Timer;
@@ -48,6 +57,55 @@ public class Dialog {
 
             }
         },2000);//延时2s执行
+
+    }
+    public static void showChangeIconDialog(final Context context) {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+
+        LayoutInflater inflater = LayoutInflater.from(context);
+        View changeIconView = inflater.inflate(R.layout.dialog_change_icon,null);
+        //builder.setView(changeIconView);
+        //builder.setItems(new String[]{"相机","从相册选择"},null);
+        builder.setNegativeButton("相机", null);
+        builder.setPositiveButton("从相册选择", null);
+        //builder.show();
+        final AlertDialog dialog =builder.create();
+        dialog.show();
+        Window window =dialog.getWindow();
+        WindowManager.LayoutParams layoutParams =window.getAttributes();
+        layoutParams.width = dip2px(context,270);//应该是828ppi
+        layoutParams.height = dip2px(context,400);//应该是1242ppi
+        window.setAttributes(layoutParams);
+        window.setContentView(R.layout.dialog_change_icon);
+        Button openCameraButton,openAlbumButton;
+        openCameraButton = (Button)changeIconView.findViewById(R.id.bt_open_camera);
+        openAlbumButton = (Button)changeIconView.findViewById(R.id.bt_open_album) ;
+        openCameraButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+                Toast.makeText(context,"打开相机",Toast.LENGTH_LONG).show();
+            }
+        });
+
+        Log.i("828",px2dip(context,828)+ "");
+        Log.i("1242",px2dip(context,1242)+ "");
+
+    }
+
+    public static int dip2px(Context context,float dpValue) {
+
+        final float scale = context.getResources().getDisplayMetrics().density;
+
+        return (int) (dpValue * scale +0.5f);
+
+    }
+    public static int px2dip(Context context,float pxValue) {
+
+        final float scale = context.getResources().getDisplayMetrics().density;
+
+        return (int) (pxValue / scale +0.5f);
 
     }
 }

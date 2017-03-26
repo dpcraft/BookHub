@@ -17,7 +17,9 @@ import android.view.Window;
 import android.widget.Button;
 
 import com.dpcraft.bookhub.Application.MyApplication;
+import com.dpcraft.bookhub.DataClass.LoginResponse;
 import com.dpcraft.bookhub.DataClass.User;
+import com.dpcraft.bookhub.NetModule.JSONUtil;
 import com.dpcraft.bookhub.NetModule.NetUtils;
 import com.dpcraft.bookhub.UIWidget.CustomToolbar;
 import com.dpcraft.bookhub.UIWidget.Dialog;
@@ -50,7 +52,9 @@ public class LoginActivity extends Activity {
                   Dialog.showLoginSuccessDialog(LoginActivity.this);
                     rememberPassword(msg.what);
                     myApplication.setLoginStatus(true);
-                    myApplication.setToken(msg.obj.toString());
+                    LoginResponse loginResponse = JSONUtil.parseJsonWithGson(msg.obj.toString(),LoginResponse.class);
+                   myApplication.setToken(loginResponse.getMessage());
+                    myApplication.setLoginResponseUserInfo(loginResponse.getData());
                     Log.i("token",myApplication.getToken());
                     timer.schedule(new TimerTask() {
                         @Override

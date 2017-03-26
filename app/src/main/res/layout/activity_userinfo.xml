@@ -40,12 +40,12 @@
             android:textSize="@dimen/font_normal"
             android:textColor="@color/black"/>
         <TextView
+            android:id="@+id/tv_username"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="5"
             android:layout_marginStart="30dp"
             android:gravity="start"
-            android:text="丫丫"
             android:textSize="@dimen/font_normal"
             android:textColor="@color/text_grey"/>
         <ImageView
@@ -79,12 +79,12 @@
             android:textSize="@dimen/font_normal"
             android:textColor="@color/black"/>
         <TextView
+            android:id="@+id/tv_phonenumber"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="5"
             android:gravity="start"
             android:phoneNumber="true"
-            android:text="18866668888"
             android:layout_marginStart="30dp"
             android:textSize="@dimen/font_normal"
             android:textColor="@color/text_grey"/>

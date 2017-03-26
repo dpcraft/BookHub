@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/dialog_change_icon"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="2dp"
+   >
+    <ImageView
+        android:id="@+id/iv_login_success"
+        android:layout_width="270dp"
+        android:layout_height="270dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/yy_640" />
+    <TextView
+        android:id="@+id/tv_login_success"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="更改头像"
+        android:textColor="@color/text_grey"
+        android:textSize="@dimen/font_small"/>
+    <Button
+        android:id="@+id/bt_open_camera"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/transparent"
+        android:text="相机"
+        android:textSize="@dimen/font_small"
+        />
+    <Button
+        android:id="@+id/bt_open_album"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/transparent"
+        android:text="从相册选择"
+        android:textSize="@dimen/font_small"
+        android:paddingBottom="5dp"
+        />
+
+
+</LinearLayout>

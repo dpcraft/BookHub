@@ -194,7 +194,7 @@ public class MainActivity extends FragmentActivity {
         super.onResume();
         if(myApplication.isLogin()){
             Log.i(" resume  islogin",myApplication.isLogin().toString());
-            textViewNavUsername.setText("丫丫");
+            textViewNavUsername.setText(myApplication.getLoginResponseUserInfo().getNickName());
             textViewNavUsername.setVisibility(View.VISIBLE);
             circleImageViewNavUserIcon.setImageResource(R.drawable.yy);
             circleImageViewNavUserIcon.setVisibility(View.VISIBLE);

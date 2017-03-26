@@ -3,13 +3,13 @@ package com.dpcraft.bookhub.DataClass;
 import com.google.gson.annotations.SerializedName;
 
 /**
- * Created by DPC on 2017/3/24.
+ * Created by DPC on 2017/3/26.
  */
-public class LoginResponse {
+public class UserInfoResponse {
     private int code;
     private String message;
     @SerializedName("Data")
-    private LoginResponseUserInfo data;
+    private UserInfo data;
     public int getCode() {
         return code;
     }
@@ -18,7 +18,7 @@ public class LoginResponse {
         return message;
     }
 
-    public LoginResponseUserInfo getData() {
+    public UserInfo getData() {
         return data;
     }
 }

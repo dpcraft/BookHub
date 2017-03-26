@@ -44,24 +44,13 @@ public class JSONUtil {
             return str;
 
         }
-    public static SignupResponse parseSignupResponse(String jsonData){
-        Gson gson = new Gson();
-        SignupResponse response = gson.fromJson(jsonData,SignupResponse.class);
-        return  response;
-    }
-    public static LoginResponse parseLoginResponse(String jsonData){
-        Gson gson = new Gson();
-        LoginResponse response = gson.fromJson(jsonData,LoginResponse.class);
-        return  response;
-    }
 
-    public static GetBookResponse parseGetBookResponse(String str) {
 
-        //GSON直接解析成对象
-        GetBookResponse getBookResponse = new Gson().fromJson(str,GetBookResponse.class);
-        //对象中拿到集合
-        //List<BookPreview> bookPreviewList = getBookResponse.getBookPreviewList();
-        return getBookResponse;
+    public static <T> T parseJsonWithGson(String jsonString,Class<T> type){
+        Gson gson = new Gson();
+        T result = gson.fromJson(jsonString,type);
+        return result;
+
     }
 
 }

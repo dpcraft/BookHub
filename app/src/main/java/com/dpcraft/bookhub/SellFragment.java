@@ -37,7 +37,7 @@ public class SellFragment extends Fragment{
             if(msg.what == 201){
 
                 Log.i("json",msg.obj.toString());
-                GetBookResponse getBookResponse = JSONUtil.parseGetBookResponse( msg.obj.toString());
+                GetBookResponse getBookResponse = JSONUtil.parseJsonWithGson( msg.obj.toString(),GetBookResponse.class);
                 bookPreviewList = getBookResponse.getData();
                 sellRecyclerAdapter = new SellRecyclerAdapter(getActivity(),bookPreviewList);
                 sellRecyclerView.setAdapter(sellRecyclerAdapter);
