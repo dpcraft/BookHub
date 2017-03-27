@@ -22,6 +22,7 @@ import android.support.v4.app.FragmentActivity;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.dpcraft.bookhub.Activity.PictureActivity;
 import com.dpcraft.bookhub.Application.MyApplication;
 import com.dpcraft.bookhub.DataClass.BookGetRequestInformation;
 import com.dpcraft.bookhub.NetModule.HttpUtil;
@@ -92,7 +93,8 @@ public class MainActivity extends FragmentActivity {
                             Toast.makeText(MainActivity.this,"Click btn 1 = "+ position,Toast.LENGTH_SHORT).show();
                             break;
                         case 2:
-                            Toast.makeText(MainActivity.this,"Click btn 2 = "+ position,Toast.LENGTH_SHORT).show();
+                            //Toast.makeText(MainActivity.this,"Click btn 2 = "+ position,Toast.LENGTH_SHORT).show();
+                            PictureActivity.actionStart(MainActivity.this,"data1","data2");
                             break;
                         case 3:
                             Toast.makeText(MainActivity.this,"Click btn 3 = "+ position,Toast.LENGTH_SHORT).show();

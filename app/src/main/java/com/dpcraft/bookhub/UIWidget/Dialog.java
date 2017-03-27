@@ -74,8 +74,8 @@ public class Dialog {
         dialog.show();
         Window window =dialog.getWindow();
         WindowManager.LayoutParams layoutParams =window.getAttributes();
-        layoutParams.width = dip2px(context,270);//应该是828ppi
-        layoutParams.height = dip2px(context,400);//应该是1242ppi
+        layoutParams.width = UnitConversion.dip2px(context,270);//应该是828ppi
+        layoutParams.height = UnitConversion.dip2px(context,400);//应该是1242ppi
         window.setAttributes(layoutParams);
         window.setContentView(R.layout.dialog_change_icon);
         Button openCameraButton,openAlbumButton;
@@ -89,23 +89,10 @@ public class Dialog {
             }
         });
 
-        Log.i("828",px2dip(context,828)+ "");
-        Log.i("1242",px2dip(context,1242)+ "");
+        Log.i("150",UnitConversion.dip2px(context,150)+ "");
+        Log.i("1242",UnitConversion.px2dip(context,1242)+ "");
 
     }
 
-    public static int dip2px(Context context,float dpValue) {
 
-        final float scale = context.getResources().getDisplayMetrics().density;
-
-        return (int) (dpValue * scale +0.5f);
-
-    }
-    public static int px2dip(Context context,float pxValue) {
-
-        final float scale = context.getResources().getDisplayMetrics().density;
-
-        return (int) (pxValue / scale +0.5f);
-
-    }
 }

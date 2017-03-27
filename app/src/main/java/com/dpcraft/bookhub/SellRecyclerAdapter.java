@@ -20,7 +20,7 @@ public class SellRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     public static final int ITEM_TYPE_CONTENT = 1;
 
     private LayoutInflater mInflater;
-    private int itemNum;
+    private int itemNum = 0;
     private Context mContext;
     private List<BookPreview> mBookList;
 
@@ -28,7 +28,9 @@ public class SellRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         this.mInflater = LayoutInflater.from(context);
         mContext = context;
         mBookList = bookList;
-        itemNum = bookList.size() + 1;
+        if(bookList != null) {
+            itemNum = bookList.size() + 1;
+        }
     }
     //判断当前Item是否为HeadView
     public boolean isHeadView(int position){
