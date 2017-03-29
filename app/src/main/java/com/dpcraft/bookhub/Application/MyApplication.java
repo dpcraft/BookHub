@@ -2,6 +2,7 @@ package com.dpcraft.bookhub.Application;
 
 import android.app.Activity;
 import android.app.Application;
+import android.net.Uri;
 import android.util.Log;
 
 import com.dpcraft.bookhub.DataClass.LoginResponse;
@@ -14,10 +15,21 @@ import com.dpcraft.bookhub.MainActivity;
 public class MyApplication extends Application{
     private Boolean loginStatus;
     private String nextActivity;
+    private Uri userIcon;
 
 
 
     private LoginResponseUserInfo loginResponseUserInfo;
+
+    public Uri getUserIcon() {
+        return userIcon;
+    }
+
+    public void setUserIcon(Uri userIcon) {
+        this.userIcon = userIcon;
+    }
+
+  
 
 
     private String token;
@@ -54,6 +66,8 @@ public class MyApplication extends Application{
         nextActivity = null;
         token = "";
         loginResponseUserInfo = new LoginResponseUserInfo();
+        userIcon = null;
+        
         Log.i("APPLICATION","application is rebuild.");
     }
 

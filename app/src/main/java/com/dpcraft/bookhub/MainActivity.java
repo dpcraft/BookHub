@@ -198,7 +198,12 @@ public class MainActivity extends FragmentActivity {
             Log.i(" resume  islogin",myApplication.isLogin().toString());
             textViewNavUsername.setText(myApplication.getLoginResponseUserInfo().getNickName());
             textViewNavUsername.setVisibility(View.VISIBLE);
-            circleImageViewNavUserIcon.setImageResource(R.drawable.yy);
+            if(myApplication.getUserIcon() == null) {
+               circleImageViewNavUserIcon.setImageResource(R.drawable.default_user_icon);
+            }else
+            {
+                circleImageViewNavUserIcon.setImageURI(myApplication.getUserIcon());
+            }
             circleImageViewNavUserIcon.setVisibility(View.VISIBLE);
             startLoginButton.setVisibility(View.GONE);
 

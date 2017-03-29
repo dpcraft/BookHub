@@ -31,7 +31,7 @@
                 android:scaleType="centerCrop"
                 app:layout_collapseMode="parallax"
                 app:layout_collapseParallaxMultiplier="0.5"
-                android:src="@drawable/image_bg"
+                android:src="@drawable/kraft_paper"
                 android:alpha="0.9 "/>
 
             <ImageView
@@ -81,7 +81,6 @@
         android:src="@drawable/ic_heart_white"
         app:borderWidth="0dp"
         android:clickable="true"
-
         app:layout_anchor="@id/appBarLayout"
         app:layout_anchorGravity="bottom|right" />
 </android.support.design.widget.CoordinatorLayout>

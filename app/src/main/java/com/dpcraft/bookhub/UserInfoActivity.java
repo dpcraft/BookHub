@@ -2,11 +2,16 @@ package com.dpcraft.bookhub;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.annotation.NonNull;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -17,6 +22,7 @@ import com.dpcraft.bookhub.DataClass.UserInfo;
 import com.dpcraft.bookhub.DataClass.UserInfoResponse;
 import com.dpcraft.bookhub.NetModule.JSONUtil;
 import com.dpcraft.bookhub.NetModule.NetUtils;
+import com.dpcraft.bookhub.PhotoUtil.ImagePicker;
 import com.dpcraft.bookhub.UIWidget.CustomToolbar;
 import com.dpcraft.bookhub.UIWidget.Dialog;
 
@@ -34,6 +40,7 @@ public class UserInfoActivity extends Activity {
     private TextView userNameTextView,phoneNumberTextView;
     public static final int REQUEST_SUCCESS = 201;
     public static final int REQUEST_FAIL = 400;
+    private ImagePicker imagePicker = new ImagePicker();
 
 
     private Handler handler= new Handler(){
@@ -65,14 +72,19 @@ public class UserInfoActivity extends Activity {
         setContentView(R.layout.activity_userinfo);
         initWidget();
         customToolbar.setTitle("个人信息");
-        circleUserIcon.setImageResource(R.drawable.yy);
+        if(myApplication.getUserIcon() == null){
+            circleUserIcon.setImageResource(R.drawable.default_user_icon);
+        }else {
+            circleUserIcon.setImageURI(myApplication.getUserIcon());
+        }
         myApplication = (MyApplication)getApplication();
         NetUtils.getUserInfo(myApplication.getToken(),handler);
         circleUserIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                Dialog.showChangeIconDialog(UserInfoActivity.this);
+               // Dialog.showChangeIconDialog(UserInfoActivity.this);
+                startCameraOrGallery();
 
             }
         });
@@ -93,6 +105,45 @@ public class UserInfoActivity extends Activity {
         circleUserIcon = (CircleImageView)findViewById(R.id.civ_usericon);
         userNameTextView = (TextView)findViewById(R.id.tv_username);
         phoneNumberTextView = (TextView)findViewById(R.id.tv_phonenumber);
+    }
+    @Override protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        imagePicker.onActivityResult(this, requestCode, resultCode, data);
+    }
+
+    @Override public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                                     @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        imagePicker.onRequestPermissionsResult(this, requestCode, permissions, grantResults);
+    }
+
+    private void startCameraOrGallery() {
+        new AlertDialog.Builder(this).setTitle("设置头像")
+                .setItems(new String[] { "从相册中选取图片", "拍照" }, new DialogInterface.OnClickListener() {
+                    @Override public void onClick(DialogInterface dialog, int which) {
+                        // 回调
+                        ImagePicker.Callback callback = new ImagePicker.Callback() {
+                            @Override public void onPickImage(Uri imageUri) {
+                            }
+
+                            @Override public void onCropImage(Uri imageUri) {
+                                circleUserIcon.setImageURI(imageUri);
+                                myApplication.setUserIcon(imageUri);
+                                //cropImageView.setImageUriAsync(imageUri);
+                            }
+                        };
+                        if (which == 0) {
+                            // 从相册中选取图片
+                            imagePicker.startGallery(UserInfoActivity.this, callback);
+                        } else {
+                            // 拍照
+                            imagePicker.startCamera(UserInfoActivity.this, callback);
+                        }
+                    }
+                })
+                .show()
+                .getWindow()
+                .setGravity(Gravity.BOTTOM);
     }
     public static void actionStart(Context context, String data1, String data2){
         Intent intent = new Intent(context,UserInfoActivity.class);

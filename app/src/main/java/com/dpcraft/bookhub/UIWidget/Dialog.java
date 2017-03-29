@@ -59,7 +59,7 @@ public class Dialog {
         },2000);//延时2s执行
 
     }
-    public static void showChangeIconDialog(final Context context) {
+    public static void showChangeIconDialog2(final Context context) {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
 
@@ -91,6 +91,14 @@ public class Dialog {
 
         Log.i("150",UnitConversion.dip2px(context,150)+ "");
         Log.i("1242",UnitConversion.px2dip(context,1242)+ "");
+
+    }
+    public static void showChangeIconDialog(final Context context) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        LayoutInflater inflater = LayoutInflater.from(context);
+        builder.setTitle("更改头像").setItems(new String[]{"相机","从相册选择"},null);
+        builder.show();
+
 
     }
 

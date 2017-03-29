@@ -30,6 +30,10 @@
             android:theme="@style/TransparentStatusBarTheme" />
         <activity android:name=".BookDetailsActivity"/>
         <activity android:name=".Activity.PictureActivity"/>
+        <activity android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
+            android:theme="@style/Base.Theme.AppCompat"/>
+        <activity android:name=".PhotoUtil.cropper.CropImageActivity"
+            android:theme="@style/Base.Theme.AppCompat"/>
 
         <provider
             android:name="android.support.v4.content.FileProvider"
