@@ -2,6 +2,7 @@ package com.dpcraft.bookhub.Application;
 
 import android.app.Activity;
 import android.app.Application;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.util.Log;
 
@@ -16,6 +17,17 @@ public class MyApplication extends Application{
     private Boolean loginStatus;
     private String nextActivity;
     private Uri userIcon;
+    private Bitmap userIconBitmap;
+
+
+    public Bitmap getUserIconBitmap() {
+        return userIconBitmap;
+    }
+
+    public void setUserIconBitmap(Bitmap userIconBitmap) {
+        this.userIconBitmap = userIconBitmap;
+    }
+
 
 
 
@@ -67,7 +79,7 @@ public class MyApplication extends Application{
         token = "";
         loginResponseUserInfo = new LoginResponseUserInfo();
         userIcon = null;
-        
+        userIconBitmap = null;
         Log.i("APPLICATION","application is rebuild.");
     }
 

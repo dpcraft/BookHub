@@ -3,8 +3,6 @@ package com.dpcraft.bookhub;
 import android.content.Context;
 import android.content.Intent;
 //import android.support.design.widget.FloatingActionButton;
-import android.os.Handler;
-import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
@@ -23,6 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.dpcraft.bookhub.Activity.PictureActivity;
+import com.dpcraft.bookhub.Activity.SearchActivity;
 import com.dpcraft.bookhub.Application.MyApplication;
 import com.dpcraft.bookhub.DataClass.BookGetRequestInformation;
 import com.dpcraft.bookhub.NetModule.HttpUtil;
@@ -30,8 +29,6 @@ import com.dpcraft.bookhub.NetModule.NetUtils;
 import com.lzp.floatingactionbuttonplus.FabTagLayout;
 import com.lzp.floatingactionbuttonplus.FloatingActionButtonPlus;
 
-import com.wyt.searchbox.SearchFragment;
-import com.wyt.searchbox.custom.IOnSearchClickListener;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -164,20 +161,12 @@ public class MainActivity extends FragmentActivity {
         viewPager.setAdapter(pagerAdapter);
         tabLayout.setupWithViewPager(viewPager);
 
-        //搜索的dialog实现
+        //搜索的实现
 
-        final SearchFragment searchFragment = SearchFragment.newInstance();
-               searchFragment.setOnSearchClickListener(new IOnSearchClickListener() {
-            @Override
-            public void OnSearchClick(String keyword) {
-                      //这里处理逻辑
-                Toast.makeText(MainActivity.this, "您搜索了"+ keyword, Toast.LENGTH_SHORT).show();
-            }
-        });
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                searchFragment.show(getSupportFragmentManager(),SearchFragment.TAG);
+                SearchActivity.actionStart(MainActivity.this,"data1","data2");
 
             }
         });

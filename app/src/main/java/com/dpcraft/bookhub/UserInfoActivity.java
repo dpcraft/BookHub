@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -25,6 +27,8 @@ import com.dpcraft.bookhub.NetModule.NetUtils;
 import com.dpcraft.bookhub.PhotoUtil.ImagePicker;
 import com.dpcraft.bookhub.UIWidget.CustomToolbar;
 import com.dpcraft.bookhub.UIWidget.Dialog;
+
+import java.io.FileNotFoundException;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -72,11 +76,18 @@ public class UserInfoActivity extends Activity {
         setContentView(R.layout.activity_userinfo);
         initWidget();
         customToolbar.setTitle("个人信息");
-        if(myApplication.getUserIcon() == null){
+       // if(myApplication.getUserIcon() == null){
+         //   circleUserIcon.setImageResource(R.drawable.default_user_icon);
+       // }else {
+        //circleUserIcon.setImageURI(myApplication.getUserIcon());
+         // }
+        if(myApplication.getUserIconBitmap() == null){
             circleUserIcon.setImageResource(R.drawable.default_user_icon);
-        }else {
-            circleUserIcon.setImageURI(myApplication.getUserIcon());
         }
+        else{
+            circleUserIcon.setImageBitmap(myApplication.getUserIconBitmap());
+        }
+
         myApplication = (MyApplication)getApplication();
         NetUtils.getUserInfo(myApplication.getToken(),handler);
         circleUserIcon.setOnClickListener(new View.OnClickListener() {
@@ -129,7 +140,13 @@ public class UserInfoActivity extends Activity {
                             @Override public void onCropImage(Uri imageUri) {
                                 circleUserIcon.setImageURI(imageUri);
                                 myApplication.setUserIcon(imageUri);
-                                //cropImageView.setImageUriAsync(imageUri);
+                                try {
+                                    Bitmap bitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(imageUri));
+                                    myApplication.setUserIconBitmap(bitmap);
+                                }catch (FileNotFoundException e){
+                                    e.printStackTrace();
+                                }
+
                             }
                         };
                         if (which == 0) {
