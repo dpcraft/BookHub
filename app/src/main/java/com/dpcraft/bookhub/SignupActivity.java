@@ -3,6 +3,7 @@ package com.dpcraft.bookhub;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -10,10 +11,16 @@ import android.support.design.widget.TextInputLayout;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.dpcraft.bookhub.DataClass.User;
@@ -35,7 +42,7 @@ public class SignupActivity extends Activity {
     private TextInputLayout mPhoneNumberWrapper;
     private TextInputLayout mRePasswordWrapper;
     private TextInputLayout mVerfCodeWrapper;
-    private  Button signupButton ;
+    private  Button signupButton, getVerfCodeButton;
     private CustomToolbar customToolbar;
 
 
@@ -66,13 +73,12 @@ public class SignupActivity extends Activity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
-
-
         customToolbar = (CustomToolbar)findViewById(R.id.ctb_signup);
         customToolbar.setTitle("用户注册");
-
         user = new User();
         initWidget();
+
+
         signupButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -90,9 +96,27 @@ public class SignupActivity extends Activity {
             }
         });
 
+        getVerfCodeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+
+            }
+        });
+
         //Dialog.showSignupSuccessDialog(SignupActivity.this);
 
     }
+
+
+
+
+
+
+
+
+
+
     public static void actionStart(Context context, String data1, String data2){
         Intent intent = new Intent(context,SignupActivity.class);
         intent.putExtra("para1",data1);
@@ -108,11 +132,13 @@ public class SignupActivity extends Activity {
         mRePasswordWrapper = (TextInputLayout)findViewById(R.id.re_passwordWrapper);
         mVerfCodeWrapper = (TextInputLayout)findViewById(R.id.verfCodeWrapper);
         signupButton =(Button)findViewById(R.id.btn_signup);
+        getVerfCodeButton = (Button)findViewById(R.id.btn_getVerfCode);
         mUsernameWrapper.getEditText().addTextChangedListener(new MyTextWatcher(mUsernameWrapper.getEditText()));
         mPasswordWrapper.getEditText().addTextChangedListener(new MyTextWatcher(mPasswordWrapper.getEditText()));
         mRePasswordWrapper.getEditText().addTextChangedListener(new MyTextWatcher(mRePasswordWrapper.getEditText()));
         mPhoneNumberWrapper.getEditText().addTextChangedListener(new MyTextWatcher(mPhoneNumberWrapper.getEditText()));
         mVerfCodeWrapper.getEditText().addTextChangedListener(new MyTextWatcher(mVerfCodeWrapper.getEditText()));
+
     }
 
     private class MyTextWatcher implements TextWatcher{

@@ -97,6 +97,7 @@
 
     </LinearLayout>
     </android.support.v7.widget.CardView>
+
     <Button
         android:id="@+id/btn_logout"
         android:layout_marginTop="200dp"

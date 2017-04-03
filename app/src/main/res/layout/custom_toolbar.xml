@@ -3,9 +3,6 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
-    <android.support.design.widget.AppBarLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
     <android.support.v7.widget.Toolbar
         android:id="@+id/c_toolbar"
         android:layout_width="match_parent"
@@ -16,10 +13,11 @@
         app:titleTextAppearance="@android:style/TextAppearance.Material.Title"
         app:titleTextColor="@color/white"
         app:title="自定义toolbar"
+        app:titleMarginStart="0dp"
         app:layout_scrollFlags="scroll"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:android="http://schemas.android.com/apk/res/android">
     </android.support.v7.widget.Toolbar>
-    </android.support.design.widget.AppBarLayout>
+
 
 </LinearLayout>
