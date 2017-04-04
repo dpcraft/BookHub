@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="array_book_type">
+        <item>文学艺术</item>
+        <item>人文社科</item>
+        <item>外语学习</item>
+        <item>计算机编程</item>
+        <item>经济管理</item>
+        <item>考研</item>
+    </string-array>
+    <string-array name="array_deal_type">
+        <item>出租</item>
+        <item>出售</item>
+        <item>出租和出售</item>
+    </string-array>
+<declare-styleable name="qr_ViewfinderView">
+    <attr name="qr_angleColor" format="color"/>
+    <attr name="qr_hint" format="string"/>
+    <attr name="qr_textHintColor" format="color"/>
+    <attr name="qr_errorHint" format="string"/>
+    <attr name="qr_textErrorHintColor" format="color"/>
+    <attr name="qr_offsetX" format="integer"/>
+    <attr name="qr_offsetY" format="integer"/>
+    <attr name="qr_showPossiblePoint" format="boolean"/>
+</declare-styleable>
+</resources>

@@ -5,11 +5,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/sign_up_main"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@color/white">
 
 
     <com.dpcraft.bookhub.UIWidget.CustomToolbar
-        android:id="@+id/ctb_signup"
+        android:id="@+id/ctb_upload"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         ></com.dpcraft.bookhub.UIWidget.CustomToolbar>
@@ -29,19 +30,53 @@
             xmlns:app="http://schemas.android.com/apk/res-auto"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="@dimen/activity_horizontal_margin"
             android:orientation="vertical">
+            <android.support.v7.widget.CardView
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                style="@style/match_width_card_view"
+                android:clickable="true"
+                app:cardCornerRadius="1dp"
+                app:cardElevation="1dp">
+            <ImageView
+                android:id="@+id/iv_book_cover"
+                android:layout_width="144dp"
+                android:layout_height="240dp"
+                android:adjustViewBounds="true"
+                android:scaleType="fitXY"
+                android:layout_gravity="center_horizontal"
+                android:src="@drawable/ic_add_cover"
+                android:paddingBottom="10dp"/>
+            </android.support.v7.widget.CardView>
 
+
+            <android.support.v7.widget.CardView
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                style="@style/match_width_card_view"
+                android:clickable="true"
+                app:cardCornerRadius="1dp"
+                app:cardElevation="1dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="书籍基本信息"
+                        android:textSize="@dimen/font_small"
+                        android:textColor="@color/text_grey"
+                        android:paddingBottom="10dp"
+                        android:paddingTop="10dp"/>
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/book_name_wrapper"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
-                app:counterOverflowTextAppearance="@style/MyOverflowStyle"
                 app:errorEnabled="true"
                 app:errorTextAppearance="@style/MyErrorStyle"
-                app:counterEnabled="true"
                 app:counterMaxLength="20">
 
                 <EditText
@@ -53,22 +88,19 @@
 
             </android.support.design.widget.TextInputLayout>
             <android.support.design.widget.TextInputLayout
-                android:id="@+id/passwordWrapper"
+                android:id="@+id/author_wrapper"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
-                app:counterOverflowTextAppearance="@style/MyOverflowStyle"
                 app:errorEnabled="true"
                 app:errorTextAppearance="@style/MyErrorStyle"
-                app:counterEnabled="true"
-                app:counterMaxLength="10"
                 app:passwordToggleEnabled="true"
                 app:passwordToggleTintMode="multiply"
                 app:passwordToggleTint="@color/colorPrimary"
                 >
                 <EditText
-                    android:id="@+id/password"
+                    android:id="@+id/et_author"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="作者"
@@ -76,86 +108,174 @@
 
             </android.support.design.widget.TextInputLayout>
             <android.support.design.widget.TextInputLayout
-                android:id="@+id/re_passwordWrapper"
+            android:id="@+id/publish_house_wrapper"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            app:errorEnabled="true"
+            app:errorTextAppearance="@style/MyErrorStyle"
+            app:passwordToggleEnabled="true"
+            app:passwordToggleTintMode="multiply"
+            app:passwordToggleTint="@color/colorPrimary">
+            <EditText
+                android:id="@+id/et_publish_house"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="出版社"
+                android:singleLine="true"/>
+        </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/origin_price_wrapper"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
-                app:counterOverflowTextAppearance="@style/MyOverflowStyle"
                 app:errorEnabled="true"
                 app:errorTextAppearance="@style/MyErrorStyle"
-                app:counterEnabled="true"
-                app:counterMaxLength="10"
                 app:passwordToggleEnabled="true"
                 app:passwordToggleTintMode="multiply"
                 app:passwordToggleTint="@color/colorPrimary">
                 <EditText
-                    android:id="@+id/re_password"
+                    android:id="@+id/et_origin_price"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="出版社"
+                    android:hint="原价（元）"
                     android:singleLine="true"/>
             </android.support.design.widget.TextInputLayout>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                >
-                <android.support.design.widget.TextInputLayout
-                    android:id="@+id/phoneNumberWrapper"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="3"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    app:counterOverflowTextAppearance="@style/MyOverflowStyle"
-                    app:errorEnabled="true"
-                    app:errorTextAppearance="@style/MyErrorStyle"
-                    app:counterEnabled="true"
-                    app:counterMaxLength="11">
-                    <EditText
-                        android:id="@+id/phoneNumber"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="phone"
-                        android:hint="手机号"
-
-                        android:singleLine="true"/>
-                </android.support.design.widget.TextInputLayout>
-
-                <Button
-                    android:id="@+id/btn_getVerfCode"
-                    android:layout_marginTop="4dp"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:background="@color/colorPrimary"
-                    android:text="获取验证码"
-                    android:textColor="@color/white"/>
-            </LinearLayout>
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/publish_time_wrapper"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        app:errorEnabled="true"
+        app:errorTextAppearance="@style/MyErrorStyle"
+        >
+        <EditText
+            android:id="@+id/et_publish_time"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="出版时间"
+            android:singleLine="true"/>
+    </android.support.design.widget.TextInputLayout>
             <android.support.design.widget.TextInputLayout
-                android:id="@+id/verfCodeWrapper"
+                android:id="@+id/ISBN_wrapper"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
-                app:counterOverflowTextAppearance="@style/MyOverflowStyle"
                 app:errorEnabled="true"
-                app:errorTextAppearance="@style/MyErrorStyle"
-                app:counterEnabled="true"
-                app:counterMaxLength="4">
+                app:errorTextAppearance="@style/MyErrorStyle">
                 <EditText
-                    android:id="@+id/verfCode"
+                    android:id="@+id/et_ISBN"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="phone"
-                    android:hint="手机验证码"
+                    android:hint="ISBN"
                     android:singleLine="true"/>
-
             </android.support.design.widget.TextInputLayout>
 
+            <Spinner
+                android:id="@+id/sp_book_type"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:entries="@array/array_book_type"
+                android:paddingBottom="10dp"/>
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
+
+
+
+            <android.support.v7.widget.CardView
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                style="@style/match_width_card_view"
+                android:clickable="true"
+                app:cardCornerRadius="1dp"
+                app:cardElevation="1dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="书籍交易信息"
+                        android:textSize="@dimen/font_small"
+                        android:textColor="@color/text_grey"
+                        android:paddingBottom="10dp"
+                        android:paddingTop="10dp"/>
+            <Spinner
+                android:id="@+id/sp_deal_type"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:entries="@array/array_deal_type" />
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/price_wrapper"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                app:errorEnabled="true"
+                app:errorTextAppearance="@style/MyErrorStyle"
+               >
+                <EditText
+                    android:id="@+id/et_price"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="价格"
+                    android:singleLine="true"/>
+            </android.support.design.widget.TextInputLayout>
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/deposit_wrapper"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                app:errorEnabled="true"
+                app:errorTextAppearance="@style/MyErrorStyle"
+               >
+                <EditText
+                    android:id="@+id/et_deposit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="押金"
+                    android:singleLine="true"/>
+            </android.support.design.widget.TextInputLayout>
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                style="@style/match_width_card_view"
+                android:clickable="true"
+                app:cardCornerRadius="1dp"
+                app:cardElevation="1dp">
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/introduction_wrapper"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                app:errorEnabled="true"
+                app:errorTextAppearance="@style/MyErrorStyle">
+                <EditText
+                    android:id="@+id/et_introduction"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="介绍"
+                    android:singleLine="true"/>
+            </android.support.design.widget.TextInputLayout>
+            </android.support.v7.widget.CardView>
             <Button
                 android:id="@+id/btn_signup"
                 android:layout_marginTop="4dp"

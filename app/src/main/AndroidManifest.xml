@@ -35,6 +35,8 @@
         <activity android:name=".PhotoUtil.cropper.CropImageActivity"
             android:theme="@style/Base.Theme.AppCompat"/>
         <activity android:name=".Activity.SearchActivity"/>
+        <activity android:name=".Activity.UploadActivity"/>
+        <activity android:name=".ScanModule.CaptureActivity"/>
 
         <provider
             android:name="android.support.v4.content.FileProvider"

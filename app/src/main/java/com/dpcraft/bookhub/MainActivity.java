@@ -22,6 +22,7 @@ import android.widget.Toast;
 
 import com.dpcraft.bookhub.Activity.PictureActivity;
 import com.dpcraft.bookhub.Activity.SearchActivity;
+import com.dpcraft.bookhub.Activity.UploadActivity;
 import com.dpcraft.bookhub.Application.MyApplication;
 import com.dpcraft.bookhub.DataClass.BookGetRequestInformation;
 import com.dpcraft.bookhub.NetModule.HttpUtil;
@@ -91,7 +92,7 @@ public class MainActivity extends FragmentActivity {
                             break;
                         case 2:
                             //Toast.makeText(MainActivity.this,"Click btn 2 = "+ position,Toast.LENGTH_SHORT).show();
-                            PictureActivity.actionStart(MainActivity.this,"data1","data2");
+                            UploadActivity.actionStart(MainActivity.this,"data1","data2");
                             break;
                         case 3:
                             Toast.makeText(MainActivity.this,"Click btn 3 = "+ position,Toast.LENGTH_SHORT).show();

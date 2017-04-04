@@ -83,7 +83,7 @@ public class NetUtils {
                     Log.i("signup code",response.code() + "");
                     Log.i("response.body",responseBody);
                     SignupResponse signupResponse = JSONUtil.parseJsonWithGson(responseBody,SignupResponse.class);
-                    int code =signupResponse.getCode();
+                    int code = signupResponse.getCode();
                     String Information = signupResponse.getMessage();
                     Log.i("JSON code",code+"");
                     Message message = handler.obtainMessage();//创建message的方式，可以更好地被回收

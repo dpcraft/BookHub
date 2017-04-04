@@ -30,7 +30,7 @@ public class Dialog {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle(title);
         builder.setMessage(message);
-        builder.setNegativeButton("取消", null);
+        //builder.setNegativeButton("取消", null);
         builder.setPositiveButton("确定", null);
         builder.show();
     }

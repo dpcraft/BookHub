@@ -83,13 +83,18 @@ public class HttpUtil {
 
         OkHttpClient client = new OkHttpClient();
         RequestBody requestBody;
-        if(address == signupURL){
+        Log.i("signupURL ==========",signupURL);
+        Log.i("address ==========",address);
+        if(address.equals(signupURL)){
             requestBody = //RequestBody.create(JSON,stringTowrite);
                     new FormBody.Builder()
                             .add("username",user.getUserName())
                             .add("password",user.getPassWord())
-                             .add("nickname",user.getNickName())
+                            .add("nickname",user.getNickName())
                             .add("phonenum",user.getPhoneNum())
+                            .add("email","")
+                            .add("wechar","")
+                            .add("qq","")
                             .build();
         }
         else {

@@ -12,7 +12,7 @@ public class GetBookResponse {
     private String msg;
 
 
-    @SerializedName("Data")
+    @SerializedName("data")
     private List<BookPreview> data;
     public int getCode() {
         return code;

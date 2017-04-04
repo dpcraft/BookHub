@@ -47,12 +47,14 @@ public class LoginActivity extends Activity {
 
     private Handler handler= new Handler(){
         public void handleMessage(Message msg){
+            LoginResponse loginResponse = JSONUtil.parseJsonWithGson(msg.obj.toString(),LoginResponse.class);
             switch ( msg.what){
+
                 case LOGIN_SUCCESS :
                   Dialog.showLoginSuccessDialog(LoginActivity.this);
                     rememberPassword(msg.what);
                     myApplication.setLoginStatus(true);
-                    LoginResponse loginResponse = JSONUtil.parseJsonWithGson(msg.obj.toString(),LoginResponse.class);
+
                    myApplication.setToken(loginResponse.getMessage());
                     myApplication.setLoginResponseUserInfo(loginResponse.getData());
                     Log.i("token",myApplication.getToken());
@@ -64,11 +66,10 @@ public class LoginActivity extends Activity {
                         }
                     },2000);//延时2s执行
 
-
                     //Dialog.showDialog((String)msg.obj,LoginActivity.this);
                     break;
                 case LOGIN_FAIL:
-                    Dialog.showDialog("登录失败",(String)msg.obj,LoginActivity.this);
+                    Dialog.showDialog("登录失败",loginResponse.getMessage(),LoginActivity.this);
                     rememberPassword(msg.what);
                     break;
 
