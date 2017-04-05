@@ -1,5 +1,7 @@
 package com.dpcraft.bookhub.NetModule;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
@@ -15,7 +17,10 @@ import com.dpcraft.bookhub.DataClass.UserInfoResponse;
 
 import org.apache.http.params.HttpParams;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 
 import okhttp3.*;
@@ -179,6 +184,34 @@ public class NetUtils {
        });
 
     }
+    public static void getBookDetails(BookGetRequestInformation bookGetRequestInformation,final Handler handler)  {
+
+
+        HttpUtil.sendHttpGetRequest(bookGetRequestInformation.generateBookDetailURL(), new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Log.i("onFailure","onFailure");
+
+            }
+
+            @Override
+            public void onResponse(Call call, okhttp3.Response response) throws IOException {
+                if (!response.isSuccessful())
+                {
+                    throw new IOException("Unexpected code " + response);
+
+                }
+                String responseBody =  response.body().string();
+                Log.i("okhttp3.response",responseBody);
+                int code = 201;
+                Message message = handler.obtainMessage();//创建message的方式，可以更好地被回收
+                message.what = code;
+                message.obj = responseBody;
+                handler.sendMessage(message);
+            }
+        });
+
+    }
 
 
     public static void getUserInfo(String token,final Handler handler)  {
@@ -210,4 +243,44 @@ public class NetUtils {
         });
 
     }
+    public static void downloadImage(){
+        String url = "http://112.74.19.3:80/BooksServer/book/image?bookid=6";
+        HttpUtil.sendHttpGetRequest(url, new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Log.i("onFailure","onFailure");
+
+            }
+
+            @Override
+            public void onResponse(Call call, okhttp3.Response response) throws IOException {
+                if (!response.isSuccessful())
+                {
+                    throw new IOException("Unexpected code " + response);
+
+                }
+                Log.i("responseCode=========",response.code() + "");
+                Log.i("responseMessage======",response.message());
+                InputStream inputStream = response.body().byteStream();
+
+                FileOutputStream fileOutputStream ;
+                try {
+                    fileOutputStream = new FileOutputStream(new File("/sdcard/bookhub.jpg"));
+                    byte[] buffer = new byte[2048];
+                    int len = 0;
+                    while ((len = inputStream.read(buffer)) != -1) {
+                        fileOutputStream.write(buffer, 0, len);
+                    }
+                    fileOutputStream.flush();
+                } catch (IOException e) {
+                    Log.i("bookhub==========", "IOException");
+                    e.printStackTrace();
+                }
+
+                Log.d("bookhub============", "文件下载成功");
+            }
+        });
+
+    }
+
 }

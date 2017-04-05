@@ -24,6 +24,10 @@ public class BookGetRequestInformation {
     private String order = "";
     private String from = "";
     private String length = "";
+    private String token = "";
+
+
+    private String bookId = "";
 
     public String getLength() {
         return length;
@@ -80,11 +84,30 @@ public class BookGetRequestInformation {
     public void setFrom(String from) {
         this.from = from;
     }
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+    public String getBookId() {
+        return bookId;
+    }
+
+    public void setBookId(String bookId) {
+        this.bookId = bookId;
+    }
+
+
 
     public String generateURL(){
 
         return Server.getServerAddress() +"book?"+"keyword=" + keyWord +
                 "&type=" + type + "&isbn=" + ISBN + "&sell="+ sell + "&order=" +
                 order + "&from=" + from+"&length="+length;
+    }
+    public String generateBookDetailURL(){
+        return Server.getServerAddress() +"book/deal?"+"token=" + token + "&bookid=" + bookId ;
     }
 }

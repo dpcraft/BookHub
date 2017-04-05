@@ -3,6 +3,8 @@ package com.dpcraft.bookhub;
 import android.content.Context;
 import android.content.Intent;
 //import android.support.design.widget.FloatingActionButton;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
@@ -25,8 +27,11 @@ import com.dpcraft.bookhub.Activity.SearchActivity;
 import com.dpcraft.bookhub.Activity.UploadActivity;
 import com.dpcraft.bookhub.Application.MyApplication;
 import com.dpcraft.bookhub.DataClass.BookGetRequestInformation;
+import com.dpcraft.bookhub.DataClass.UploadBookInfo;
 import com.dpcraft.bookhub.NetModule.HttpUtil;
 import com.dpcraft.bookhub.NetModule.NetUtils;
+import com.dpcraft.bookhub.ScanModule.CaptureActivity;
+import com.dpcraft.bookhub.ScanModule.ScanUtil;
 import com.lzp.floatingactionbuttonplus.FabTagLayout;
 import com.lzp.floatingactionbuttonplus.FloatingActionButtonPlus;
 
@@ -49,6 +54,8 @@ public class MainActivity extends FragmentActivity {
     private MyApplication myApplication;
     private SwipeRefreshLayout requestSwipeRefreshLayout;
     private SimpleFragmentPagerAdapter pagerAdapter;
+    private Handler handler;
+    private static final int REQUEST_QR_CODE = 1;
 
 
    // private FloatingActionButton floatingActionButton;
@@ -66,6 +73,17 @@ public class MainActivity extends FragmentActivity {
        //透明导航栏
         //getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
         initWidget();
+        handler = new Handler(){
+            @Override
+            public void handleMessage(Message msg) {
+                // TODO Auto-generated method stub
+                super.handleMessage(msg);
+                UploadBookInfo uploadBookInfo= (UploadBookInfo)msg.obj;
+                Intent intent=new Intent(MainActivity.this,UploadActivity.class);
+                intent.putExtra(UploadBookInfo.class.getName(),uploadBookInfo);
+                startActivity(intent);
+            }
+        };
 
         myApplication = (MyApplication)getApplication();
         //setActivityMenuColor(this);
@@ -88,7 +106,8 @@ public class MainActivity extends FragmentActivity {
                         Toast.makeText(MainActivity.this,"Click btn 0 = "+ position,Toast.LENGTH_SHORT).show();
                         break;
                         case 1:
-                            Toast.makeText(MainActivity.this,"Click btn 1 = "+ position,Toast.LENGTH_SHORT).show();
+                            final Intent i = new Intent(MainActivity.this, CaptureActivity.class);
+                            startActivityForResult(i, REQUEST_QR_CODE);
                             break;
                         case 2:
                             //Toast.makeText(MainActivity.this,"Click btn 2 = "+ position,Toast.LENGTH_SHORT).show();
@@ -146,6 +165,7 @@ public class MainActivity extends FragmentActivity {
                         break;
                     case R.id.navigation_item_about:
                         //关于
+                        NetUtils.downloadImage();
 
                         break;
                 }
@@ -220,6 +240,43 @@ public class MainActivity extends FragmentActivity {
         viewPager = (ViewPager) findViewById(R.id.viewpager);
         searchButton = (Button)findViewById(R.id.btn_search);
 
+    }
+
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK
+                && requestCode == REQUEST_QR_CODE
+                && data != null) {
+            String result = data.getStringExtra("result");
+            String urlstr="https://api.douban.com/v2/book/isbn/"+result;
+            Log.i("OUTPUT",urlstr);
+            //扫到ISBN后，启动下载线程下载图书信息
+            new DownloadThread(urlstr).start();
+
+            // Toast.makeText(MainActivity.this, result, Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private class DownloadThread extends Thread
+    {
+        String url=null;
+        public DownloadThread(String urlstr)
+        {
+            url=urlstr;
+        }
+        public void run()
+        {
+            String result= ScanUtil.Download(url);
+            Log.i("OUTPUT", "download over");
+            UploadBookInfo book=new ScanUtil().parseUploadBookInfo(result);
+            Log.i("OUTPUT", "parse over");
+            //给主线程UI界面发消息，提醒下载信息，解析信息完毕
+            Message msg= Message.obtain();
+            msg.obj=book;
+            handler.sendMessage(msg);
+            Log.i("OUTPUT","send over");
+        }
     }
 
 

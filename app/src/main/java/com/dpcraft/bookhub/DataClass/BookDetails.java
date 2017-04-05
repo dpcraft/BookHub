@@ -15,8 +15,8 @@ public class BookDetails {
     private String author;
     @SerializedName("publish")
     private String publishHouse;
-    //@SerializedName("pubtime")
-    //private String publishDate;
+    @SerializedName("pubTime")
+    private String publishDate;
     @SerializedName("orig")
     private String originPrice;//原价
     @SerializedName("version")
@@ -80,14 +80,14 @@ public class BookDetails {
         this.publishHouse = publishHouse;
     }
 
-//    public String getPublishDate() {
-//        return publishDate;
-//    }
-//
-//    public void setPublishDate(String publishDate) {
-//
-//        this.publishDate = publishDate;
-//    }
+    public String getPublishDate() {
+        return publishDate;
+    }
+
+    public void setPublishDate(String publishDate) {
+
+        this.publishDate = publishDate;
+    }
 
     public String getOriginPrice() {
         return originPrice;

@@ -2,6 +2,7 @@ package com.dpcraft.bookhub;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -53,7 +54,7 @@ public class SellRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
             return headerViewHolder;
         }else {
-            ContentViewHolder contentViewHolder = new ContentViewHolder(mInflater.inflate(R.layout.item_sell_recycler,parent,false));
+            final ContentViewHolder contentViewHolder = new ContentViewHolder(mInflater.inflate(R.layout.item_sell_recycler,parent,false));
             contentViewHolder.bookListView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -62,7 +63,9 @@ public class SellRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                     //*获取书籍详细信息*
 
 
-                    BookDetailsActivity.actionStart(mContext, "data1", "data2");
+                    BookDetailsActivity.actionStart(mContext, contentViewHolder.getBookId() + "", "data2");
+                    Log.i("previewBookId=======",contentViewHolder.getBookId() + "");
+
                 }
             });
             return contentViewHolder;
@@ -77,11 +80,11 @@ public class SellRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         }
         else{
             BookPreview bookPreview = mBookList.get(position - 1);
-
             //为书名作者等赋值
             ((ContentViewHolder)holder).bookPreviewName.setText(bookPreview.getName());
             ((ContentViewHolder)holder).bookPreviewAuthor.setText(bookPreview.getAuthor());
             ((ContentViewHolder)holder).bookPreviewPublishingHouse.setText(bookPreview.getPublishHouse());
+            ((ContentViewHolder)holder).setBookId(bookPreview.getId()); ;
             if(bookPreview.getSell()) {
                 ((ContentViewHolder) holder).bookPreviewDealType.setImageResource(R.drawable.ic_sell);
             }else {
@@ -103,6 +106,7 @@ public class SellRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
         View bookListView;
         ImageView bookPreviewImage,bookPreviewDealType;
+        int bookId;
         TextView bookPreviewName,bookPreviewAuthor,bookPreviewPublishingHouse,bookPreviewPrice;
         public ContentViewHolder(View view){
             super(view);
@@ -114,6 +118,12 @@ public class SellRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             bookPreviewDealType = (ImageView)view.findViewById(R.id.iv_book_preview_dealtype);
             bookPreviewPrice = (TextView)view.findViewById(R.id.tv_book_preview_price);
 
+        }
+        public void setBookId(int bookId){
+            this.bookId = bookId;
+        }
+        public int getBookId(){
+            return bookId;
         }
     }
     public class HeaderViewHolder extends RecyclerView.ViewHolder{

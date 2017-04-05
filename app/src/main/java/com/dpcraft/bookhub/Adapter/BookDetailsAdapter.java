@@ -69,7 +69,7 @@ public class BookDetailsAdapter extends RecyclerView.Adapter<BookDetailsAdapter.
                     str = "作者：" + mBookDetails.getAuthor();
                     break;
                 case 4:
-                    str = "出版日期: " ;//+ mBookDetails.getPublishDate();
+                    str = "出版日期: " + mBookDetails.getPublishDate();
                     break;
                 case 5:
                     str = "原价: " + mBookDetails.getOriginPrice();
@@ -98,7 +98,7 @@ public class BookDetailsAdapter extends RecyclerView.Adapter<BookDetailsAdapter.
                     str = "价格(租): ￥" + mBookDetails.getPrice()+" 元/天";
                     break;
                 case 1:
-                    str = "可租至:" + mBookDetails;//.getEndtime();
+                    str = "押金:" + mBookDetails.getDeposit();
                     break;
                 case 2:
                     str = "类别: " + mBookDetails.getType();
@@ -110,7 +110,7 @@ public class BookDetailsAdapter extends RecyclerView.Adapter<BookDetailsAdapter.
                     str = "作者：" + mBookDetails.getAuthor();
                     break;
                 case 5:
-                    str = "出版日期: " ;//+ mBookDetails.getPublishDate();
+                    str = "出版日期: " + mBookDetails.getPublishDate();
                     break;
                 case 6:
                     str = "原价: " + mBookDetails.getOriginPrice();

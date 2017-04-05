@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"/>
 
-    <com.dpcraft.myscancode.ScanModule.zxing.view.ViewfinderView
+    <com.dpcraft.bookhub.ScanModule.zxing.view.ViewfinderView
         android:id="@+id/viewfinder_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
