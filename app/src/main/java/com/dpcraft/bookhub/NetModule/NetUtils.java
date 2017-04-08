@@ -1,27 +1,19 @@
 package com.dpcraft.bookhub.NetModule;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 
-import com.dpcraft.bookhub.Application.*;
 import com.dpcraft.bookhub.DataClass.BookGetRequestInformation;
-import com.dpcraft.bookhub.DataClass.BookPreview;
-import com.dpcraft.bookhub.DataClass.GetBookResponse;
 import com.dpcraft.bookhub.DataClass.LoginResponse;
+import com.dpcraft.bookhub.DataClass.SignupResponse;
+import com.dpcraft.bookhub.DataClass.UploadBookInfo;
 import com.dpcraft.bookhub.DataClass.User;
-import com.dpcraft.bookhub.DataClass.UserInfo;
-import com.dpcraft.bookhub.DataClass.UserInfoResponse;
-
-import org.apache.http.params.HttpParams;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.List;
 
 import okhttp3.*;
 
@@ -131,25 +123,30 @@ public class NetUtils {
 
             }
         });
+    }
+    public static void uploadBook(UploadBookInfo uploadBookInfo,String token, final Handler handler) throws Exception {
 
-
-
-
-        /*Log.i("LOGINURL",loginURL);
-        HttpUtil.sendHttpPostRequest2(loginURL,str,new HttpCallBackListener() {
+        HttpUtil.sendHttpPostRequest(Server.getServerAddress() + "book" ,token , uploadBookInfo, new Callback() {
             @Override
-            public void onFinish(String response, int responseCode) {
-                Log.i("Login code", responseCode + "");
-                Log.i("response",response.toString());
-
+            public void onFailure(Call call, IOException e) {
+                Log.i("login error", "error" );
             }
 
             @Override
-            public void onError(Exception e) {
-                Log.i("Login error","");
+            public void onResponse(Call call, okhttp3.Response response) throws IOException {
+                String responseBody = response.body().string();
+                Log.i("login code",response.code() + "");
+                Log.i("response.body",responseBody);
+               // int code = JSONUtil.parseJsonWithGson(responseBody,LoginResponse.class).getCode();
+               // Log.i("JSON code",code+"");
+                //Message message = handler.obtainMessage();//创建message的方式，可以更好地被回收
+                //message.what = code;
+               // message.obj = responseBody;
+                //Log.i("firstmessge.obj",message.obj.toString());
+                //handler.sendMessage(message);
 
             }
-        });*/
+        });
     }
 
 
@@ -184,6 +181,11 @@ public class NetUtils {
        });
 
     }
+
+    /*
+     * The method used to get details of the book
+     *
+     */
     public static void getBookDetails(BookGetRequestInformation bookGetRequestInformation,final Handler handler)  {
 
 

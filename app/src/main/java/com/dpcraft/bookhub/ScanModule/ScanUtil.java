@@ -45,10 +45,10 @@ public class ScanUtil {
             JSONObject imageJSON =  mess.getJSONObject("images");
             info.setBitmap(DownloadBitmap(imageJSON.getString("large")));
             info.setAuthor(parseJSONArraytoString(mess.getJSONArray("author")));
-            info.setPublisher(mess.getString("publisher"));
+            info.setPublishHouse(mess.getString("publisher"));
             info.setPublishDate(mess.getString("pubdate"));
             info.setISBN(mess.getString("isbn13"));
-            info.setPrice(mess.getString("price"));
+            info.setOriginPrice(mess.getString("price"));
 
         }catch (Exception e) {
             e.printStackTrace();

@@ -9,7 +9,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.dpcraft.bookhub.DataClass.BookPreview;
+import com.dpcraft.bookhub.NetModule.Server;
 
 import java.util.List;
 
@@ -81,6 +83,9 @@ public class SellRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         else{
             BookPreview bookPreview = mBookList.get(position - 1);
             //为书名作者等赋值
+            String imageUrl = Server.getServerAddress() + "book/image?bookid=" + bookPreview.getId() + "&reduce=true";
+            Glide.with(mContext).load(imageUrl).into(((ContentViewHolder)holder).bookPreviewCover);
+            Log.i("imageUrl============",imageUrl);
             ((ContentViewHolder)holder).bookPreviewName.setText(bookPreview.getName());
             ((ContentViewHolder)holder).bookPreviewAuthor.setText(bookPreview.getAuthor());
             ((ContentViewHolder)holder).bookPreviewPublishingHouse.setText(bookPreview.getPublishHouse());
@@ -105,13 +110,13 @@ public class SellRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     public class ContentViewHolder extends RecyclerView.ViewHolder{
 
         View bookListView;
-        ImageView bookPreviewImage,bookPreviewDealType;
+        ImageView bookPreviewCover,bookPreviewDealType;
         int bookId;
         TextView bookPreviewName,bookPreviewAuthor,bookPreviewPublishingHouse,bookPreviewPrice;
         public ContentViewHolder(View view){
             super(view);
             bookListView = view;
-            bookPreviewImage = (ImageView)view.findViewById(R.id.book_preview_image);
+            bookPreviewCover = (ImageView)view.findViewById(R.id.book_preview_cover);
             bookPreviewName = (TextView)view.findViewById(R.id.tv_book_preview_name);
             bookPreviewAuthor = (TextView)view.findViewById(R.id.tv_book_preview_author);
             bookPreviewPublishingHouse = (TextView)view.findViewById(R.id.tv_book_preview_publishing_house);

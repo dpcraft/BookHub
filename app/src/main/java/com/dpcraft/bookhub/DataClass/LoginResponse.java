@@ -8,7 +8,7 @@ import com.google.gson.annotations.SerializedName;
 public class LoginResponse {
     private int code;
     private String message;
-    @SerializedName("Data")
+    @SerializedName("data")
     private LoginResponseUserInfo data;
     public int getCode() {
         return code;

@@ -4,8 +4,6 @@ import android.graphics.Bitmap;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import java.io.Serializable;
-
 /**
  * Created by Jim on 13-7-10.
  */
@@ -14,10 +12,19 @@ public class UploadBookInfo implements Parcelable {
     private String mTitle="";
     private Bitmap mBitmap;
     private String mAuthor="";
-    private String mPublisher="";
+    private String mPublishHouse ="";
     private String mPublishDate="";
     private String mISBN="";
-    private String mPrice = "";
+    private String mOriginPrice = "";
+    private Boolean mIsSold;
+    private String mDeposit = "";
+    private String mIntroduction = "";
+    private String price = "";
+
+
+
+    private String bookType = "";
+
 
     public void setTitle(String Title)
     {
@@ -39,11 +46,12 @@ public class UploadBookInfo implements Parcelable {
     {
         mPublishDate=PublishDate;
     }
-    public void setPublisher(String Publisher)
+    public void setPublishHouse(String PublishHouse)
     {
-        mPublisher=Publisher;
+        mPublishHouse = PublishHouse;
     }
-    public void setPrice(String price){mPrice = price;}
+    public void setOriginPrice(String originPrice){
+        mOriginPrice = originPrice;}
     public String getTitle() {return mTitle;}
     public Bitmap getBitmap()
     {
@@ -58,11 +66,49 @@ public class UploadBookInfo implements Parcelable {
     {
         return mPublishDate;
     }
-    public String getPublisher()
+    public String getPublishHouse()
     {
-        return mPublisher;
+        return mPublishHouse;
     }
-    public String getPrice(){return mPrice;}
+    public String getOriginPrice(){return mOriginPrice;}
+    public Boolean getmIsSold() {
+        return mIsSold;
+    }
+
+    public void setmIsSold(Boolean mIsSold) {
+        this.mIsSold = mIsSold;
+    }
+
+    public String getmDeposit() {
+        return mDeposit;
+    }
+
+    public void setmDeposit(String mDeposit) {
+        this.mDeposit = mDeposit;
+    }
+
+    public String getmIntroduction() {
+        return mIntroduction;
+    }
+
+    public void setmIntroduction(String mIntroduction) {
+        this.mIntroduction = mIntroduction;
+    }
+    public String getPrice() {
+        return price;
+    }
+
+    public void setPrice(String price) {
+        this.price = price;
+    }
+    public String getBookType() {
+        return bookType;
+    }
+
+    public void setBookType(String bookType) {
+        this.bookType = bookType;
+    }
+
 
     public static final Parcelable.Creator<UploadBookInfo> CREATOR = new Creator<UploadBookInfo>() {
 
@@ -72,10 +118,10 @@ public class UploadBookInfo implements Parcelable {
             bookInfo.mTitle = source.readString();
             bookInfo.mBitmap = source.readParcelable(Bitmap.class.getClassLoader());
             bookInfo.mAuthor = source.readString();
-            bookInfo.mPublisher = source.readString();
+            bookInfo.mPublishHouse = source.readString();
             bookInfo.mPublishDate = source.readString();
             bookInfo.mISBN = source.readString();
-            bookInfo.mPrice = source.readString();
+            bookInfo.mOriginPrice = source.readString();
             return bookInfo;
         }
 
@@ -95,10 +141,10 @@ public class UploadBookInfo implements Parcelable {
         dest.writeString(mTitle);
         dest.writeParcelable(mBitmap, flags);
         dest.writeString(mAuthor);
-        dest.writeString(mPublisher);
+        dest.writeString(mPublishHouse);
         dest.writeString(mPublishDate);
         dest.writeString(mISBN);
-        dest.writeString(mPrice);
+        dest.writeString(mOriginPrice);
     }
 
 }

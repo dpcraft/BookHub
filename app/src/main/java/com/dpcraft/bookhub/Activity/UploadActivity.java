@@ -4,14 +4,19 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.TextInputEditText;
+import android.os.Handler;
+import android.os.Message;
 import android.support.design.widget.TextInputLayout;
+import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 
+import com.dpcraft.bookhub.Application.MyApplication;
 import com.dpcraft.bookhub.DataClass.UploadBookInfo;
+import com.dpcraft.bookhub.NetModule.NetUtils;
 import com.dpcraft.bookhub.R;
 import com.dpcraft.bookhub.UIWidget.CustomToolbar;
 
@@ -26,6 +31,13 @@ public class UploadActivity extends Activity {
                             ISBNWrapper , priceWrapper , depositWrapper , introductionWrapper ;
     private Spinner bookTypeSpinner , dealTypeSpinner;
     private Button uploadButton;
+    private  UploadBookInfo uploadBookInfo;
+    private MyApplication myApplication;
+
+    private Handler handler = new Handler(){
+        public void handleMessage(Message msg) {
+        }
+    };
 
     @Override
     protected void onCreate(Bundle saveInstanceState) {
@@ -34,11 +46,25 @@ public class UploadActivity extends Activity {
         initWidget();
         mCustomToolbar.setTitle("发布书籍");
         initBookInfo();
+        setSpinnerListener();
+        uploadButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                myApplication = (MyApplication)getApplication();
+                collectBookInfo();
+                try {
+                    NetUtils.uploadBook(uploadBookInfo, myApplication.getToken(), handler);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+
+            }
+        });
+
     }
 
 
     private void initWidget(){
-
         mCustomToolbar = (CustomToolbar)findViewById(R.id.ctb_upload);
         bookCover = (ImageView)findViewById(R.id.iv_book_cover);
         bookNameWrapper = (TextInputLayout)findViewById(R.id.book_name_wrapper);
@@ -57,16 +83,60 @@ public class UploadActivity extends Activity {
     }
     private void initBookInfo(){
         intent=getIntent();
-        UploadBookInfo uploadBookInfo = (UploadBookInfo)intent.getParcelableExtra(UploadBookInfo.class.getName());
+        uploadBookInfo = (UploadBookInfo)intent.getParcelableExtra(UploadBookInfo.class.getName());
         if(uploadBookInfo != null) {
             bookCover.setImageBitmap(uploadBookInfo.getBitmap());
             bookNameWrapper.getEditText().setText(uploadBookInfo.getTitle());
             authorWrapper.getEditText().setText(uploadBookInfo.getAuthor());
-            publishHouseWrapper.getEditText().setText(uploadBookInfo.getPublisher());
+            publishHouseWrapper.getEditText().setText(uploadBookInfo.getPublishHouse());
             publishDateWrapper.getEditText().setText(uploadBookInfo.getPublishDate());
             ISBNWrapper.getEditText().setText(uploadBookInfo.getISBN());
-            originPriceWrapper.getEditText().setText(uploadBookInfo.getPrice());
+            originPriceWrapper.getEditText().setText(uploadBookInfo.getOriginPrice());
         }
+        else uploadBookInfo = new UploadBookInfo();
+    }
+    private void collectBookInfo(){
+        uploadBookInfo.setTitle(bookNameWrapper.getEditText().getText().toString().trim());
+        uploadBookInfo.setAuthor(authorWrapper.getEditText().getText().toString().trim());
+        uploadBookInfo.setPublishHouse(publishHouseWrapper.getEditText().getText().toString().trim());
+        uploadBookInfo.setOriginPrice(originPriceWrapper.getEditText().getText().toString().trim());
+        uploadBookInfo.setPublishDate(publishDateWrapper.getEditText().getText().toString().trim());
+        uploadBookInfo.setPrice(priceWrapper.getEditText().getText().toString().trim());
+        uploadBookInfo.setmDeposit(depositWrapper.getEditText().getText().toString().trim());
+        //version 没有设置
+        uploadBookInfo.setISBN(ISBNWrapper.getEditText().getText().toString().trim());
+       // uploadBookInfo.setBookType();
+        uploadBookInfo.setmIntroduction(introductionWrapper.getEditText().getText().toString().trim());
+    }
+
+    private void  setSpinnerListener(){
+        bookTypeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
+            @Override
+            public void onItemSelected(AdapterView<?> parent,View view,int position,long id){
+                uploadBookInfo.setBookType(position + "");
+                Log.i("bookTypeSpinner=======",position + "");
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent){
+
+            }
+        });
+
+        dealTypeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
+            @Override
+            public void onItemSelected(AdapterView<?> parent,View view,int position,long id){
+                if(position == 1)
+                    uploadBookInfo.setmIsSold(false);
+                else
+                    uploadBookInfo.setmIsSold(true);
+                Log.i("DealTypeSpinner=======",position + "");
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent){
+
+            }
+        });
+
     }
 
     public static void actionStart(Context context, String data1, String data2) {

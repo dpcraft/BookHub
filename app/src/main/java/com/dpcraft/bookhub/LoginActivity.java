@@ -48,14 +48,12 @@ public class LoginActivity extends Activity {
     private Handler handler= new Handler(){
         public void handleMessage(Message msg){
             LoginResponse loginResponse = JSONUtil.parseJsonWithGson(msg.obj.toString(),LoginResponse.class);
-            switch ( msg.what){
-
+            switch (loginResponse.getCode()){
                 case LOGIN_SUCCESS :
                   Dialog.showLoginSuccessDialog(LoginActivity.this);
                     rememberPassword(msg.what);
                     myApplication.setLoginStatus(true);
-
-                   myApplication.setToken(loginResponse.getMessage());
+                    myApplication.setToken(loginResponse.getMessage());
                     myApplication.setLoginResponseUserInfo(loginResponse.getData());
                     Log.i("token",myApplication.getToken());
                     timer.schedule(new TimerTask() {

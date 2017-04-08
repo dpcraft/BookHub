@@ -13,7 +13,9 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
 import com.dpcraft.bookhub.Adapter.BookDetailsAdapter;
 import com.dpcraft.bookhub.Application.MyApplication;
 import com.dpcraft.bookhub.DataClass.BookDetails;
@@ -22,6 +24,7 @@ import com.dpcraft.bookhub.DataClass.GetBookDetailsResponse;
 import com.dpcraft.bookhub.DataClass.GetBookResponse;
 import com.dpcraft.bookhub.NetModule.JSONUtil;
 import com.dpcraft.bookhub.NetModule.NetUtils;
+import com.dpcraft.bookhub.NetModule.Server;
 
 
 /**
@@ -35,7 +38,8 @@ public class BookDetailsActivity extends Activity {
     private BookDetails mbookDetails;
     private BookDetailsAdapter mbookDetailsAdapter;
     private RecyclerView bookDetailsRecyclerView;
-    private String bookId;
+    private ImageView bookCover;
+    private String bookId , imageUrl;
     private BookGetRequestInformation bookGetRequestInformation;
 
     private Handler handler= new Handler(){
@@ -44,7 +48,7 @@ public class BookDetailsActivity extends Activity {
 
                 Log.i("json",msg.obj.toString());
                 GetBookDetailsResponse getBookDetailsResponse = JSONUtil.parseJsonWithGson( msg.obj.toString(),GetBookDetailsResponse.class);
-               mbookDetails = getBookDetailsResponse.getData();
+                mbookDetails = getBookDetailsResponse.getData();
                 bookNameToolbar.setTitle(mbookDetails.getName());
                 mbookDetailsAdapter = new BookDetailsAdapter(mbookDetails,BookDetailsActivity.this);
                 bookDetailsRecyclerView.setAdapter(mbookDetailsAdapter);
@@ -61,12 +65,16 @@ public class BookDetailsActivity extends Activity {
         setContentView(R.layout.activity_book_details);
 
         initWidget();
+
+
         Intent intent = getIntent();
         bookId = intent.getStringExtra("bookId");
+        imageUrl = Server.getServerAddress() + "book/image?bookid=" + bookId;
+        Glide.with(this).load(imageUrl).placeholder(R.drawable.image_belonged).error(R.drawable.load_error).into(bookCover);
+        Log.i("detailImageUrl======",imageUrl);
         Log.i("detailbookId======",bookId );
-
-
         initBookDetails();
+
 
 
         bookNameToolbar.setNavigationIcon(R.drawable.ic_back_white);
@@ -99,6 +107,7 @@ public class BookDetailsActivity extends Activity {
         floatingActionButton = (FloatingActionButton)findViewById(R.id.fab);
         bookDetailsRecyclerView = (RecyclerView)findViewById(R.id.rv_bookdetais);
         bookNameToolbar = (Toolbar)findViewById(R.id.tb_bookname);
+        bookCover = (ImageView)findViewById(R.id.iv_book_cover_details);
 
     }
     private BookDetails initBookDetails2(){

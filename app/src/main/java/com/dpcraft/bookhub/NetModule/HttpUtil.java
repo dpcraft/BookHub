@@ -2,6 +2,7 @@ package com.dpcraft.bookhub.NetModule;
 
 import android.util.Log;
 
+import com.dpcraft.bookhub.DataClass.UploadBookInfo;
 import com.dpcraft.bookhub.DataClass.User;
 
 import java.io.BufferedReader;
@@ -105,6 +106,51 @@ public class HttpUtil {
                 .build();
         }
        // Log.i("sendhttppost",stringTowrite);
+        okhttp3.Request request = new okhttp3.Request.Builder()
+                .url(address)
+                .post(requestBody)
+                .build();
+        client.newCall(request).enqueue(callback);
+
+    }
+    public static void sendHttpPostRequest(final String address,String token,  final UploadBookInfo uploadBookInfo, final okhttp3.Callback callback){
+        Log.i("post url",address);
+
+        OkHttpClient client = new OkHttpClient();
+        RequestBody requestBody;
+        Log.i("address ==========",address);
+           /* requestBody = new FormBody.Builder()
+                            .add("token",token)
+                            .add("Bookname",uploadBookInfo.getTitle())
+                            .add("Author",uploadBookInfo.getAuthor())
+                            .add("Publish",uploadBookInfo.getPublishHouse())
+                            .add("Orig",uploadBookInfo.getOriginPrice())
+                            .add("Pubtime",uploadBookInfo.getPublishDate())
+                            .add("Version","")
+                            .add("ISBN",uploadBookInfo.getISBN())
+                            .add("Type",uploadBookInfo.getBookType())
+                            .add("isSell",uploadBookInfo.getmIsSold().toString())
+                            .add("Deposit",uploadBookInfo.getmDeposit())
+                            .add("Price",uploadBookInfo.getPrice())
+                            .add("Introduction",uploadBookInfo.getmIntroduction())
+                            .build();*/
+        requestBody = new MultipartBody.Builder().setType(MultipartBody.FORM)
+                .addFormDataPart("token",token)
+                .addFormDataPart("bookname",uploadBookInfo.getTitle())
+                .addFormDataPart("author",uploadBookInfo.getAuthor())
+                .addFormDataPart("publish",uploadBookInfo.getPublishHouse())
+                .addFormDataPart("orig",uploadBookInfo.getOriginPrice())
+                .addFormDataPart("pubtime",uploadBookInfo.getPublishDate())
+                .addFormDataPart("version","0")
+                .addFormDataPart("isbn",uploadBookInfo.getISBN())
+                .addFormDataPart("type",uploadBookInfo.getBookType())
+                .addFormDataPart("isSell",uploadBookInfo.getmIsSold().toString())
+                .addFormDataPart("deposit",uploadBookInfo.getmDeposit())
+                .addFormDataPart("price",uploadBookInfo.getPrice())
+                .addFormDataPart("introduction",uploadBookInfo.getmIntroduction())
+               // .addFormDataPart("image",)
+                .build();
+
         okhttp3.Request request = new okhttp3.Request.Builder()
                 .url(address)
                 .post(requestBody)
