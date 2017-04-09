@@ -7,6 +7,7 @@ import com.dpcraft.bookhub.DataClass.User;
 
 import java.io.BufferedReader;
 
+import java.io.File;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
@@ -14,6 +15,7 @@ import java.net.URL;
 
 
 import okhttp3.*;
+import okhttp3.internal.http2.Header;
 
 /**
  * Created by DPC on 2017/2/23.
@@ -134,6 +136,8 @@ public class HttpUtil {
                             .add("Price",uploadBookInfo.getPrice())
                             .add("Introduction",uploadBookInfo.getmIntroduction())
                             .build();*/
+        File file = new File("/sdcard/BookHub/bookCover.jpg");
+        RequestBody fileBody = RequestBody.create(MediaType.parse("image/png"), file);
         requestBody = new MultipartBody.Builder().setType(MultipartBody.FORM)
                 .addFormDataPart("token",token)
                 .addFormDataPart("bookname",uploadBookInfo.getTitle())
@@ -141,18 +145,19 @@ public class HttpUtil {
                 .addFormDataPart("publish",uploadBookInfo.getPublishHouse())
                 .addFormDataPart("orig",uploadBookInfo.getOriginPrice())
                 .addFormDataPart("pubtime",uploadBookInfo.getPublishDate())
-                .addFormDataPart("version","0")
+                .addFormDataPart("version","3")
                 .addFormDataPart("isbn",uploadBookInfo.getISBN())
                 .addFormDataPart("type",uploadBookInfo.getBookType())
-                .addFormDataPart("isSell",uploadBookInfo.getmIsSold().toString())
+                .addFormDataPart("isSell","on")//uploadBookInfo.getmIsSold().toString())
                 .addFormDataPart("deposit",uploadBookInfo.getmDeposit())
                 .addFormDataPart("price",uploadBookInfo.getPrice())
                 .addFormDataPart("introduction",uploadBookInfo.getmIntroduction())
-               // .addFormDataPart("image",)
+                .addFormDataPart("image",file.getName(),fileBody)
                 .build();
 
         okhttp3.Request request = new okhttp3.Request.Builder()
                 .url(address)
+                .header("Content-Disposition","form-data")
                 .post(requestBody)
                 .build();
         client.newCall(request).enqueue(callback);
@@ -181,7 +186,6 @@ public class HttpUtil {
                     String line;
                     while ((line = reader.readLine()) != null) {
                         response.append(line);
-
                     }
                     Log.i("Login code", code + "");
 

@@ -129,7 +129,7 @@ public class NetUtils {
         HttpUtil.sendHttpPostRequest(Server.getServerAddress() + "book" ,token , uploadBookInfo, new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-                Log.i("login error", "error" );
+                Log.i("upload error", "error" );
             }
 
             @Override

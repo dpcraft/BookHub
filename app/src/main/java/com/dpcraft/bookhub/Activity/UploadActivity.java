@@ -3,6 +3,7 @@ package com.dpcraft.bookhub.Activity;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -19,6 +20,11 @@ import com.dpcraft.bookhub.DataClass.UploadBookInfo;
 import com.dpcraft.bookhub.NetModule.NetUtils;
 import com.dpcraft.bookhub.R;
 import com.dpcraft.bookhub.UIWidget.CustomToolbar;
+
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
 /**
  * Created by DPC on 2017/4/4.
@@ -40,7 +46,7 @@ public class UploadActivity extends Activity {
     };
 
     @Override
-    protected void onCreate(Bundle saveInstanceState) {
+    protected void onCreate(final Bundle saveInstanceState) {
         super.onCreate(saveInstanceState);
         setContentView(R.layout.activity_upload);
         initWidget();
@@ -51,6 +57,12 @@ public class UploadActivity extends Activity {
             @Override
             public void onClick(View view) {
                 myApplication = (MyApplication)getApplication();
+                bookCover.buildDrawingCache(true);
+                bookCover.buildDrawingCache();
+                Bitmap bitmap = bookCover.getDrawingCache();
+                saveBitmapFile(bitmap);
+                bookCover.setDrawingCacheEnabled(false);
+
                 collectBookInfo();
                 try {
                     NetUtils.uploadBook(uploadBookInfo, myApplication.getToken(), handler);
@@ -61,6 +73,21 @@ public class UploadActivity extends Activity {
             }
         });
 
+    }
+    private void saveBitmapFile(Bitmap bitmap){
+        File temp = new File("/sdcard/BookHub/");
+        if(!temp.exists()){
+            temp.mkdir();
+        }
+        File file = new File("/sdcard/BookHub/bookCover.jpg");
+        try{
+            BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(new FileOutputStream(file));
+            bitmap.compress(Bitmap.CompressFormat.JPEG,100,bufferedOutputStream);
+            bufferedOutputStream.flush();
+            bufferedOutputStream.close();
+        }catch (IOException e){
+            e.printStackTrace();
+        }
     }
 
 
