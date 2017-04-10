@@ -73,6 +73,7 @@ public class MainActivity extends FragmentActivity {
        //透明导航栏
         //getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
         initWidget();
+        //扫码用的handler
         handler = new Handler(){
             @Override
             public void handleMessage(Message msg) {
@@ -106,12 +107,22 @@ public class MainActivity extends FragmentActivity {
                         Toast.makeText(MainActivity.this,"Click btn 0 = "+ position,Toast.LENGTH_SHORT).show();
                         break;
                         case 1:
-                            final Intent i = new Intent(MainActivity.this, CaptureActivity.class);
-                            startActivityForResult(i, REQUEST_QR_CODE);
+                            if(myApplication.isLogin()){
+                                final Intent i = new Intent(MainActivity.this, CaptureActivity.class);
+                                startActivityForResult(i, REQUEST_QR_CODE);
+                            }else{
+                                LoginActivity.actionStart(MainActivity.this, "MainActivity", "data2");
+                            }
+//                            final Intent i = new Intent(MainActivity.this, CaptureActivity.class);
+//                            startActivityForResult(i, REQUEST_QR_CODE);
                             break;
                         case 2:
                             //Toast.makeText(MainActivity.this,"Click btn 2 = "+ position,Toast.LENGTH_SHORT).show();
-                            UploadActivity.actionStart(MainActivity.this,"data1","data2");
+                            if(myApplication.isLogin()){
+                                UploadActivity.actionStart(MainActivity.this,"data1","data2");
+                            }else{
+                                LoginActivity.actionStart(MainActivity.this, "MainActivity", "data2");
+                            }
                             break;
                         case 3:
                             Toast.makeText(MainActivity.this,"Click btn 3 = "+ position,Toast.LENGTH_SHORT).show();

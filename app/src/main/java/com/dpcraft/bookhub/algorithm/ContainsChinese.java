@@ -1,4 +1,4 @@
-package com.dpcraft.bookhub.algorithm;
+package com.dpcraft.bookhub.Algorithm;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

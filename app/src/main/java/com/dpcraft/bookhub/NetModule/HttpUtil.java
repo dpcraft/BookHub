@@ -154,6 +154,7 @@ public class HttpUtil {
                 .addFormDataPart("introduction",uploadBookInfo.getmIntroduction())
                 .addFormDataPart("image",file.getName(),fileBody)
                 .build();
+        Log.i("deposit==============",uploadBookInfo.getmDeposit());
 
         okhttp3.Request request = new okhttp3.Request.Builder()
                 .url(address)

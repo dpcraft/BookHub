@@ -2,6 +2,7 @@ package com.dpcraft.bookhub.ScanModule;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
+import com.dpcraft.bookhub.Algorithm.StringProcess;
 import com.dpcraft.bookhub.DataClass.UploadBookInfo;
 
 import org.json.JSONArray;
@@ -46,9 +47,9 @@ public class ScanUtil {
             info.setBitmap(DownloadBitmap(imageJSON.getString("large")));
             info.setAuthor(parseJSONArraytoString(mess.getJSONArray("author")));
             info.setPublishHouse(mess.getString("publisher"));
-            info.setPublishDate(mess.getString("pubdate"));
+            info.setPublishDate(StringProcess.formatDate(mess.getString("pubdate")));
             info.setISBN(mess.getString("isbn13"));
-            info.setOriginPrice(mess.getString("price"));
+            info.setOriginPrice(StringProcess.extractNumFromString(mess.getString("price")));
 
         }catch (Exception e) {
             e.printStackTrace();

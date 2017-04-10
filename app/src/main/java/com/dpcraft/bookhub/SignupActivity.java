@@ -3,31 +3,20 @@ package com.dpcraft.bookhub;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.design.widget.TextInputLayout;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewTreeObserver;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.ScrollView;
-import android.widget.TextView;
 
 import com.dpcraft.bookhub.DataClass.User;
 import com.dpcraft.bookhub.NetModule.NetUtils;
 import com.dpcraft.bookhub.UIWidget.CustomToolbar;
 import com.dpcraft.bookhub.UIWidget.Dialog;
-import com.dpcraft.bookhub.algorithm.ContainsChinese;
+import com.dpcraft.bookhub.Algorithm.ContainsChinese;
 
 /**
  * Created by DPC on 2017/2/21.

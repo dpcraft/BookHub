@@ -84,7 +84,7 @@ public class SellRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             BookPreview bookPreview = mBookList.get(position - 1);
             //为书名作者等赋值
             String imageUrl = Server.getServerAddress() + "book/image?bookid=" + bookPreview.getId() + "&reduce=true";
-            Glide.with(mContext).load(imageUrl).into(((ContentViewHolder)holder).bookPreviewCover);
+            Glide.with(mContext).load(imageUrl).error(R.drawable.load_error).into(((ContentViewHolder)holder).bookPreviewCover);
             Log.i("imageUrl============",imageUrl);
             ((ContentViewHolder)holder).bookPreviewName.setText(bookPreview.getName());
             ((ContentViewHolder)holder).bookPreviewAuthor.setText(bookPreview.getAuthor());

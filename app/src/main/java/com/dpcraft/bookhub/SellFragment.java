@@ -131,10 +131,12 @@ public class SellFragment extends Fragment{
             @Override
             public void run() {
                 try{
-                    Thread.sleep(2000);
+
+                   Thread.sleep(2000);
                 }catch (InterruptedException e){
                     e.printStackTrace();
                 }
+               // initBookList();
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
