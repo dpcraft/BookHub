@@ -40,7 +40,7 @@ public class SignupActivity extends Activity {
         public void handleMessage(Message msg){
             switch ( msg.what){
                 case SUCCESS :
-                    Dialog.showSignupSuccessDialog(SignupActivity.this);
+                    Dialog.showSignupSuccessDialog(SignupActivity.this, "恭喜您注册成功");
                     //Dialog.showDialog((String)msg.obj,SignupActivity.this);
                     break;
                 case REQUEST_ERROR:

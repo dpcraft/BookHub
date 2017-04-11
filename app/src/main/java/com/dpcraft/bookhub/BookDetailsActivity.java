@@ -52,6 +52,15 @@ public class BookDetailsActivity extends Activity {
                 bookNameToolbar.setTitle(mbookDetails.getName());
                 mbookDetailsAdapter = new BookDetailsAdapter(mbookDetails,BookDetailsActivity.this);
                 bookDetailsRecyclerView.setAdapter(mbookDetailsAdapter);
+                if(mbookDetails.getIntention() == true){
+                    isLiked = true;
+                }
+                else if(mbookDetails.getIntention() == false){
+                    isLiked = false;
+                }
+                Log.i("userId==============",mbookDetails.getUserId());
+                //if(myApplication.isLogin() && mbookDetails.getUserId() == myApplication.getLoginResponseUserInfo().getNickName())
+                bookNameToolbar.inflateMenu(R.menu.menu_book_details);
 
             }
 
@@ -74,8 +83,6 @@ public class BookDetailsActivity extends Activity {
         Log.i("detailImageUrl======",imageUrl);
         Log.i("detailbookId======",bookId );
         initBookDetails();
-
-
 
         bookNameToolbar.setNavigationIcon(R.drawable.ic_back_white);
         bookNameToolbar.setNavigationOnClickListener(new View.OnClickListener() {

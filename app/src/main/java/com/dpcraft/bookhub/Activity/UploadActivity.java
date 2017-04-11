@@ -20,6 +20,7 @@ import com.dpcraft.bookhub.DataClass.UploadBookInfo;
 import com.dpcraft.bookhub.NetModule.NetUtils;
 import com.dpcraft.bookhub.R;
 import com.dpcraft.bookhub.UIWidget.CustomToolbar;
+import com.dpcraft.bookhub.UIWidget.Dialog;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -30,6 +31,9 @@ import java.io.IOException;
  * Created by DPC on 2017/4/4.
  */
 public class UploadActivity extends Activity {
+
+    public static final int SUCCESS = 201;
+    public static final int REQUEST_ERROR = 400;
     private Intent intent;
     private CustomToolbar mCustomToolbar;
     private ImageView bookCover;
@@ -40,8 +44,19 @@ public class UploadActivity extends Activity {
     private  UploadBookInfo uploadBookInfo;
     private MyApplication myApplication;
 
-    private Handler handler = new Handler(){
-        public void handleMessage(Message msg) {
+    private Handler handler= new Handler(){
+        public void handleMessage(Message msg){
+            switch ( msg.what){
+                case SUCCESS :
+                    Dialog.showSignupSuccessDialog(UploadActivity.this , "上传成功");
+                    break;
+                case REQUEST_ERROR:
+                    Dialog.showDialog("注册失败",(String)msg.obj,UploadActivity.this);
+                    break;
+
+                default:
+                    break;
+            }
         }
     };
 
@@ -153,9 +168,9 @@ public class UploadActivity extends Activity {
             @Override
             public void onItemSelected(AdapterView<?> parent,View view,int position,long id){
                 if(position == 1)
-                    uploadBookInfo.setmIsSold(false);
+                    uploadBookInfo.setmIsSold("");
                 else
-                    uploadBookInfo.setmIsSold(true);
+                    uploadBookInfo.setmIsSold("on");
                 Log.i("DealTypeSpinner=======",position + "");
             }
             @Override

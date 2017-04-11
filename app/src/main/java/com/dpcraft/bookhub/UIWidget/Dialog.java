@@ -2,6 +2,7 @@ package com.dpcraft.bookhub.UIWidget;
 
 import android.content.Context;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.DialogTitle;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -10,6 +11,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.dpcraft.bookhub.R;
@@ -34,12 +36,14 @@ public class Dialog {
         builder.setPositiveButton("确定", null);
         builder.show();
     }
-    public static void showSignupSuccessDialog(Context context) {
+    public static void showSignupSuccessDialog(Context context,String dialogTitle) {
 
         final AlertDialog dialog = new AlertDialog.Builder(context).create();
         dialog.show();
         Window window =dialog.getWindow();
         window.setContentView(R.layout.dialog_signup_success);
+        TextView textView = (TextView) window.findViewById(R.id.tv_success);
+        textView.setText(dialogTitle);
 
     }
     public static void showLoginSuccessDialog(Context context) {

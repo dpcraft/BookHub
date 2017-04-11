@@ -6,7 +6,7 @@ import android.util.Log;
 
 import com.dpcraft.bookhub.DataClass.BookGetRequestInformation;
 import com.dpcraft.bookhub.DataClass.LoginResponse;
-import com.dpcraft.bookhub.DataClass.SignupResponse;
+import com.dpcraft.bookhub.DataClass.ResponseFromServer;
 import com.dpcraft.bookhub.DataClass.UploadBookInfo;
 import com.dpcraft.bookhub.DataClass.User;
 
@@ -44,28 +44,6 @@ public class NetUtils {
 
          */
 
-           /*JSONUtil jsonUtil = new JSONUtil();
-            String str = jsonUtil.packageJson(user);
-            HttpUtil.sendHttpPostRequest2(signupURL, str, new HttpCallBackListener() {
-                @Override
-                public void onFinish(String response, int responseCode) {
-                    Log.i("signup code",responseCode+"");
-                    Log.i("response",response.toString());
-                    int code = JSONUtil.parseSignupResponse(response).getCode();
-                    String Information = JSONUtil.parseSignupResponse(response).getMessage();
-                    Log.i("JSON code",code+"");
-                    Message message = handler.obtainMessage();//创建message的方式，可以更好地被回收
-                    message.what = code;
-                    message.obj = Information;
-                    handler.sendMessage(message);
-                }
-
-                @Override
-                public void onError(Exception e) {
-                    Log.i("signup error","");
-
-                }
-            });*/
             HttpUtil.sendHttpPostRequest(signupURL, user, new Callback() {
 
                 @Override
@@ -79,9 +57,9 @@ public class NetUtils {
                     String responseBody = response.body().string();
                     Log.i("signup code",response.code() + "");
                     Log.i("response.body",responseBody);
-                    SignupResponse signupResponse = JSONUtil.parseJsonWithGson(responseBody,SignupResponse.class);
-                    int code = signupResponse.getCode();
-                    String Information = signupResponse.getMessage();
+                    ResponseFromServer responseFromServer = JSONUtil.parseJsonWithGson(responseBody,ResponseFromServer.class);
+                    int code = responseFromServer.getCode();
+                    String Information = responseFromServer.getMessage();
                     Log.i("JSON code",code+"");
                     Message message = handler.obtainMessage();//创建message的方式，可以更好地被回收
                     message.what = code;
@@ -92,16 +70,7 @@ public class NetUtils {
         }
     public static void login(User user,final Handler handler) throws Exception {
 
-        /*
 
-         * 如果登录成功会在result中返回JSON格式的code为201
-
-         * message为Token令牌，作其他操作时提交令牌即可获得权限，令牌有时限
-
-         */
-
-//        JSONUtil jsonUtil = new JSONUtil();
-//        String str = jsonUtil.packageJson(user);
         HttpUtil.sendHttpPostRequest(loginURL, user, new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
@@ -137,13 +106,13 @@ public class NetUtils {
                 String responseBody = response.body().string();
                 Log.i("login code",response.code() + "");
                 Log.i("response.body",responseBody);
-               // int code = JSONUtil.parseJsonWithGson(responseBody,LoginResponse.class).getCode();
-               // Log.i("JSON code",code+"");
-                //Message message = handler.obtainMessage();//创建message的方式，可以更好地被回收
-                //message.what = code;
-               // message.obj = responseBody;
-                //Log.i("firstmessge.obj",message.obj.toString());
-                //handler.sendMessage(message);
+                int code = JSONUtil.parseJsonWithGson(responseBody,ResponseFromServer.class).getCode();
+                Log.i("JSON code",code+"");
+                Message message = handler.obtainMessage();//创建message的方式，可以更好地被回收
+                message.what = code;
+                message.obj = responseBody;
+                Log.i("uploadmessage.obj",message.obj.toString());
+                handler.sendMessage(message);
 
             }
         });

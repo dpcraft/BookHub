@@ -16,7 +16,7 @@ public class UploadBookInfo implements Parcelable {
     private String mPublishDate="";
     private String mISBN="";
     private String mOriginPrice = "";
-    private Boolean mIsSold;
+    private String mIsSold;
     private String mDeposit = "";
     private String mIntroduction = "";
     private String price = "";
@@ -71,11 +71,11 @@ public class UploadBookInfo implements Parcelable {
         return mPublishHouse;
     }
     public String getOriginPrice(){return mOriginPrice;}
-    public Boolean getmIsSold() {
+    public String getmIsSold() {
         return mIsSold;
     }
 
-    public void setmIsSold(Boolean mIsSold) {
+    public void setmIsSold(String mIsSold) {
         this.mIsSold = mIsSold;
     }
 
