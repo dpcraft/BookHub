@@ -1,4 +1,4 @@
-package com.dpcraft.bookhub;
+package com.dpcraft.bookhub.Fragment;
 
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -7,6 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+
+import com.dpcraft.bookhub.R;
 
 /**
  * Created by DPC on 2017/2/20.

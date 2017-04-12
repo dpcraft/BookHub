@@ -1,4 +1,4 @@
-package com.dpcraft.bookhub;
+package com.dpcraft.bookhub.Adapter;
 
 /**
  * Created by DPC on 2017/2/9.
@@ -7,6 +7,9 @@ import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+
+import com.dpcraft.bookhub.Fragment.RequestFragment;
+import com.dpcraft.bookhub.Fragment.SellFragment;
 
 
 public class SimpleFragmentPagerAdapter extends FragmentPagerAdapter {

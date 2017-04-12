@@ -1,4 +1,4 @@
-package com.dpcraft.bookhub;
+package com.dpcraft.bookhub.Activity;
 
 import android.content.Context;
 import android.content.Intent;
@@ -22,14 +22,11 @@ import android.support.v4.app.FragmentActivity;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.dpcraft.bookhub.Activity.PictureActivity;
-import com.dpcraft.bookhub.Activity.SearchActivity;
-import com.dpcraft.bookhub.Activity.UploadActivity;
+import com.dpcraft.bookhub.Adapter.SimpleFragmentPagerAdapter;
 import com.dpcraft.bookhub.Application.MyApplication;
-import com.dpcraft.bookhub.DataClass.BookGetRequestInformation;
 import com.dpcraft.bookhub.DataClass.UploadBookInfo;
-import com.dpcraft.bookhub.NetModule.HttpUtil;
 import com.dpcraft.bookhub.NetModule.NetUtils;
+import com.dpcraft.bookhub.R;
 import com.dpcraft.bookhub.ScanModule.CaptureActivity;
 import com.dpcraft.bookhub.ScanModule.ScanUtil;
 import com.lzp.floatingactionbuttonplus.FabTagLayout;

@@ -1,4 +1,4 @@
-package com.dpcraft.bookhub;
+package com.dpcraft.bookhub.Adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -7,12 +7,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.dpcraft.bookhub.Activity.BookDetailsActivity;
 import com.dpcraft.bookhub.DataClass.BookPreview;
 import com.dpcraft.bookhub.NetModule.Server;
+import com.dpcraft.bookhub.R;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -21,28 +25,36 @@ import java.util.List;
 public class SellRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     public static final int ITEM_TYPE_HEADER = 0;
     public static final int ITEM_TYPE_CONTENT = 1;
+    public static final int ITEM_TYPE_FOOTER = 2;
 
     private LayoutInflater mInflater;
     private int itemNum = 0;
+    private boolean hasMore = true;
     private Context mContext;
-    private List<BookPreview> mBookList;
+    private List<BookPreview> mBookList = new ArrayList<>();
 
     public SellRecyclerAdapter(Context context,List<BookPreview> bookList){
         this.mInflater = LayoutInflater.from(context);
         mContext = context;
         mBookList = bookList;
         if(bookList != null) {
-            itemNum = bookList.size() + 1;
+            itemNum = bookList.size() + 2;
         }
     }
-    //判断当前Item是否为HeadView
-    public boolean isHeadView(int position){
-        return position == 0;
+    public SellRecyclerAdapter(Context context){
+        mContext = context;
+        this.mInflater = LayoutInflater.from(context);
+
     }
+
     @Override
     public int getItemViewType(int position){
-        if(isHeadView(position)){
+        if(position == 0){
             return ITEM_TYPE_HEADER;
+        }
+        else if( position == getItemCount() - 1) {
+            return ITEM_TYPE_FOOTER;
+
         }else{
             return ITEM_TYPE_CONTENT;
         }
@@ -53,9 +65,12 @@ public class SellRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent,int viewType){
         if(viewType == ITEM_TYPE_HEADER){
             HeaderViewHolder headerViewHolder = new HeaderViewHolder(mInflater.inflate(R.layout.item_sell_recycler_header,parent,false));
-
             return headerViewHolder;
-        }else {
+        } else if(viewType == ITEM_TYPE_FOOTER){
+            FooterViewHolder footerViewHolder = new FooterViewHolder(mInflater.inflate(R.layout.item_sell_recycler_footer,parent,false));
+            return footerViewHolder;
+
+        } else {
             final ContentViewHolder contentViewHolder = new ContentViewHolder(mInflater.inflate(R.layout.item_sell_recycler,parent,false));
             contentViewHolder.bookListView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -78,6 +93,15 @@ public class SellRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     public void onBindViewHolder(RecyclerView.ViewHolder holder,int position){
         //holder.item_tv.setText(mTitle[position]);
         if (holder instanceof HeaderViewHolder) {
+
+        }else if(holder instanceof FooterViewHolder){
+            if(!hasMore){
+                ((FooterViewHolder)holder).footerProgressBar.setVisibility(View.GONE);
+                ((FooterViewHolder)holder).footerText.setText("没有更多书籍");
+                //((FooterViewHolder)holder).footerText.setTextColor(R.color.red_900);
+
+                //mContext.
+            }
 
         }
         else{
@@ -104,7 +128,11 @@ public class SellRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     //每次加载的item数
     @Override
     public int getItemCount(){
-        return itemNum;
+        //return itemNum;
+        if(mBookList == null){
+            return 2;
+        }else
+        return mBookList.size() + 2;
     }
 
     public class ContentViewHolder extends RecyclerView.ViewHolder{
@@ -138,5 +166,39 @@ public class SellRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             // item_tv =(TextView)view.findViewById(R.id.item_tv);
         }
     }
+    public class FooterViewHolder extends RecyclerView.ViewHolder{
+        public TextView footerText;
+        public ProgressBar footerProgressBar;
+        public FooterViewHolder(View view){
+            super(view);
+            footerText = (TextView)view.findViewById(R.id.tv_loading_more);
+            footerProgressBar = (ProgressBar)view.findViewById(R.id.pb_loading_more);
+
+        }
+    }
+
+    public void addBookList(List<BookPreview> bookList){
+        mBookList.addAll(bookList);
+        if (bookList.size() == 0){
+            hasMore = false;
+        }
+
+
+        Log.i("addBookList==========","done"+ hasMore);
+        notifyDataSetChanged();
+
+    }
+    public void clearBooklist(){
+        mBookList.clear();
+    }
+    public List<BookPreview> getmBookList() {
+        return mBookList;
+    }
+
+    public void setmBookList(List<BookPreview> mBookList) {
+        this.mBookList = mBookList;
+        notifyDataSetChanged();
+    }
+
 
 }

@@ -1,14 +1,11 @@
 package com.dpcraft.bookhub.Application;
 
-import android.app.Activity;
 import android.app.Application;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.util.Log;
 
-import com.dpcraft.bookhub.DataClass.LoginResponse;
 import com.dpcraft.bookhub.DataClass.LoginResponseUserInfo;
-import com.dpcraft.bookhub.MainActivity;
 
 /**
  * Created by DPC on 2017/3/6.

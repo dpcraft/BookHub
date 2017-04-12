@@ -122,7 +122,7 @@ public class NetUtils {
 
 
 
-    public static void getBookList(BookGetRequestInformation bookGetRequestInformation,final Handler handler)  {
+    public static void getBookList(BookGetRequestInformation bookGetRequestInformation , final boolean refresh , final Handler handler)  {
 
 
        HttpUtil.sendHttpGetRequest(bookGetRequestInformation.generateURL(), new Callback() {
@@ -141,7 +141,13 @@ public class NetUtils {
                }
                String responseBody =  response.body().string();
                Log.i("okhttp3.response",responseBody);
-               int code = 201;
+               int code;
+               if(refresh){
+                   code = 1;
+               }else {
+                   code = 2;
+               }
+
                Message message = handler.obtainMessage();//创建message的方式，可以更好地被回收
                message.what = code;
                message.obj = responseBody;
@@ -183,6 +189,41 @@ public class NetUtils {
         });
 
     }
+
+    /*
+     * The method used to get details of the book
+     *
+     */
+    public static void modifyIntention( String address , String token , String bookid , Boolean isSeller , Boolean isIntention,final Handler handler)  {
+
+
+        HttpUtil.sendHttpPostRequest( address , token , bookid ,  isSeller , isIntention , new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Log.i("onFailure","onFailure");
+
+            }
+
+            @Override
+            public void onResponse(Call call, okhttp3.Response response) throws IOException {
+                if (!response.isSuccessful())
+                {
+                    throw new IOException("Unexpected code " + response);
+
+                }
+                String responseBody =  response.body().string();
+                Log.i("okhttp3.response",responseBody);
+                int code = 002;
+                Message message = handler.obtainMessage();//创建message的方式，可以更好地被回收
+                message.what = code;
+                message.obj = responseBody;
+                handler.sendMessage(message);
+            }
+        });
+
+    }
+
+
 
 
     public static void getUserInfo(String token,final Handler handler)  {

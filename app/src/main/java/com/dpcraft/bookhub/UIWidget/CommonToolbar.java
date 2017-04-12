@@ -1,4 +1,4 @@
-package com.dpcraft.bookhub;
+package com.dpcraft.bookhub.UIWidget;
 
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;

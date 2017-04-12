@@ -1,4 +1,4 @@
-package com.dpcraft.bookhub;
+package com.dpcraft.bookhub.Fragment;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.Fragment;
@@ -12,11 +12,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.dpcraft.bookhub.Adapter.SellRecyclerAdapter;
 import com.dpcraft.bookhub.DataClass.BookGetRequestInformation;
 import com.dpcraft.bookhub.DataClass.BookPreview;
 import com.dpcraft.bookhub.DataClass.GetBookResponse;
 import com.dpcraft.bookhub.NetModule.JSONUtil;
 import com.dpcraft.bookhub.NetModule.NetUtils;
+import com.dpcraft.bookhub.R;
 
 import java.util.List;
 
@@ -25,24 +27,28 @@ import java.util.List;
  */
 public class SellFragment extends Fragment{
     private RecyclerView sellRecyclerView;
-    private RecyclerView.Adapter sellRecyclerAdapter;
+    private SellRecyclerAdapter sellRecyclerAdapter;
     private LinearLayoutManager sellLinearLayoutManager;
     private SwipeRefreshLayout sellSwipeRefreshLayout;
     private BookGetRequestInformation bookGetRequestInformation;
     private  List<BookPreview> bookPreviewList;
-
-
+    private int mIndex = 0;
+    private final int length = 5;
+    private boolean hasMore = true;
     private Handler handler= new Handler(){
         public void handleMessage(Message msg){
-            if(msg.what == 201){
-
                 Log.i("json",msg.obj.toString());
                 GetBookResponse getBookResponse = JSONUtil.parseJsonWithGson( msg.obj.toString(),GetBookResponse.class);
                 bookPreviewList = getBookResponse.getData();
-                sellRecyclerAdapter = new SellRecyclerAdapter(getActivity(),bookPreviewList);
-                sellRecyclerView.setAdapter(sellRecyclerAdapter);
-
+                mIndex += bookPreviewList.size();
+                if(bookPreviewList.size() == 0){
+                    hasMore = false;
+                    sellRecyclerView.clearOnScrollListeners();
+                }
+            if(msg.what == 1) {
+                sellRecyclerAdapter.clearBooklist();
             }
+            sellRecyclerAdapter.addBookList(bookPreviewList);
 
         }
     };
@@ -62,16 +68,13 @@ public class SellFragment extends Fragment{
     }
     public void onActivityCreated(Bundle savedInstanceState){
         super.onActivityCreated(savedInstanceState);
-
-
-
-
         bookGetRequestInformation = new BookGetRequestInformation();
         sellRecyclerView = (RecyclerView)getActivity().findViewById(R.id.sell_recycler);
-
-        initBookList();
+        sellRecyclerAdapter = new SellRecyclerAdapter(getActivity());
+        sellRecyclerView.setAdapter(sellRecyclerAdapter);
+        requestBookList(mIndex + "" , false);
         //上拉刷新
-         sellRecyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
+         sellRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
 
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView,
@@ -79,8 +82,8 @@ public class SellFragment extends Fragment{
                 super.onScrollStateChanged(recyclerView, newState);
                 if (newState == RecyclerView.SCROLL_STATE_IDLE
                         && sellLinearLayoutManager.findLastVisibleItemPosition() + 1 == sellRecyclerAdapter.getItemCount()) {
-                    sellSwipeRefreshLayout.setRefreshing(true);
-                    refreshBookList();
+
+                    requestBookList(mIndex + "" , false);
                 }
             }
 
@@ -117,31 +120,46 @@ public class SellFragment extends Fragment{
         });
 
     }
-    public void initBookList() {
-        bookGetRequestInformation.setLength("20");
+    public void requestBookList(String index , boolean refresh) {
+
+        bookGetRequestInformation.setLength(length + "");
+        bookGetRequestInformation.setFrom(index);
         Log.i("generateURL()", bookGetRequestInformation.generateURL());
         try {
-            NetUtils.getBookList(bookGetRequestInformation, handler);
+            NetUtils.getBookList(bookGetRequestInformation , refresh , handler);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
     private void refreshBookList(){
+            sellRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+                @Override
+                public void onScrollStateChanged(RecyclerView recyclerView,
+                                                 int newState) {
+                    super.onScrollStateChanged(recyclerView, newState);
+                    if (newState == RecyclerView.SCROLL_STATE_IDLE
+                            && sellLinearLayoutManager.findLastVisibleItemPosition() + 1 == sellRecyclerAdapter.getItemCount()) {
+                        requestBookList(mIndex + "" , false);
+                    }
+                }
+
+                @Override
+                public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                    super.onScrolled(recyclerView, dx, dy);
+                    //int lastVisibleItem = sellLinearLayoutManager.findLastVisibleItemPosition();
+                }
+            });
         new Thread(new Runnable() {
             @Override
             public void run() {
-                try{
-
-                   Thread.sleep(2000);
-                }catch (InterruptedException e){
-                    e.printStackTrace();
-                }
-               // initBookList();
+                mIndex = 0;
+               requestBookList(mIndex + "" , true);
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         //此处处理刷新事件
                         sellSwipeRefreshLayout.setRefreshing(false);
+
                     }
                 });
             }

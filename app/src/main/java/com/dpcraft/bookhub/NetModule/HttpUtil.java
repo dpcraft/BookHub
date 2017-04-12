@@ -118,26 +118,55 @@ public class HttpUtil {
         OkHttpClient client = new OkHttpClient();
         RequestBody requestBody;
         Log.i("address ==========",address);
-            File file = new File("/sdcard/BookHub/bookCover.jpg");
-            RequestBody fileBody = RequestBody.create(MediaType.parse("image/png"), file);
-            requestBody = new MultipartBody.Builder().setType(MultipartBody.FORM)
-                    .addFormDataPart("token", token)
-                    .addFormDataPart("bookname", uploadBookInfo.getTitle())
-                    .addFormDataPart("author", uploadBookInfo.getAuthor())
-                    .addFormDataPart("publish", uploadBookInfo.getPublishHouse())
-                    .addFormDataPart("orig", uploadBookInfo.getOriginPrice())
-                    .addFormDataPart("pubtime", uploadBookInfo.getPublishDate())
-                    .addFormDataPart("version", "3")
-                    .addFormDataPart("isbn", uploadBookInfo.getISBN())
-                    .addFormDataPart("type", uploadBookInfo.getBookType())
-                    .addFormDataPart("issell", uploadBookInfo.getmIsSold().toString())
-                    .addFormDataPart("deposit", uploadBookInfo.getmDeposit())
-                    .addFormDataPart("price", uploadBookInfo.getPrice())
-                    .addFormDataPart("introduction", uploadBookInfo.getmIntroduction())
-                    .addFormDataPart("image", file.getName(), fileBody)
-                    .build();
+        File file = new File("/sdcard/BookHub/bookCover.jpg");
+        RequestBody fileBody = RequestBody.create(MediaType.parse("image/png"), file);
+        requestBody = new MultipartBody.Builder().setType(MultipartBody.FORM)
+                .addFormDataPart("token", token)
+                .addFormDataPart("bookname", uploadBookInfo.getTitle())
+                .addFormDataPart("author", uploadBookInfo.getAuthor())
+                .addFormDataPart("publish", uploadBookInfo.getPublishHouse())
+                .addFormDataPart("orig", uploadBookInfo.getOriginPrice())
+                .addFormDataPart("pubtime", uploadBookInfo.getPublishDate())
+                .addFormDataPart("version", "3")
+                .addFormDataPart("isbn", uploadBookInfo.getISBN())
+                .addFormDataPart("type", uploadBookInfo.getBookType())
+                .addFormDataPart("issell", uploadBookInfo.getmIsSold().toString())
+                .addFormDataPart("deposit", uploadBookInfo.getmDeposit())
+                .addFormDataPart("price", uploadBookInfo.getPrice())
+                .addFormDataPart("introduction", uploadBookInfo.getmIntroduction())
+                .addFormDataPart("image", file.getName(), fileBody)
+                .build();
 
         Log.i("deposit==============",uploadBookInfo.getmDeposit());
+
+        okhttp3.Request request = new okhttp3.Request.Builder()
+                .url(address)
+                .header("Content-Disposition","form-data")
+                .post(requestBody)
+                .build();
+        client.newCall(request).enqueue(callback);
+
+    }
+    public static void sendHttpPostRequest(final String address , String token , String bookid , Boolean isSeller , Boolean isIntention , final okhttp3.Callback callback){
+        Log.i("post url",address);
+
+        OkHttpClient client = new OkHttpClient();
+        RequestBody requestBody;
+        Log.i("address ==========",address);
+        String intentionString ;
+        if(isIntention) {
+            intentionString = "false";
+        }
+            else
+        {
+            intentionString = "on";
+        }
+            requestBody = new FormBody.Builder()
+                    .add("token" , token)
+                    .add("bookid" , bookid)
+                    .add("intention" , intentionString)
+                    .build();
+
 
         okhttp3.Request request = new okhttp3.Request.Builder()
                 .url(address)

@@ -1,4 +1,4 @@
-package com.dpcraft.bookhub;
+package com.dpcraft.bookhub.Activity;
 
 import android.app.Activity;
 import android.content.Context;
@@ -19,12 +19,12 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.dpcraft.bookhub.Application.MyApplication;
-import com.dpcraft.bookhub.DataClass.User;
 import com.dpcraft.bookhub.DataClass.UserInfo;
 import com.dpcraft.bookhub.DataClass.UserInfoResponse;
 import com.dpcraft.bookhub.NetModule.JSONUtil;
 import com.dpcraft.bookhub.NetModule.NetUtils;
 import com.dpcraft.bookhub.PhotoUtil.ImagePicker;
+import com.dpcraft.bookhub.R;
 import com.dpcraft.bookhub.UIWidget.CustomToolbar;
 import com.dpcraft.bookhub.UIWidget.Dialog;
 

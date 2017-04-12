@@ -1,4 +1,4 @@
-package com.dpcraft.bookhub;
+package com.dpcraft.bookhub.Fragment;
 
 /**
  * Created by DPC on 2017/2/9.
@@ -10,6 +10,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import com.dpcraft.bookhub.R;
 
 
 public class PageFragment extends Fragment {

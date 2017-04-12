@@ -1,4 +1,4 @@
-package com.dpcraft.bookhub;
+package com.dpcraft.bookhub.UIWidget;
 
 /**
  * Created by DPC on 2017/2/11.

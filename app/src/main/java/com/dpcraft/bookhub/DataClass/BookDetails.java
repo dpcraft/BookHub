@@ -7,7 +7,7 @@ import com.google.gson.annotations.SerializedName;
  */
 public class BookDetails {
     @SerializedName("bookid")
-    private int Id;
+    private String Id;
     //书籍基本信息
     @SerializedName("bookname")
     private String Name;
@@ -48,11 +48,11 @@ public class BookDetails {
     private String  tarUserId;
     @SerializedName("selled")
     private Boolean isSold;
-    public int getId() {
+    public String getId() {
         return Id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         Id = id;
     }
 

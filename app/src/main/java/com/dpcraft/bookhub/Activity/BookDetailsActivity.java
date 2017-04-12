@@ -1,4 +1,4 @@
-package com.dpcraft.bookhub;
+package com.dpcraft.bookhub.Activity;
 
 import android.app.Activity;
 import android.content.Context;
@@ -11,7 +11,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -21,10 +20,12 @@ import com.dpcraft.bookhub.Application.MyApplication;
 import com.dpcraft.bookhub.DataClass.BookDetails;
 import com.dpcraft.bookhub.DataClass.BookGetRequestInformation;
 import com.dpcraft.bookhub.DataClass.GetBookDetailsResponse;
-import com.dpcraft.bookhub.DataClass.GetBookResponse;
+import com.dpcraft.bookhub.DataClass.ResponseFromServer;
 import com.dpcraft.bookhub.NetModule.JSONUtil;
 import com.dpcraft.bookhub.NetModule.NetUtils;
 import com.dpcraft.bookhub.NetModule.Server;
+import com.dpcraft.bookhub.R;
+import com.dpcraft.bookhub.UIWidget.Dialog;
 
 
 /**
@@ -44,23 +45,30 @@ public class BookDetailsActivity extends Activity {
 
     private Handler handler= new Handler(){
         public void handleMessage(Message msg){
-            if(msg.what == 201){
-
-                Log.i("json",msg.obj.toString());
-                GetBookDetailsResponse getBookDetailsResponse = JSONUtil.parseJsonWithGson( msg.obj.toString(),GetBookDetailsResponse.class);
-                mbookDetails = getBookDetailsResponse.getData();
-                bookNameToolbar.setTitle(mbookDetails.getName());
-                mbookDetailsAdapter = new BookDetailsAdapter(mbookDetails,BookDetailsActivity.this);
-                bookDetailsRecyclerView.setAdapter(mbookDetailsAdapter);
-                if(mbookDetails.getIntention() == true){
-                    isLiked = true;
-                }
-                else if(mbookDetails.getIntention() == false){
+            switch (msg.what) {
+                case 201:
+                    Log.i("json",msg.obj.toString());
+                    GetBookDetailsResponse getBookDetailsResponse = JSONUtil.parseJsonWithGson( msg.obj.toString(),GetBookDetailsResponse.class);
+                    mbookDetails = getBookDetailsResponse.getData();
+                    bookNameToolbar.setTitle(mbookDetails.getName());
+                    mbookDetailsAdapter = new BookDetailsAdapter(mbookDetails,BookDetailsActivity.this);
+                    bookDetailsRecyclerView.setAdapter(mbookDetailsAdapter);
+                    if(mbookDetails.getIntention()){
+                        isLiked = true;
+                     }
+                    else{
                     isLiked = false;
-                }
-                Log.i("userId==============",mbookDetails.getUserId());
-                //if(myApplication.isLogin() && mbookDetails.getUserId() == myApplication.getLoginResponseUserInfo().getNickName())
-                bookNameToolbar.inflateMenu(R.menu.menu_book_details);
+                     }
+                    Log.i("userId==============",mbookDetails.getUserId());
+                    //if(myApplication.isLogin() && mbookDetails.getUserId() == myApplication.getLoginResponseUserInfo().getNickName())
+                    bookNameToolbar.inflateMenu(R.menu.menu_book_details);
+                    break;
+                case 002:
+                    Dialog.showDialog("dialog", JSONUtil.parseJsonWithGson(msg.obj.toString(),ResponseFromServer.class).getMessage(),BookDetailsActivity.this);
+                    break;
+                default:
+                    break;
+
 
             }
 
@@ -72,17 +80,14 @@ public class BookDetailsActivity extends Activity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_book_details);
-
         initWidget();
-
-
         Intent intent = getIntent();
         bookId = intent.getStringExtra("bookId");
-        imageUrl = Server.getServerAddress() + "book/image?bookid=" + bookId;
-        Glide.with(this).load(imageUrl).placeholder(R.drawable.image_belonged).error(R.drawable.load_error).into(bookCover);
-        Log.i("detailImageUrl======",imageUrl);
+
         Log.i("detailbookId======",bookId );
         initBookDetails();
+        imageUrl = Server.getServerAddress() + "book/image?bookid=" + bookId;
+        Glide.with(this).load(imageUrl).placeholder(R.drawable.image_belonged).error(R.drawable.load_error).into(bookCover);
 
         bookNameToolbar.setNavigationIcon(R.drawable.ic_back_white);
         bookNameToolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -93,16 +98,18 @@ public class BookDetailsActivity extends Activity {
         });
         //绑定适配器
         bookDetailsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-
-
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                String intentionUrl = Server.getServerAddress() + "book/deal";
                 if(!isLiked){
-                    floatingActionButton.setImageResource(R.drawable.ic_heart_red);
+                    floatingActionButton.setImageResource(R.drawable.ic_intention_true);
+                    NetUtils.modifyIntention( intentionUrl , myApplication.getToken() , mbookDetails.getId() , false , isLiked , handler);
                 }else{
-                    floatingActionButton.setImageResource(R.drawable.ic_heart_white);
+                    floatingActionButton.setImageResource(R.drawable.ic_intention_false);
+                    NetUtils.modifyIntention( intentionUrl , myApplication.getToken() , mbookDetails.getId() , false , isLiked , handler);
                 }
+                //initBookDetails();
                 isLiked = !isLiked;
             }
         });
@@ -117,19 +124,7 @@ public class BookDetailsActivity extends Activity {
         bookCover = (ImageView)findViewById(R.id.iv_book_cover_details);
 
     }
-    private BookDetails initBookDetails2(){
-        mbookDetails = new BookDetails();
-        mbookDetails.setPrice("9.99");
-        mbookDetails.setType("文学");
-        mbookDetails.setPublishHouse("湖南文艺出版社");
-        mbookDetails.setAuthor("张嘉佳");
-        mbookDetails.setName("从你的全世界路过");
-      //  mbookDetails.setPublishDate("2013-11-1");
-        mbookDetails.setOriginPrice("36.00");
-        mbookDetails.setISBN("9787540458027");
-        mbookDetails.setSell(true);
-        return mbookDetails;
-    }
+
     public void initBookDetails() {
         myApplication = (MyApplication)getApplication();
         bookGetRequestInformation = new BookGetRequestInformation();
@@ -141,6 +136,7 @@ public class BookDetailsActivity extends Activity {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
     }
 
 
