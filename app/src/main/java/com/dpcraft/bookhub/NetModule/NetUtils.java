@@ -255,6 +255,34 @@ public class NetUtils {
         });
 
     }
+    public static void uploadUserIcon(String token,final Handler handler)  {
+
+
+        HttpUtil.sendHttpPostRequest(Server.getServerAddress() + "user/photo", token ,new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Log.i("onFailure","onFailure");
+
+            }
+
+            @Override
+            public void onResponse(Call call, okhttp3.Response response) throws IOException {
+                String responseBody = response.body().string();
+                Log.i("login code",response.code() + "");
+                Log.i("response.body",responseBody);
+                int code = 3;
+                Log.i("JSON code",code+"");
+                Message message = handler.obtainMessage();//创建message的方式，可以更好地被回收
+                message.what = code;
+                message.obj = responseBody;
+                Log.i("uploadmessage.obj",message.obj.toString());
+                handler.sendMessage(message);
+
+            }
+        });
+
+    }
+
     public static void downloadImage(){
         String url = "http://112.74.19.3:80/BooksServer/book/image?bookid=6";
         HttpUtil.sendHttpGetRequest(url, new Callback() {

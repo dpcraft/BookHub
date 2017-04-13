@@ -16,7 +16,9 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 
 import com.dpcraft.bookhub.Application.MyApplication;
+import com.dpcraft.bookhub.DataClass.ResponseFromServer;
 import com.dpcraft.bookhub.DataClass.UploadBookInfo;
+import com.dpcraft.bookhub.NetModule.JSONUtil;
 import com.dpcraft.bookhub.NetModule.NetUtils;
 import com.dpcraft.bookhub.R;
 import com.dpcraft.bookhub.UIWidget.CustomToolbar;
@@ -51,7 +53,8 @@ public class UploadActivity extends Activity {
                     Dialog.showSignupSuccessDialog(UploadActivity.this , "上传成功");
                     break;
                 case REQUEST_ERROR:
-                    Dialog.showDialog("注册失败",(String)msg.obj,UploadActivity.this);
+                    Dialog.showDialog("上传失败", JSONUtil.parseJsonWithGson((String)msg.obj,ResponseFromServer.class).getMessage(),UploadActivity.this);
+
                     break;
 
                 default:

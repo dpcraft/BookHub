@@ -22,10 +22,12 @@ import android.support.v4.app.FragmentActivity;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.dpcraft.bookhub.Adapter.SimpleFragmentPagerAdapter;
 import com.dpcraft.bookhub.Application.MyApplication;
 import com.dpcraft.bookhub.DataClass.UploadBookInfo;
 import com.dpcraft.bookhub.NetModule.NetUtils;
+import com.dpcraft.bookhub.NetModule.Server;
 import com.dpcraft.bookhub.R;
 import com.dpcraft.bookhub.ScanModule.CaptureActivity;
 import com.dpcraft.bookhub.ScanModule.ScanUtil;
@@ -216,12 +218,15 @@ public class MainActivity extends FragmentActivity {
             Log.i(" resume  islogin",myApplication.isLogin().toString());
             textViewNavUsername.setText(myApplication.getLoginResponseUserInfo().getNickName());
             textViewNavUsername.setVisibility(View.VISIBLE);
-            if(myApplication.getUserIcon() == null) {
-               circleImageViewNavUserIcon.setImageResource(R.drawable.default_user_icon);
-            }else
-            {
-                circleImageViewNavUserIcon.setImageURI(myApplication.getUserIcon());
-            }
+            Glide.with(this).load(Server.getServerAddress() + "user/photo?token=" + myApplication.getToken())
+                   .error(R.drawable.default_user_icon).into(circleImageViewNavUserIcon);
+            Log.i("IconUrl=======",Server.getServerAddress() + "user/photo?token=" +myApplication.getToken());
+//            if(myApplication.getUserIcon() == null) {
+//               circleImageViewNavUserIcon.setImageResource(R.drawable.default_user_icon);
+//            }else
+//            {
+//                circleImageViewNavUserIcon.setImageURI(myApplication.getUserIcon());
+//            }
             circleImageViewNavUserIcon.setVisibility(View.VISIBLE);
             startLoginButton.setVisibility(View.GONE);
 

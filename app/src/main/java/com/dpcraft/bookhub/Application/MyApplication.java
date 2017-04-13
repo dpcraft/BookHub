@@ -13,33 +13,8 @@ import com.dpcraft.bookhub.DataClass.LoginResponseUserInfo;
 public class MyApplication extends Application{
     private Boolean loginStatus;
     private String nextActivity;
-    private Uri userIcon;
-    private Bitmap userIconBitmap;
-
-
-    public Bitmap getUserIconBitmap() {
-        return userIconBitmap;
-    }
-
-    public void setUserIconBitmap(Bitmap userIconBitmap) {
-        this.userIconBitmap = userIconBitmap;
-    }
-
-
-
 
     private LoginResponseUserInfo loginResponseUserInfo;
-
-    public Uri getUserIcon() {
-        return userIcon;
-    }
-
-    public void setUserIcon(Uri userIcon) {
-        this.userIcon = userIcon;
-    }
-
-  
-
 
     private String token;
     public void setLoginStatus(Boolean loginStatus){
@@ -75,8 +50,6 @@ public class MyApplication extends Application{
         nextActivity = null;
         token = "";
         loginResponseUserInfo = new LoginResponseUserInfo();
-        userIcon = null;
-        userIconBitmap = null;
         Log.i("APPLICATION","application is rebuild.");
     }
 

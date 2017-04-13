@@ -8,7 +8,6 @@ import com.dpcraft.bookhub.DataClass.User;
 import java.io.BufferedReader;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
@@ -16,7 +15,6 @@ import java.net.URL;
 
 
 import okhttp3.*;
-import okhttp3.internal.http2.Header;
 
 /**
  * Created by DPC on 2017/2/23.
@@ -24,6 +22,7 @@ import okhttp3.internal.http2.Header;
 public class HttpUtil {
     private static String signupURL = Server.getServerAddress() + "user";
     private  static String loginURL= Server.getServerAddress() + "login";
+    private static String userIconURL = Server.getServerAddress() + "user/photo";
     public static void sendHttpGetRequest2(final String address,final HttpCallBackListener listener){
         new Thread(new Runnable() {
             @Override
@@ -145,6 +144,27 @@ public class HttpUtil {
                 .post(requestBody)
                 .build();
         client.newCall(request).enqueue(callback);
+
+    }
+    public static void sendHttpPostRequest(final String address,String token, final okhttp3.Callback callback){
+        Log.i("post url",address);
+
+        OkHttpClient client = new OkHttpClient();
+        RequestBody requestBody;
+        Log.i("address ==========",address);
+        if(address.equals(userIconURL)) {
+            File file = new File("/sdcard/BookHub/userIcon.jpg");
+            RequestBody fileBody = RequestBody.create(MediaType.parse("image/png"), file);
+            requestBody = new MultipartBody.Builder().setType(MultipartBody.FORM)
+                    .addFormDataPart("token", token)
+                    .addFormDataPart("image", file.getName(), fileBody)
+                    .build();
+            okhttp3.Request request = new okhttp3.Request.Builder()
+                    .url(address)
+                    .post(requestBody)
+                    .build();
+            client.newCall(request).enqueue(callback);
+        }
 
     }
     public static void sendHttpPostRequest(final String address , String token , String bookid , Boolean isSeller , Boolean isIntention , final okhttp3.Callback callback){

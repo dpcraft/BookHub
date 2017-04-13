@@ -18,17 +18,25 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.dpcraft.bookhub.Application.MyApplication;
+import com.dpcraft.bookhub.DataClass.ResponseFromServer;
 import com.dpcraft.bookhub.DataClass.UserInfo;
 import com.dpcraft.bookhub.DataClass.UserInfoResponse;
 import com.dpcraft.bookhub.NetModule.JSONUtil;
 import com.dpcraft.bookhub.NetModule.NetUtils;
+import com.dpcraft.bookhub.NetModule.Server;
 import com.dpcraft.bookhub.PhotoUtil.ImagePicker;
 import com.dpcraft.bookhub.R;
 import com.dpcraft.bookhub.UIWidget.CustomToolbar;
 import com.dpcraft.bookhub.UIWidget.Dialog;
 
+import java.io.BufferedOutputStream;
+import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.net.URI;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -49,23 +57,41 @@ public class UserInfoActivity extends Activity {
 
     private Handler handler= new Handler(){
         public void handleMessage(Message msg){
-            UserInfoResponse userInfoResponse =  JSONUtil.parseJsonWithGson(msg.obj.toString(), UserInfoResponse.class);
-            if(msg.what == 200)
-            switch ( userInfoResponse.getCode()){
-                case REQUEST_SUCCESS :
-                    userInfo =userInfoResponse.getData();
-                    userNameTextView.setText(userInfo.getNickName());
-                    phoneNumberTextView.setText(userInfo.getPhoneNumber());
-                    break;
-                case REQUEST_FAIL:
-                    Dialog.showDialog("获取失败",userInfoResponse.getMessage(),UserInfoActivity.this);
-                    break;
-                default:
-                    break;
+
+            if(msg.what == 200) {
+                UserInfoResponse userInfoResponse = JSONUtil.parseJsonWithGson(msg.obj.toString(), UserInfoResponse.class);
+                switch (userInfoResponse.getCode()) {
+                    case REQUEST_SUCCESS:
+                        userInfo = userInfoResponse.getData();
+                        userNameTextView.setText(userInfo.getNickName());
+                        phoneNumberTextView.setText(userInfo.getPhoneNumber());
+                        break;
+                    case REQUEST_FAIL:
+                        Dialog.showDialog("获取失败", userInfoResponse.getMessage(), UserInfoActivity.this);
+                        break;
+                    default:
+                        break;
+                }
             }
-            else{
-                Dialog.showDialog("获取失败","检查网络失败",UserInfoActivity.this);
+            else if(msg.what == 3){
+                switch (  JSONUtil.parseJsonWithGson((String)msg.obj,ResponseFromServer.class).getCode()){
+                    case REQUEST_SUCCESS :
+                        Dialog.showSignupSuccessDialog(UserInfoActivity.this , "上传成功");
+                        break;
+                    case REQUEST_FAIL:
+                        Dialog.showDialog("上传失败", JSONUtil.parseJsonWithGson((String)msg.obj,ResponseFromServer.class).getMessage(),UserInfoActivity.this);
+                        break;
+
+                    default:
+                        break;
+                }
+
             }
+                else{
+                    Dialog.showDialog("获取失败", "检查网络失败", UserInfoActivity.this);
+                }
+
+
         }
     };
     
@@ -81,12 +107,8 @@ public class UserInfoActivity extends Activity {
        // }else {
         //circleUserIcon.setImageURI(myApplication.getUserIcon());
          // }
-        if(myApplication.getUserIconBitmap() == null){
-            circleUserIcon.setImageResource(R.drawable.default_user_icon);
-        }
-        else{
-            circleUserIcon.setImageBitmap(myApplication.getUserIconBitmap());
-        }
+        Glide.with(this).load(Server.getServerAddress() + "user/photo?token=" + myApplication.getToken())
+                .error(R.drawable.default_user_icon).into(circleUserIcon);
 
         myApplication = (MyApplication)getApplication();
         NetUtils.getUserInfo(myApplication.getToken(),handler);
@@ -139,13 +161,22 @@ public class UserInfoActivity extends Activity {
 
                             @Override public void onCropImage(Uri imageUri) {
                                 circleUserIcon.setImageURI(imageUri);
-                                myApplication.setUserIcon(imageUri);
-                                try {
+                                File temp = new File("/sdcard/BookHub/");
+                                if(!temp.exists()){
+                                    temp.mkdir();
+                                }
+                                File file = new File("/sdcard/BookHub/userIcon.jpg");
+                                try{
                                     Bitmap bitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(imageUri));
-                                    myApplication.setUserIconBitmap(bitmap);
-                                }catch (FileNotFoundException e){
+                                    BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(new FileOutputStream(file));
+                                    bitmap.compress(Bitmap.CompressFormat.JPEG,100,bufferedOutputStream);
+                                    bufferedOutputStream.flush();
+                                    bufferedOutputStream.close();
+                                }catch (IOException e){
                                     e.printStackTrace();
                                 }
+                                NetUtils.uploadUserIcon(myApplication.getToken(),handler);
+
 
                             }
                         };
@@ -158,9 +189,9 @@ public class UserInfoActivity extends Activity {
                         }
                     }
                 })
-                .show()
-                .getWindow()
-                .setGravity(Gravity.BOTTOM);
+                .show();
+//                .getWindow()
+//                .setGravity(Gravity.BOTTOM);
     }
     public static void actionStart(Context context, String data1, String data2){
         Intent intent = new Intent(context,UserInfoActivity.class);
