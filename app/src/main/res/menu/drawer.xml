@@ -14,14 +14,15 @@
             android:icon="@drawable/ic_user_info"
             android:title="个人信息"
             />
+
+        <item
+            android:id="@+id/navigation_item_upload"
+            android:icon="@drawable/ic_history"
+            android:title="我的发布" />
         <item
             android:id="@+id/navigation_item_like"
             android:icon="@drawable/ic_like"
             android:title="我的有意" />
-        <item
-            android:id="@+id/navigation_item_history"
-            android:icon="@drawable/ic_history"
-            android:title="浏览历史" />
         <item
             android:id="@+id/navigation_item_about"
             android:icon="@drawable/ic_about"

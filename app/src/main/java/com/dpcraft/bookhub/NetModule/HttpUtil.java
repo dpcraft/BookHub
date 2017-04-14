@@ -86,7 +86,7 @@ public class HttpUtil {
         Log.i("signupURL ==========",signupURL);
         Log.i("address ==========",address);
         if(address.equals(signupURL)){
-            requestBody = //RequestBody.create(JSON,stringTowrite);
+            requestBody =
                     new FormBody.Builder()
                             .add("username",user.getUserName())
                             .add("password",user.getPassWord())
@@ -104,6 +104,21 @@ public class HttpUtil {
                 .build();
         }
 
+        okhttp3.Request request = new okhttp3.Request.Builder()
+                .url(address)
+                .post(requestBody)
+                .build();
+        client.newCall(request).enqueue(callback);
+
+    }
+    public static void sendHttpPostRequest2(final String address,String token, final okhttp3.Callback callback){
+        Log.i("post url",address);
+
+        OkHttpClient client = new OkHttpClient();
+        RequestBody requestBody;
+        Log.i("address ==========",address);
+        requestBody = new FormBody.Builder().add("token",token)
+                .build();
         okhttp3.Request request = new okhttp3.Request.Builder()
                 .url(address)
                 .post(requestBody)

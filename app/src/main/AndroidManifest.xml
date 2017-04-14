@@ -37,6 +37,10 @@
         <activity android:name=".Activity.SearchActivity"/>
         <activity android:name=".Activity.UploadActivity"/>
         <activity android:name=".ScanModule.CaptureActivity"/>
+        <activity android:name=".Activity.SearchResultActivity"/>
+        <activity android:name=".Activity.MyUploadActivity"/>
+        <activity android:name=".Activity.MyIntentionActivity"/>
+        <activity android:name=".Activity.AboutActivity"/>
 
         <provider
             android:name="android.support.v4.content.FileProvider"

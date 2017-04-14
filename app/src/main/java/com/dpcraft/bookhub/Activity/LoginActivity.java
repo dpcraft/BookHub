@@ -181,6 +181,14 @@ public class LoginActivity extends Activity {
                 UserInfoActivity.actionStart(LoginActivity.this,"data1","data2");
                 finish();
                 break;
+            case "MyUploadActivity":
+                MyUploadActivity.actionStart(LoginActivity.this, "data1", "data2");
+                finish();
+                break;
+            case "MyIntentionActivity":
+                MyIntentionActivity.actionStart(LoginActivity.this, "data1", "data2");
+                finish();
+                break;
             default:
                 MainActivity.actionStart(LoginActivity.this,"data1","data2");
                 finish();

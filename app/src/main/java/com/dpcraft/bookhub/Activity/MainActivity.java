@@ -66,7 +66,7 @@ public class MainActivity extends FragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
        // requestWindowFeature(Window.FEATURE_NO_TITLE);
         super.onCreate(savedInstanceState);
-       setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_main);
         //透明状态栏
        // getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
        //透明导航栏
@@ -166,16 +166,26 @@ public class MainActivity extends FragmentActivity {
                             LoginActivity.actionStart(MainActivity.this, "UserInfoActivity", "data2");
                         }
                         break;
+                    case R.id.navigation_item_upload:
+                        //发布
+                        if(myApplication.isLogin()){
+                            MyUploadActivity.actionStart(MainActivity.this, "data1", "data2");
+                        }else{
+                            LoginActivity.actionStart(MainActivity.this, "MyUploadActivity", "data2");
+                        }
+                        break;
                     case R.id.navigation_item_like:
                         //有意
+                        if(myApplication.isLogin()){
+                            MyIntentionActivity.actionStart(MainActivity.this, "data1", "data2");
+                        }else{
+                            LoginActivity.actionStart(MainActivity.this, "MyIntentionActivity", "data2");
+                        }
+                        break;
 
-                        break;
-                    case R.id.navigation_item_history:
-                        //历史
-                        break;
                     case R.id.navigation_item_about:
                         //关于
-                        NetUtils.downloadImage();
+                        AboutActivity.actionStart(MainActivity.this, "data1", "data2");
 
                         break;
                 }
@@ -197,7 +207,7 @@ public class MainActivity extends FragmentActivity {
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                SearchActivity.actionStart(MainActivity.this,"data1","data2");
+                SearchActivity.actionStart(MainActivity.this,"","data2");
 
             }
         });

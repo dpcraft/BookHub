@@ -14,6 +14,18 @@
         <item>出租</item>
         <item>出售</item>
     </string-array>
+    <string-array name="array_search_deal_type">
+        <item>交易类型</item>
+        <item>默认</item>
+        <item>仅看出售</item>
+        <item>仅看出租</item>
+    </string-array>
+    <string-array name="array_search_order">
+        <item>排序</item>
+        <item>默认排序</item>
+        <item>价格从低到高</item>
+        <item>价格从高到低</item>
+    </string-array>
     <declare-styleable name="qr_ViewfinderView">
         <attr name="qr_angleColor" format="color"/>
         <attr name="qr_hint" format="string"/>

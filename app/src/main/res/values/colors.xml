@@ -17,6 +17,18 @@
     <color name="blue_700">#303F9F</color>
     <color name="blue_800">#283593</color>
     <color name="blue_900">#1A237E</color>
+
+    <color name="grey_50">#FAFAFA</color>
+    <color name="grey_100">#F5F5F5</color>
+    <color name="grey_200">#EEEEEE</color>
+    <color name="grey_300">#E0E0E0</color>
+    <color name="grey_400">#BDBDBD</color>
+    <color name="grey_500">#9E9E9E</color>
+    <color name="grey_600">#757575</color>
+    <color name="grey_700">#616161</color>
+    <color name="grey_800">#424242</color>
+    <color name="grey_900">#212121</color>
+
     <color name="red_50">#FFEBEE</color>
     <color name="red_100">#FFCDD2</color>
     <color name="red_200">#EF9A9A</color>
@@ -27,7 +39,6 @@
     <color name="red_700">#D32F2F</color>
     <color name="red_800">#C62828</color>
     <color name="red_900">#B71C1C</color>
-    <color name="grey_400">#BDBDBD</color>
 
 
     <color name="book_title_mask">#80000000</color>

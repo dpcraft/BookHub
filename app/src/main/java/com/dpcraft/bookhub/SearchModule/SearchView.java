@@ -21,6 +21,7 @@ import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.dpcraft.bookhub.Activity.SearchResultActivity;
 import com.dpcraft.bookhub.R;
 
 /**
@@ -72,7 +73,7 @@ public class SearchView extends LinearLayout {
 
         //初始化UI组件
         initWidget();
-        searchToolbar.setNavigationIcon(R.drawable.ic_back_black);
+        searchToolbar.setNavigationIcon(R.drawable.ic_back_simple_black);
         searchToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -169,7 +170,9 @@ public class SearchView extends LinearLayout {
                 TextView textView = (TextView) view.findViewById(android.R.id.text1);
                 String name = textView.getText().toString();
                 et_search.setText(name);
-                Toast.makeText(context, name, Toast.LENGTH_SHORT).show();
+                SearchResultActivity.actionStart( context , et_search.getText().toString().trim() , "data2");
+                Activity activity = (Activity)context;
+                activity.finish();
 
             }
         });
@@ -191,7 +194,11 @@ public class SearchView extends LinearLayout {
                     queryData("");
                 }
                 //根据输入的内容模糊查询商品，并跳转到另一个界面，这个根据需求实现
-                Toast.makeText(context, "clicked!", Toast.LENGTH_SHORT).show();
+
+                SearchResultActivity.actionStart( context , et_search.getText().toString().trim() , "data2");
+                Activity activity = (Activity)context;
+                activity.finish();
+
             }
         });
 
@@ -254,5 +261,10 @@ public class SearchView extends LinearLayout {
         db = helper.getWritableDatabase();
         db.execSQL("delete from records");
         db.close();
+    }
+    public void setKeyword(String keyword){
+        et_search.setText(keyword);
+        //设置光标位置到最后
+        et_search.setSelection(keyword.length());
     }
 }

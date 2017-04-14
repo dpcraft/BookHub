@@ -97,6 +97,7 @@ public class UserInfoActivity extends Activity {
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         myApplication = (MyApplication)getApplication();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_userinfo);
@@ -110,7 +111,7 @@ public class UserInfoActivity extends Activity {
         Glide.with(this).load(Server.getServerAddress() + "user/photo?token=" + myApplication.getToken())
                 .error(R.drawable.default_user_icon).into(circleUserIcon);
 
-        myApplication = (MyApplication)getApplication();
+
         NetUtils.getUserInfo(myApplication.getToken(),handler);
         circleUserIcon.setOnClickListener(new View.OnClickListener() {
             @Override

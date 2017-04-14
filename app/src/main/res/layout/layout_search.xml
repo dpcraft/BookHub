@@ -19,14 +19,16 @@
         app:layout_scrollFlags="scroll">
         <EditText
             android:id="@+id/edt_search"
-            android:layout_width="200dp"
-            android:layout_height="40dp" />
+            android:layout_width="240dp"
+            android:layout_height="35dp"
+            android:singleLine="true"
+            android:background="@drawable/shape_search_edit"/>
         <Button
             android:id="@+id/btn_search"
             android:layout_width="50dp"
             android:layout_height="40dp"
             android:layout_margin="0dp"
-            android:background="@drawable/shape_bt_search"
+            android:background="@color/transparent"
             android:text="搜 索"
             android:textSize="@dimen/font_small"/>
     </android.support.v7.widget.Toolbar>

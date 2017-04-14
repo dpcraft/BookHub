@@ -54,19 +54,15 @@ a<android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1"
-
         app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
         <include layout="@layout/fab" />
 
     </android.support.design.widget.CoordinatorLayout>
 
-
-
     <android.support.design.widget.NavigationView
         android:id="@+id/navigation_view"
         android:layout_width="260dp"
         android:layout_height="match_parent"
-
         android:elevation="15dp"
         android:layout_gravity="start"
         android:translationZ="200dp"
