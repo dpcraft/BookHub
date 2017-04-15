@@ -1,4 +1,4 @@
-package com.dpcraft.bookhub.UIWidget;
+package com.dpcraft.bookhub.Algorithm;
 
 import android.content.Context;
 
