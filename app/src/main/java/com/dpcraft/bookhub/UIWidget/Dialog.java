@@ -2,8 +2,6 @@ package com.dpcraft.bookhub.UIWidget;
 
 import android.content.Context;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.DialogTitle;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 
@@ -14,6 +12,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.dpcraft.bookhub.Algorithm.UnitConversion;
 import com.dpcraft.bookhub.R;
 
 import java.util.Timer;
@@ -34,6 +33,28 @@ public class Dialog {
         builder.setMessage(message);
         //builder.setNegativeButton("取消", null);
         builder.setPositiveButton("确定", null);
+        builder.show();
+    }
+    public static void showDialog( String message,Context context) {
+  /*
+  这里使用了 android.support.v7.app.AlertDialog.Builder
+  可以直接在头部写 import android.support.v7.app.AlertDialog
+  那么下面就可以写成 AlertDialog.Builder
+  */
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setMessage(message);
+        builder.setNegativeButton("取消", null);
+        builder.setPositiveButton("确定", null);
+        builder.show();
+    }
+
+    public static void showDealerMessageDialog( String title,String message,Context context) {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle(title);
+        builder.setMessage(message);
+        builder.setNegativeButton("取消", null);
+        builder.setPositiveButton("联系", null);
         builder.show();
     }
     public static void showSignupSuccessDialog(Context context,String dialogTitle) {
@@ -63,6 +84,8 @@ public class Dialog {
         },2000);//延时2s执行
 
     }
+
+
     public static void showChangeIconDialog2(final Context context) {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(context);

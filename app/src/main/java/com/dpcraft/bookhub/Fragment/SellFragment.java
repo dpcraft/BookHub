@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.dpcraft.bookhub.Activity.MainActivity;
 import com.dpcraft.bookhub.Adapter.SellRecyclerAdapter;
 import com.dpcraft.bookhub.DataClass.BookGetRequestInformation;
 import com.dpcraft.bookhub.DataClass.BookPreview;
@@ -19,6 +20,7 @@ import com.dpcraft.bookhub.DataClass.GetBookResponse;
 import com.dpcraft.bookhub.NetModule.JSONUtil;
 import com.dpcraft.bookhub.NetModule.NetUtils;
 import com.dpcraft.bookhub.R;
+import com.dpcraft.bookhub.UIWidget.Dialog;
 
 import java.util.List;
 
@@ -35,20 +37,39 @@ public class SellFragment extends Fragment{
     private int mIndex = 0;
     private final int length = 5;
     private boolean hasMore = true;
+    public final int SUCCESS = 201;
+    public final int FAIL = 400;
     private Handler handler= new Handler(){
         public void handleMessage(Message msg){
-                Log.i("json",msg.obj.toString());
-                GetBookResponse getBookResponse = JSONUtil.parseJsonWithGson( msg.obj.toString(),GetBookResponse.class);
-                bookPreviewList = getBookResponse.getData();
-                mIndex += bookPreviewList.size();
-                if(bookPreviewList.size() == 0){
-                    hasMore = false;
-                    sellRecyclerView.clearOnScrollListeners();
+            if(msg.what == 1 || msg.what == 2) {
+                try {
+                GetBookResponse getBookResponse = JSONUtil.parseJsonWithGson(msg.obj.toString(), GetBookResponse.class);
+                switch (getBookResponse.getCode()){
+                    case SUCCESS:
+                    {
+                        bookPreviewList = getBookResponse.getData();
+                        mIndex += bookPreviewList.size();
+                        if (bookPreviewList.size() == 0) {
+                            hasMore = false;
+                            sellRecyclerView.clearOnScrollListeners();
+                        }
+                        if (msg.what == 1) {
+                            sellRecyclerAdapter.clearBooklist();
+                        }
+                        sellRecyclerAdapter.addBookList(bookPreviewList);
+                    }
+                    break;
+                    case FAIL:
+                        Dialog.showDialog("获取数据错误",getBookResponse.getMessage(),getActivity());
+                        break;
+                    default:
+                        break;
                 }
-            if(msg.what == 1) {
-                sellRecyclerAdapter.clearBooklist();
+                }catch (Exception e){
+                    Dialog.showDialog("获取数据错误"," 数据库错误 !",getActivity());
+                }
+
             }
-            sellRecyclerAdapter.addBookList(bookPreviewList);
 
         }
     };

@@ -62,7 +62,7 @@ public class SearchResultRecyclerAdapter extends RecyclerView.Adapter<RecyclerVi
 
                     //*获取书籍详细信息*
                     BookDetailsActivity.actionStart(mContext, contentViewHolder.getBookId() + "", "data2");
-                    Log.i("previewBookId=======",contentViewHolder.getBookId() + "");
+
 
                 }
             });
@@ -89,18 +89,14 @@ public class SearchResultRecyclerAdapter extends RecyclerView.Adapter<RecyclerVi
 
                 //mContext.
             }
-            Log.i("FooterItemCount ====",getItemCount() + "");
-            Log.i("FooterPosition =====" , position + "");
+
 
         }
         else{
-            Log.i("ContentItemCount ====",getItemCount() + "");
-            Log.i("ContentPosition =====" , position + "");
             BookPreview bookPreview = mBookList.get(position);
             //为书名作者等赋值
             String imageUrl = Server.getServerAddress() + "book/image?bookid=" + bookPreview.getId() + "&reduce=true";
             Glide.with(mContext).load(imageUrl).error(R.drawable.load_error).into(((ContentViewHolder)holder).bookPreviewCover);
-            Log.i("imageUrl============",imageUrl);
             ((ContentViewHolder)holder).bookPreviewName.setText(bookPreview.getName());
             ((ContentViewHolder)holder).bookPreviewAuthor.setText(bookPreview.getAuthor());
             ((ContentViewHolder)holder).bookPreviewPublishingHouse.setText(bookPreview.getPublishHouse());
@@ -168,7 +164,7 @@ public class SearchResultRecyclerAdapter extends RecyclerView.Adapter<RecyclerVi
     public void addBookList(List<BookPreview> bookList){
 
         mBookList.addAll(bookList);
-        if (bookList.size() < 5){
+        if (bookList.size() == 0){
             hasMore = false;
         }
 

@@ -223,7 +223,7 @@ public class SearchView extends LinearLayout {
         tv_tip = (TextView) findViewById(R.id.tv_tip);
         listView = (SearchListView) findViewById(R.id.listView);
         searchButton = (Button) findViewById(R.id.btn_search);
-        searchToolbar = (Toolbar)findViewById(R.id.tb_search);
+        searchToolbar = (Toolbar)findViewById(R.id.tb_classification);
     }
 
     /*插入数据*/

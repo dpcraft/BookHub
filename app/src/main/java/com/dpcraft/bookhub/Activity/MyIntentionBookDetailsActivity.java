@@ -15,12 +15,12 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
-import com.dpcraft.bookhub.Adapter.BookDetailsAdapter;
+import com.dpcraft.bookhub.Adapter.MyIntentionBookDetailsAdapter;
 import com.dpcraft.bookhub.Application.MyApplication;
 import com.dpcraft.bookhub.DataClass.BookDetails;
+import com.dpcraft.bookhub.DataClass.BookDetailsIncludeUser;
 import com.dpcraft.bookhub.DataClass.BookGetRequestInformation;
 import com.dpcraft.bookhub.DataClass.GetBookDetailsIncludeUserResponse;
-import com.dpcraft.bookhub.DataClass.GetBookDetailsResponse;
 import com.dpcraft.bookhub.DataClass.ResponseFromServer;
 import com.dpcraft.bookhub.NetModule.JSONUtil;
 import com.dpcraft.bookhub.NetModule.NetUtils;
@@ -32,13 +32,14 @@ import com.dpcraft.bookhub.UIWidget.Dialog;
 /**
  * Created by DPC on 2017/3/8.
  */
-public class BookDetailsActivity extends Activity {
+public class MyIntentionBookDetailsActivity extends Activity {
     private MyApplication myApplication;
     private FloatingActionButton floatingActionButton;
     private Toolbar bookNameToolbar;
     private boolean isLiked;
-    private BookDetails mbookDetails;
-    private BookDetailsAdapter mbookDetailsAdapter;
+    private BookDetailsIncludeUser bookDetailsIncludeUser;
+    private MyIntentionBookDetailsAdapter myIntentionBookDetailsAdapter;
+    private BookDetails bookDetails;
     private RecyclerView bookDetailsRecyclerView;
     private ImageView bookCover;
     private String bookId , imageUrl;
@@ -49,21 +50,22 @@ public class BookDetailsActivity extends Activity {
             switch (msg.what) {
                 case 201:
                     Log.i("json",msg.obj.toString());
-                    GetBookDetailsIncludeUserResponse getBookDetailsIncludeUserResponse = JSONUtil.parseJsonWithGson( msg.obj.toString(),GetBookDetailsIncludeUserResponse.class);
-                    mbookDetails = getBookDetailsIncludeUserResponse.getData().getBook();
-                    bookNameToolbar.setTitle(mbookDetails.getName());
-                    mbookDetailsAdapter = new BookDetailsAdapter(mbookDetails,BookDetailsActivity.this);
-                    bookDetailsRecyclerView.setAdapter(mbookDetailsAdapter);
-                    if(mbookDetails.getIntention()){
+                    GetBookDetailsIncludeUserResponse getBookDetailsIncludeUserResponse = JSONUtil.parseJsonWithGson( msg.obj.toString(), GetBookDetailsIncludeUserResponse.class);
+                    bookDetailsIncludeUser = getBookDetailsIncludeUserResponse.getData();
+                    bookDetails = bookDetailsIncludeUser.getBook();
+                    bookNameToolbar.setTitle(bookDetails.getName());
+                    myIntentionBookDetailsAdapter = new MyIntentionBookDetailsAdapter(bookDetailsIncludeUser,MyIntentionBookDetailsActivity.this);
+                    bookDetailsRecyclerView.setAdapter( myIntentionBookDetailsAdapter);
+                    if(bookDetails.getIntention()){
                         isLiked = true;
                      }
                     else{
                     isLiked = false;
                      }
-                    Log.i("userId==============",mbookDetails.getUserId());
+                    Log.i("userId==============",bookDetails.getUserId());
                     break;
                 case 002:
-                    Dialog.showDialog("dialog", JSONUtil.parseJsonWithGson(msg.obj.toString(),ResponseFromServer.class).getMessage(),BookDetailsActivity.this);
+                    Dialog.showDialog("dialog", JSONUtil.parseJsonWithGson(msg.obj.toString(),ResponseFromServer.class).getMessage(),MyIntentionBookDetailsActivity.this);
                     break;
                 default:
                     break;
@@ -103,10 +105,10 @@ public class BookDetailsActivity extends Activity {
                 String intentionUrl = Server.getServerAddress() + "book/deal";
                 if(!isLiked){
                     floatingActionButton.setImageResource(R.drawable.ic_intention_true);
-                    NetUtils.modifyIntention( intentionUrl , myApplication.getToken() , mbookDetails.getId() , false , isLiked , handler);
+                    NetUtils.modifyIntention( intentionUrl , myApplication.getToken() , bookDetails.getId() , false , isLiked , handler);
                 }else{
                     floatingActionButton.setImageResource(R.drawable.ic_intention_false);
-                    NetUtils.modifyIntention( intentionUrl , myApplication.getToken() , mbookDetails.getId() , false , isLiked , handler);
+                    NetUtils.modifyIntention( intentionUrl , myApplication.getToken() , bookDetails.getId() , false , isLiked , handler);
                 }
                 //initBookDetails();
                 isLiked = !isLiked;
@@ -140,7 +142,7 @@ public class BookDetailsActivity extends Activity {
 
 
     public static void actionStart(Context context, String data1, String data2){
-        Intent intent = new Intent(context,BookDetailsActivity.class);
+        Intent intent = new Intent(context,MyIntentionBookDetailsActivity.class);
         intent.putExtra("bookId",data1);
         intent.putExtra("para2",data2);
         context.startActivity(intent);

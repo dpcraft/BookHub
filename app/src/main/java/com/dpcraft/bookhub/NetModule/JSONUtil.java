@@ -7,6 +7,7 @@ import com.dpcraft.bookhub.DataClass.LoginResponse;
 import com.dpcraft.bookhub.DataClass.User;
 import com.google.gson.Gson;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -45,12 +46,27 @@ public class JSONUtil {
 
         }
 
+    public static int getResponseCode(String jsonData ){
+        int code = 0;
+        try{
+            JSONObject jsonObject =new JSONObject(jsonData);
+            String codeStr = jsonObject.getString("code");
+            code = Integer.parseInt(codeStr);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return code;
+
+    }
+
 
     public static <T> T parseJsonWithGson(String jsonString,Class<T> type){
         Gson gson = new Gson();
-        T result = gson.fromJson(jsonString,type);
-        return result;
+            T result = gson.fromJson(jsonString, type);
+            return result;
+
 
     }
+
 
 }

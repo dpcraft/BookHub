@@ -11,6 +11,7 @@ import android.support.v7.widget.OrientationHelper;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -32,20 +33,17 @@ import java.util.List;
 /**
  * Created by DPC on 2017/4/14.
  */
-public class SearchResultActivity extends Activity {
-    private Toolbar searchToolbar;
-    private Button searchButton;
-    private TextView searchEditTextView;
-    private RecyclerView searchRecyclerView;
+public class ClassificationActivity extends Activity {
+    private Toolbar classificationToolbar;
+    private RecyclerView classificationRecyclerView;
     private SearchResultRecyclerAdapter searchResultRecyclerAdapter;
     private BookGetRequestInformation bookGetRequestInformation;
     private List<BookPreview> bookPreviewList;
-    private LinearLayoutManager searchLinearLayoutManager;
+    private LinearLayoutManager classificationLinearLayoutManager;
     private Spinner dealTypeSpinner , orderSpinner;
     private int mIndex = 0;
     private final int length = 5;
-    private String keyword;
-    
+    private String classification;
     private Handler handler= new Handler(){
         public void handleMessage(Message msg) {
             try {
@@ -53,7 +51,6 @@ public class SearchResultActivity extends Activity {
                     GetBookResponse getBookResponse = JSONUtil.parseJsonWithGson(msg.obj.toString(), GetBookResponse.class);
                     bookPreviewList = getBookResponse.getData();
                     mIndex += bookPreviewList.size();
-
                     if (msg.what == 1) {
                         searchResultRecyclerAdapter.clearBookList();
                     }
@@ -61,47 +58,59 @@ public class SearchResultActivity extends Activity {
 
                 }
             }catch (Exception e){
-                Dialog.showDialog("获取数据错误"," 数据库错误 !",SearchResultActivity.this);
+                Dialog.showDialog("获取数据错误"," 数据库错误 !",ClassificationActivity.this);
             }
         }
     };
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_search_result);
+        setContentView(R.layout.activity_classification);
         initWidget();
         setSpinnerListener();
-        searchToolbar.setNavigationIcon(R.drawable.ic_back_simple_black);
-        searchToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+        Intent intent = getIntent();
+        classification = intent.getStringExtra("CLASSIFICATION");
+        classificationToolbar.setTitle(getBookTypeName(classification));
+        classificationToolbar.setNavigationIcon(R.drawable.ic_back_simple_black);
+        classificationToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 finish();
             }
         });
+        classificationToolbar.inflateMenu(R.menu.menu_search);
+        classificationToolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                int menuItemId = item.getItemId();
+                if(menuItemId == R.id.action_search){
+                    SearchActivity.actionStart( ClassificationActivity.this , "" , "data2");
+                    finish();
+                }
+                return false;
+            }
+        });
         
         searchResultRecyclerAdapter = new SearchResultRecyclerAdapter(this);
-        searchRecyclerView.setAdapter(searchResultRecyclerAdapter);
+        classificationRecyclerView.setAdapter(searchResultRecyclerAdapter);
         //设置固定大小
-        searchRecyclerView.setHasFixedSize(true);
+        classificationRecyclerView.setHasFixedSize(true);
         //创建线性布局
-        searchLinearLayoutManager = new LinearLayoutManager(this);
-        searchLinearLayoutManager.setOrientation(OrientationHelper.VERTICAL);
-        searchRecyclerView.setLayoutManager(searchLinearLayoutManager);
-        Intent intent = getIntent();
-        keyword = intent.getStringExtra("KEYWORD");
-        searchEditTextView.setText(keyword);
+        classificationLinearLayoutManager = new LinearLayoutManager(this);
+        classificationLinearLayoutManager.setOrientation(OrientationHelper.VERTICAL);
+        classificationRecyclerView.setLayoutManager(classificationLinearLayoutManager);
+        
         bookGetRequestInformation = new BookGetRequestInformation();
-        bookGetRequestInformation.setKeyWord(keyword);
+        bookGetRequestInformation.setType(classification);
         requestBookList(mIndex + "" , false);
-
-        searchRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+        classificationRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
 
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView,
                                              int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
                 if (newState == RecyclerView.SCROLL_STATE_IDLE
-                        && searchLinearLayoutManager.findLastVisibleItemPosition() + 1 == searchResultRecyclerAdapter.getItemCount()) {
+                        &&classificationLinearLayoutManager.findLastVisibleItemPosition() + 1 == searchResultRecyclerAdapter.getItemCount()) {
 
                     requestBookList(mIndex + "" , false);
                 }
@@ -114,21 +123,13 @@ public class SearchResultActivity extends Activity {
             }
         });
 
-        searchEditTextView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                SearchActivity.actionStart( SearchResultActivity.this , keyword , "data2");
-                finish();
-            }
-        });
     }
 
     private void initWidget(){
 
-        searchToolbar = (Toolbar) findViewById(R.id.tb_classification);
-        searchButton = (Button)findViewById(R.id.btn_search);
-        searchEditTextView = (TextView) findViewById(R.id.tv_search_edit);
-        searchRecyclerView = (RecyclerView)findViewById(R.id.classification_recycler);
+        classificationToolbar = (Toolbar) findViewById(R.id.tb_classification);
+        
+        classificationRecyclerView = (RecyclerView)findViewById(R.id.classification_recycler);
         dealTypeSpinner = (Spinner)findViewById(R.id.spin_deal_type);
         orderSpinner = (Spinner)findViewById(R.id.spin_order);
 
@@ -181,10 +182,22 @@ public class SearchResultActivity extends Activity {
         });
 
     }
+    private String getBookTypeName(String indexStr){
+        int index = Integer.parseInt(indexStr);
+        String[] bookTypeNames = getResources().getStringArray(R.array.array_book_type);
+        String bookTypeName;
+        if(index == 0){
+            bookTypeName = bookTypeNames[9];
+        }else {
+            bookTypeName = bookTypeNames[index];
+        }
+        return bookTypeName;
+
+    }
 
     public static void actionStart(Context context, String data1, String data2) {
-        Intent intent = new Intent(context, SearchResultActivity.class);
-        intent.putExtra("KEYWORD", data1);
+        Intent intent = new Intent(context, ClassificationActivity.class);
+        intent.putExtra("CLASSIFICATION", data1);
         intent.putExtra("para2", data2);
         context.startActivity(intent);
     }

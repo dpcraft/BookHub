@@ -30,8 +30,6 @@
             android:theme="@style/TransparentStatusBarTheme" />
         <activity android:name=".Activity.BookDetailsActivity"/>
         <activity android:name=".Activity.PictureActivity"/>
-        <activity android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
-            android:theme="@style/Base.Theme.AppCompat"/>
         <activity android:name=".PhotoUtil.cropper.CropImageActivity"
             android:theme="@style/Base.Theme.AppCompat"/>
         <activity android:name=".Activity.SearchActivity"/>
@@ -41,7 +39,9 @@
         <activity android:name=".Activity.MyUploadActivity"/>
         <activity android:name=".Activity.MyIntentionActivity"/>
         <activity android:name=".Activity.AboutActivity"/>
-
+        <activity android:name=".Activity.MyUploadBookDetailsActivity"/>
+        <activity android:name=".Activity.MyIntentionBookDetailsActivity"/>
+        <activity android:name=".Activity.ClassificationActivity"/>
         <provider
             android:name="android.support.v4.content.FileProvider"
             android:authorities="com.dpcraft.bookhub.fileprovider"

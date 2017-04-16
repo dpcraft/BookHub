@@ -1,6 +1,7 @@
 package com.dpcraft.bookhub.Activity;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 //import android.support.design.widget.FloatingActionButton;
 import android.os.Handler;
@@ -12,6 +13,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Gravity;
@@ -250,6 +252,12 @@ public class MainActivity extends FragmentActivity {
         }
     }
 
+    @Override
+    public void onBackPressed(){
+        showExitDialog();
+
+    }
+
     public void initWidget(){
         drawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -300,6 +308,19 @@ public class MainActivity extends FragmentActivity {
             handler.sendMessage(msg);
             Log.i("OUTPUT","send over");
         }
+    }
+    public  void showExitDialog() {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("客官留步，还有很多书等您收留呢");
+        builder.setNegativeButton("残忍离去", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                finish();
+            }
+        });
+        builder.setPositiveButton("再看看", null);
+        builder.show();
     }
 
 

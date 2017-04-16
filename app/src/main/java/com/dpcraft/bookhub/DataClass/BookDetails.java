@@ -30,7 +30,7 @@ public class BookDetails {
     @SerializedName("isSell")
     private Boolean isSell;
 
-    //private String endtime;
+    private String endtime;
 
     @SerializedName("deposit")
     private String deposit;

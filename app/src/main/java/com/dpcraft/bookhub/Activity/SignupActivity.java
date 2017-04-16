@@ -39,22 +39,26 @@ public class SignupActivity extends Activity {
     private User user;
     private Handler handler= new Handler(){
         public void handleMessage(Message msg){
-            switch ( msg.what){
-                case SUCCESS :
-                    Dialog.showSignupSuccessDialog(SignupActivity.this, "恭喜您注册成功");
-                    //Dialog.showDialog((String)msg.obj,SignupActivity.this);
-                    break;
-                case REQUEST_ERROR:
-                    Dialog.showDialog("注册失败",(String)msg.obj,SignupActivity.this);
-                    break;
-                case OPERATION_UNAUTHORIZED:
-                    Dialog.showDialog("注册失败",(String)msg.obj,SignupActivity.this);
-                    break;
-                case OBJECT_EXIST:
-                    Dialog.showDialog("注册失败",(String)msg.obj,SignupActivity.this);
-                    break;
-                default:
-                    break;
+            try {
+                switch (msg.what) {
+                    case SUCCESS:
+                        Dialog.showSignupSuccessDialog(SignupActivity.this, "恭喜您注册成功");
+                        //Dialog.showDialog((String)msg.obj,SignupActivity.this);
+                        break;
+                    case REQUEST_ERROR:
+                        Dialog.showDialog("注册失败", (String) msg.obj, SignupActivity.this);
+                        break;
+                    case OPERATION_UNAUTHORIZED:
+                        Dialog.showDialog("注册失败", (String) msg.obj, SignupActivity.this);
+                        break;
+                    case OBJECT_EXIST:
+                        Dialog.showDialog("注册失败", (String) msg.obj, SignupActivity.this);
+                        break;
+                    default:
+                        break;
+                }
+            }catch (Exception e){
+                Dialog.showDialog("获取数据错误"," 数据库错误 !" , SignupActivity.this);
             }
         }
     };

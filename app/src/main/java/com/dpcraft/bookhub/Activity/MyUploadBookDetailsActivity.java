@@ -2,25 +2,28 @@ package com.dpcraft.bookhub.Activity;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
-import com.dpcraft.bookhub.Adapter.BookDetailsAdapter;
+import com.dpcraft.bookhub.Adapter.MyUploadBookDetailsAdapter;
 import com.dpcraft.bookhub.Application.MyApplication;
 import com.dpcraft.bookhub.DataClass.BookDetails;
+import com.dpcraft.bookhub.DataClass.BookDetailsIncludeUser;
 import com.dpcraft.bookhub.DataClass.BookGetRequestInformation;
 import com.dpcraft.bookhub.DataClass.GetBookDetailsIncludeUserResponse;
-import com.dpcraft.bookhub.DataClass.GetBookDetailsResponse;
 import com.dpcraft.bookhub.DataClass.ResponseFromServer;
 import com.dpcraft.bookhub.NetModule.JSONUtil;
 import com.dpcraft.bookhub.NetModule.NetUtils;
@@ -32,13 +35,14 @@ import com.dpcraft.bookhub.UIWidget.Dialog;
 /**
  * Created by DPC on 2017/3/8.
  */
-public class BookDetailsActivity extends Activity {
+public class MyUploadBookDetailsActivity extends Activity {
     private MyApplication myApplication;
     private FloatingActionButton floatingActionButton;
     private Toolbar bookNameToolbar;
     private boolean isLiked;
-    private BookDetails mbookDetails;
-    private BookDetailsAdapter mbookDetailsAdapter;
+    private BookDetailsIncludeUser bookDetailsIncludeUser;
+    private MyUploadBookDetailsAdapter myUploadBookDetailsAdapter;
+    private BookDetails bookDetails;
     private RecyclerView bookDetailsRecyclerView;
     private ImageView bookCover;
     private String bookId , imageUrl;
@@ -49,21 +53,27 @@ public class BookDetailsActivity extends Activity {
             switch (msg.what) {
                 case 201:
                     Log.i("json",msg.obj.toString());
-                    GetBookDetailsIncludeUserResponse getBookDetailsIncludeUserResponse = JSONUtil.parseJsonWithGson( msg.obj.toString(),GetBookDetailsIncludeUserResponse.class);
-                    mbookDetails = getBookDetailsIncludeUserResponse.getData().getBook();
-                    bookNameToolbar.setTitle(mbookDetails.getName());
-                    mbookDetailsAdapter = new BookDetailsAdapter(mbookDetails,BookDetailsActivity.this);
-                    bookDetailsRecyclerView.setAdapter(mbookDetailsAdapter);
-                    if(mbookDetails.getIntention()){
+                    GetBookDetailsIncludeUserResponse getBookDetailsIncludeUserResponse = JSONUtil.parseJsonWithGson( msg.obj.toString(), GetBookDetailsIncludeUserResponse.class);
+                    bookDetailsIncludeUser = getBookDetailsIncludeUserResponse.getData();
+                    bookDetails = bookDetailsIncludeUser.getBook();
+                    bookNameToolbar.setTitle(bookDetails.getName());
+                    myUploadBookDetailsAdapter = new MyUploadBookDetailsAdapter(bookDetailsIncludeUser,MyUploadBookDetailsActivity.this);
+                    bookDetailsRecyclerView.setAdapter( myUploadBookDetailsAdapter);
+                    if(bookDetails.getIntention()){
                         isLiked = true;
                      }
                     else{
                     isLiked = false;
                      }
-                    Log.i("userId==============",mbookDetails.getUserId());
+                    Log.i("userId==============",bookDetails.getUserId());
+                    //if(myApplication.isLogin() && mbookDetails.getUserId() == myApplication.getLoginResponseUserInfo().getNickName())
+
                     break;
                 case 002:
-                    Dialog.showDialog("dialog", JSONUtil.parseJsonWithGson(msg.obj.toString(),ResponseFromServer.class).getMessage(),BookDetailsActivity.this);
+                    Dialog.showDialog("dialog", JSONUtil.parseJsonWithGson(msg.obj.toString(),ResponseFromServer.class).getMessage(),MyUploadBookDetailsActivity.this);
+                    break;
+                case 301:
+                    Dialog.showDialog("dialog", JSONUtil.parseJsonWithGson(msg.obj.toString(),ResponseFromServer.class).getMessage(),MyUploadBookDetailsActivity.this);
                     break;
                 default:
                     break;
@@ -87,12 +97,24 @@ public class BookDetailsActivity extends Activity {
         initBookDetails();
         imageUrl = Server.getServerAddress() + "book/image?bookid=" + bookId;
         Glide.with(this).load(imageUrl).placeholder(R.drawable.image_belonged).error(R.drawable.load_error).into(bookCover);
-
         bookNameToolbar.setNavigationIcon(R.drawable.ic_back_white);
         bookNameToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 finish();
+            }
+        });
+        bookNameToolbar.inflateMenu(R.menu.menu_book_details);
+        bookNameToolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                int menuItemId = item.getItemId();
+                if(menuItemId == R.id.action_delete){
+                   showDeleteDialog();
+                }else if(menuItemId == R.id.action_edit){
+                    //跳转到编辑页面
+                }
+                return false;
             }
         });
         //绑定适配器
@@ -103,12 +125,11 @@ public class BookDetailsActivity extends Activity {
                 String intentionUrl = Server.getServerAddress() + "book/deal";
                 if(!isLiked){
                     floatingActionButton.setImageResource(R.drawable.ic_intention_true);
-                    NetUtils.modifyIntention( intentionUrl , myApplication.getToken() , mbookDetails.getId() , false , isLiked , handler);
+                    NetUtils.modifyIntention( intentionUrl , myApplication.getToken() , bookDetails.getId() , false , isLiked , handler);
                 }else{
                     floatingActionButton.setImageResource(R.drawable.ic_intention_false);
-                    NetUtils.modifyIntention( intentionUrl , myApplication.getToken() , mbookDetails.getId() , false , isLiked , handler);
+                    NetUtils.modifyIntention( intentionUrl , myApplication.getToken() , bookDetails.getId() , false , isLiked , handler);
                 }
-                //initBookDetails();
                 isLiked = !isLiked;
             }
         });
@@ -137,10 +158,25 @@ public class BookDetailsActivity extends Activity {
         }
 
     }
+    public  void showDeleteDialog() {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("注意");
+        builder.setMessage("确定删除本书？");
+        builder.setNegativeButton("取消", null);
+        builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                NetUtils.deleteBook(myApplication.getToken() , bookId , handler);
+                finish();
+            }
+        });
+        builder.show();
+    }
 
 
     public static void actionStart(Context context, String data1, String data2){
-        Intent intent = new Intent(context,BookDetailsActivity.class);
+        Intent intent = new Intent(context,MyUploadBookDetailsActivity.class);
         intent.putExtra("bookId",data1);
         intent.putExtra("para2",data2);
         context.startActivity(intent);

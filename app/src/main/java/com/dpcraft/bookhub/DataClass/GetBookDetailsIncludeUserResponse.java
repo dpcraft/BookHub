@@ -2,16 +2,14 @@ package com.dpcraft.bookhub.DataClass;
 
 import com.google.gson.annotations.SerializedName;
 
-
-
 /**
- * Created by DPC on 2017/4/5.
+ * Created by DPC on 2017/4/15.
  */
-public class GetBookDetailsResponse {
+public class GetBookDetailsIncludeUserResponse {
     private int code ;
     private String msg;
     @SerializedName("data")
-    private BookDetails data;
+    private BookDetailsIncludeUser data;
     public int getCode() {
         return code;
     }
@@ -27,12 +25,14 @@ public class GetBookDetailsResponse {
     public void setMsg(String msg) {
         this.msg = msg;
     }
-    public BookDetails getData() {
+
+    public BookDetailsIncludeUser getData() {
         return data;
     }
 
-    public void setData(BookDetails data) {
+    public void setData(BookDetailsIncludeUser data) {
         this.data = data;
     }
+
 
 }

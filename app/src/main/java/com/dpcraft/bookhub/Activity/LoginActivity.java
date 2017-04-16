@@ -14,6 +14,7 @@ import android.widget.Button;
 
 import com.dpcraft.bookhub.Application.MyApplication;
 import com.dpcraft.bookhub.DataClass.LoginResponse;
+import com.dpcraft.bookhub.DataClass.ResponseFromServer;
 import com.dpcraft.bookhub.DataClass.User;
 import com.dpcraft.bookhub.NetModule.JSONUtil;
 import com.dpcraft.bookhub.NetModule.NetUtils;
@@ -44,10 +45,11 @@ public class LoginActivity extends Activity {
 
     private Handler handler= new Handler(){
         public void handleMessage(Message msg){
-            LoginResponse loginResponse = JSONUtil.parseJsonWithGson(msg.obj.toString(),LoginResponse.class);
-            switch (loginResponse.getCode()){
+            try{
+            switch (msg.what){
                 case LOGIN_SUCCESS :
-                  Dialog.showLoginSuccessDialog(LoginActivity.this);
+                    LoginResponse loginResponse = JSONUtil.parseJsonWithGson(msg.obj.toString(),LoginResponse.class);
+                    Dialog.showLoginSuccessDialog(LoginActivity.this);
                     rememberPassword(msg.what);
                     myApplication.setLoginStatus(true);
                     myApplication.setToken(loginResponse.getMessage());
@@ -64,12 +66,16 @@ public class LoginActivity extends Activity {
                     //Dialog.showDialog((String)msg.obj,LoginActivity.this);
                     break;
                 case LOGIN_FAIL:
-                    Dialog.showDialog("登录失败",loginResponse.getMessage(),LoginActivity.this);
+                    ResponseFromServer responseFromServer = JSONUtil.parseJsonWithGson(msg.obj.toString(),ResponseFromServer.class);
+                    Dialog.showDialog("登录失败",responseFromServer.getMessage(),LoginActivity.this);
                     rememberPassword(msg.what);
                     break;
 
                 default:
                     break;
+            }
+            }catch (Exception e){
+                Dialog.showDialog("获取数据错误"," 数据库错误 !" , LoginActivity.this);
             }
         }
     };

@@ -3,14 +3,9 @@ package com.dpcraft.bookhub.Activity;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.support.annotation.NonNull;
-import android.support.v4.content.FileProvider;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -19,11 +14,6 @@ import com.dpcraft.bookhub.PhotoUtil.ImagePicker;
 import com.dpcraft.bookhub.PhotoUtil.cropper.CropImage;
 import com.dpcraft.bookhub.PhotoUtil.cropper.CropImageView;
 import com.dpcraft.bookhub.R;
-import com.dpcraft.bookhub.UIWidget.UnitConversion;
-
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 
 /**
  * Created by DPC on 2017/3/27.

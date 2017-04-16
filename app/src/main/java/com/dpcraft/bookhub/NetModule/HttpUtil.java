@@ -78,6 +78,7 @@ public class HttpUtil {
         client.newCall(request).enqueue(callback);
 
     }
+
     public static void sendHttpPostRequest(final String address, final User user, final okhttp3.Callback callback){
         Log.i("post url",address);
 

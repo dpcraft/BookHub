@@ -11,8 +11,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.dpcraft.bookhub.Activity.BookDetailsActivity;
-import com.dpcraft.bookhub.Activity.MyUploadBookDetailsActivity;
+import com.dpcraft.bookhub.Activity.MyIntentionBookDetailsActivity;
 import com.dpcraft.bookhub.DataClass.BookPreview;
 import com.dpcraft.bookhub.NetModule.Server;
 import com.dpcraft.bookhub.R;
@@ -23,7 +22,7 @@ import java.util.List;
 /**
  * Created by DPC on 2017/2/11.
  */
-public class MyUploadRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class MyIntentionRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     public static final int ITEM_TYPE_CONTENT = 1;
     public static final int ITEM_TYPE_FOOTER = 2;
     private LayoutInflater mInflater;
@@ -32,7 +31,7 @@ public class MyUploadRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.V
     private Context mContext;
     private List<BookPreview> mBookList = new ArrayList<>();
 
-    public MyUploadRecyclerAdapter(Context context){
+    public MyIntentionRecyclerAdapter(Context context){
         mContext = context;
         this.mInflater = LayoutInflater.from(context);
 
@@ -62,7 +61,7 @@ public class MyUploadRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.V
                 public void onClick(View view) {
 
                     //*获取书籍详细信息*
-                   MyUploadBookDetailsActivity.actionStart(mContext, contentViewHolder.getBookId() + "", "data2");
+                   MyIntentionBookDetailsActivity.actionStart(mContext, contentViewHolder.getBookId() + "", "data2");
                     Log.i("previewBookId=======",contentViewHolder.getBookId() + "");
 
                 }
@@ -77,7 +76,7 @@ public class MyUploadRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.V
         if(holder instanceof FooterViewHolder){
             if(mBookList.size() == 0){
                 ((FooterViewHolder)holder).footerProgressBar.setVisibility(View.GONE);
-                ((FooterViewHolder)holder).footerText.setText("您尚未发布任何书籍书籍");
+                ((FooterViewHolder)holder).footerText.setText("没有任何书籍符合您的要求");
             }else {
                 ((FooterViewHolder) holder).footerProgressBar.setVisibility(View.GONE);
                 ((FooterViewHolder) holder).footerText.setText("没有更多书籍");
@@ -87,13 +86,17 @@ public class MyUploadRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.V
 //
 //                if(mBookList.size() == 0){
 //                    ((FooterViewHolder)holder).footerProgressBar.setVisibility(View.GONE);
-//                    ((FooterViewHolder)holder).footerText.setText("您尚未发布任何书籍书籍");
+//                    ((FooterViewHolder)holder).footerText.setText("没有搜索到相关书籍");
 //                }else {
 //                    ((FooterViewHolder) holder).footerProgressBar.setVisibility(View.GONE);
 //                    ((FooterViewHolder) holder).footerText.setText("没有更多书籍");
 //                }
 //
+//                //((FooterViewHolder)holder).footerText.setTextColor(R.color.red_900);
+//
+//                //mContext.
 //            }
+
 
         }
         else{
@@ -171,7 +174,7 @@ public class MyUploadRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.V
     public void addBookList(List<BookPreview> bookList){
 
         mBookList.addAll(bookList);
-        if (bookList.size() == 0){
+        if (bookList.size() < 5){
             hasMore = false;
         }
 

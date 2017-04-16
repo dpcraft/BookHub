@@ -9,7 +9,8 @@ import java.util.List;
  */
 public class GetBookResponse {
     private int code ;
-    private String msg;
+    @SerializedName("message")
+    private String message;
 
 
     @SerializedName("data")
@@ -22,12 +23,12 @@ public class GetBookResponse {
         this.code = code;
     }
 
-    public String getMsg() {
-        return msg;
+    public String getMessage() {
+        return message;
     }
 
-    public void setMsg(String msg) {
-        this.msg = msg;
+    public void setMessage(String message) {
+        this.message = message;
     }
     public List<BookPreview> getData() {
         return data;

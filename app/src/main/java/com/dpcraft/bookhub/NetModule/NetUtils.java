@@ -80,10 +80,10 @@ public class NetUtils {
             @Override
             public void onResponse(Call call, okhttp3.Response response) throws IOException {
                 String responseBody = response.body().string();
-                Log.i("login code",response.code() + "");
+
                 Log.i("response.body",responseBody);
-                int code = JSONUtil.parseJsonWithGson(responseBody,LoginResponse.class).getCode();
-                Log.i("JSON code",code+"");
+               int code = JSONUtil.getResponseCode(responseBody);
+                Log.i("login code",code + "");
                 Message message = handler.obtainMessage();//创建message的方式，可以更好地被回收
                 message.what = code;
                 message.obj = responseBody;
@@ -139,18 +139,20 @@ public class NetUtils {
                    throw new IOException("Unexpected code " + response);
 
                }
+               Log.i("RBcode===========" , response.code() + "");
                String responseBody =  response.body().string();
                Log.i("okhttp3.response",responseBody);
                int code;
-               if(refresh){
-                   code = 1;
-               }else {
-                   code = 2;
-               }
+                   if (refresh) {
+                       code = 1;
+                   } else {
+                       code = 2;
+                   }
 
                Message message = handler.obtainMessage();//创建message的方式，可以更好地被回收
                message.what = code;
                message.obj = responseBody;
+               Log.i("message.obj=======" , message.obj.toString());
                handler.sendMessage(message);
            }
        });
@@ -336,6 +338,35 @@ public class NetUtils {
                 Log.i("uploadmessage.obj",message.obj.toString());
                 handler.sendMessage(message);
 
+            }
+        });
+
+    }
+    public static void deleteBook(String token ,String bookId ,final Handler handler){
+        String address = Server.getServerAddress() + "book/update?token=" + token
+                + "&bookid=" + bookId;
+
+        HttpUtil.sendHttpGetRequest(address, new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Log.i("onFailure","onFailure");
+
+            }
+
+            @Override
+            public void onResponse(Call call, okhttp3.Response response) throws IOException {
+                if (!response.isSuccessful())
+                {
+                    throw new IOException("Unexpected code " + response);
+                }
+                String responseBody =  response.body().string();
+                Log.i("deleteResponse===",responseBody);
+                int code;
+                code = 301;
+                Message message = handler.obtainMessage();//创建message的方式，可以更好地被回收
+                message.what = code;
+                message.obj = responseBody;
+                handler.sendMessage(message);
             }
         });
 

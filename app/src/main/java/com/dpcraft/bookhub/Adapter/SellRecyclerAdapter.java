@@ -6,12 +6,16 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.dpcraft.bookhub.Activity.BookDetailsActivity;
+import com.dpcraft.bookhub.Activity.ClassificationActivity;
+import com.dpcraft.bookhub.Activity.MyUploadActivity;
 import com.dpcraft.bookhub.DataClass.BookPreview;
 import com.dpcraft.bookhub.NetModule.Server;
 import com.dpcraft.bookhub.R;
@@ -65,6 +69,66 @@ public class SellRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent,int viewType){
         if(viewType == ITEM_TYPE_HEADER){
             HeaderViewHolder headerViewHolder = new HeaderViewHolder(mInflater.inflate(R.layout.item_sell_recycler_header,parent,false));
+
+
+            headerViewHolder.button1.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    ClassificationActivity.actionStart(mContext ,"1" ,"");
+
+                }
+            });
+            headerViewHolder.button2.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    ClassificationActivity.actionStart(mContext ,"2" ,"");
+
+                }
+            });
+            headerViewHolder.button3.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    ClassificationActivity.actionStart(mContext ,"3" ,"");
+
+                }
+            });
+            headerViewHolder.button4.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    ClassificationActivity.actionStart(mContext ,"4" ,"");
+
+                }
+            });
+            headerViewHolder.button5.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    ClassificationActivity.actionStart(mContext ,"5" ,"");
+
+                }
+            });
+            headerViewHolder.button6.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    ClassificationActivity.actionStart(mContext ,"6" ,"");
+
+                }
+            });
+            headerViewHolder.button7.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    ClassificationActivity.actionStart(mContext ,"7" ,"");
+
+                }
+            });
+            headerViewHolder.button8.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    ClassificationActivity.actionStart(mContext ,"8" ,"");
+
+                }
+            });
+
+
             return headerViewHolder;
         } else if(viewType == ITEM_TYPE_FOOTER){
             FooterViewHolder footerViewHolder = new FooterViewHolder(mInflater.inflate(R.layout.item_sell_recycler_footer,parent,false));
@@ -80,12 +144,46 @@ public class SellRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                     //*获取书籍详细信息*
 
 
-                    BookDetailsActivity.actionStart(mContext, contentViewHolder.getBookId() + "", "data2");
+
+                        BookDetailsActivity.actionStart(mContext, contentViewHolder.getBookId() + "", "data2");
+
+
+
+
                     Log.i("previewBookId=======",contentViewHolder.getBookId() + "");
 
                 }
             });
             return contentViewHolder;
+        }
+    }
+    public void onClick(View view){
+        switch (view.getId()){
+            case R.id.btn_1:
+                Toast.makeText(mContext,"Click btn 1 ",Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.btn_2:
+                Toast.makeText(mContext,"Click btn 2 ",Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.btn_3:
+                Toast.makeText(mContext,"Click btn 3 ",Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.btn_4:
+                Toast.makeText(mContext,"Click btn 4 ",Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.btn_5:
+                Toast.makeText(mContext,"Click btn 5 ",Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.btn_6:
+                Toast.makeText(mContext,"Click btn 6 ",Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.btn_7:
+                Toast.makeText(mContext,"Click btn 7 ",Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.btn_8:
+                Toast.makeText(mContext,"Click btn 8 ",Toast.LENGTH_SHORT).show();
+                break;
+
         }
     }
     //数据绑定显示
@@ -113,7 +211,7 @@ public class SellRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             ((ContentViewHolder)holder).bookPreviewName.setText(bookPreview.getName());
             ((ContentViewHolder)holder).bookPreviewAuthor.setText(bookPreview.getAuthor());
             ((ContentViewHolder)holder).bookPreviewPublishingHouse.setText(bookPreview.getPublishHouse());
-            ((ContentViewHolder)holder).setBookId(bookPreview.getId()); ;
+            ((ContentViewHolder)holder).setBookId(bookPreview.getId());
             if(bookPreview.getSell()) {
                 ((ContentViewHolder) holder).bookPreviewDealType.setImageResource(R.drawable.ic_sell);
             }else {
@@ -165,9 +263,18 @@ public class SellRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     }
 
     public class HeaderViewHolder extends RecyclerView.ViewHolder{
-        // public TextView item_tv;
+        public Button button1 , button2 , button3 , button4 ,
+                button5 , button6 ,button7 , button8 ;
         public HeaderViewHolder(View view){
             super(view);
+            button1 = (Button)view.findViewById(R.id.btn_1);
+            button2 = (Button)view.findViewById(R.id.btn_2);
+            button3 = (Button)view.findViewById(R.id.btn_3);
+            button4 = (Button)view.findViewById(R.id.btn_4);
+            button5 = (Button)view.findViewById(R.id.btn_5);
+            button6 = (Button)view.findViewById(R.id.btn_6);
+            button7 = (Button)view.findViewById(R.id.btn_7);
+            button8 = (Button)view.findViewById(R.id.btn_8);
             // item_tv =(TextView)view.findViewById(R.id.item_tv);
         }
     }

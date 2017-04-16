@@ -2,12 +2,17 @@ package com.dpcraft.bookhub.Activity;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputLayout;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -15,11 +20,15 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Spinner;
 
+import com.dpcraft.bookhub.Algorithm.UnitConversion;
 import com.dpcraft.bookhub.Application.MyApplication;
 import com.dpcraft.bookhub.DataClass.ResponseFromServer;
 import com.dpcraft.bookhub.DataClass.UploadBookInfo;
 import com.dpcraft.bookhub.NetModule.JSONUtil;
 import com.dpcraft.bookhub.NetModule.NetUtils;
+import com.dpcraft.bookhub.PhotoUtil.ImagePicker;
+import com.dpcraft.bookhub.PhotoUtil.cropper.CropImage;
+import com.dpcraft.bookhub.PhotoUtil.cropper.CropImageView;
 import com.dpcraft.bookhub.R;
 import com.dpcraft.bookhub.UIWidget.CustomToolbar;
 import com.dpcraft.bookhub.UIWidget.Dialog;
@@ -45,6 +54,7 @@ public class UploadActivity extends Activity {
     private Button uploadButton;
     private  UploadBookInfo uploadBookInfo;
     private MyApplication myApplication;
+    private ImagePicker imagePicker = new ImagePicker();
 
     private Handler handler= new Handler(){
         public void handleMessage(Message msg){
@@ -71,6 +81,12 @@ public class UploadActivity extends Activity {
         mCustomToolbar.setTitle("发布书籍");
         initBookInfo();
         setSpinnerListener();
+        bookCover.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startCameraOrGallery();
+            }
+        });
         uploadButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -100,7 +116,7 @@ public class UploadActivity extends Activity {
         File file = new File("/sdcard/BookHub/bookCover.jpg");
         try{
             BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(new FileOutputStream(file));
-            bitmap.compress(Bitmap.CompressFormat.JPEG,100,bufferedOutputStream);
+            bitmap.compress(Bitmap.CompressFormat.JPEG,100,bufferedOutputStream );
             bufferedOutputStream.flush();
             bufferedOutputStream.close();
         }catch (IOException e){
@@ -131,6 +147,9 @@ public class UploadActivity extends Activity {
         uploadBookInfo = (UploadBookInfo)intent.getParcelableExtra(UploadBookInfo.class.getName());
         if(uploadBookInfo != null) {
             bookCover.setImageBitmap(uploadBookInfo.getBitmap());
+            Log.i("bookcoverWidth===",uploadBookInfo.getBitmap().getWidth() + "");
+            Log.i("bookcoverHeight===",uploadBookInfo.getBitmap().getHeight() + "");
+
             bookNameWrapper.getEditText().setText(uploadBookInfo.getTitle());
             authorWrapper.getEditText().setText(uploadBookInfo.getAuthor());
             publishHouseWrapper.getEditText().setText(uploadBookInfo.getPublishHouse());
@@ -158,7 +177,13 @@ public class UploadActivity extends Activity {
         bookTypeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
             @Override
             public void onItemSelected(AdapterView<?> parent,View view,int position,long id){
-                uploadBookInfo.setBookType(position + "");
+                int bookType;
+                if(position == 0 || position == 9){
+                    bookType = 0;
+                }else {
+                    bookType = position ;
+                }
+                uploadBookInfo.setBookType(bookType + "");
                 Log.i("bookTypeSpinner=======",position + "");
             }
             @Override
@@ -170,11 +195,16 @@ public class UploadActivity extends Activity {
         dealTypeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
             @Override
             public void onItemSelected(AdapterView<?> parent,View view,int position,long id){
-                if(position == 1)
+                if(position == 1 ) {
                     uploadBookInfo.setmIsSold("");
-                else
+                    depositWrapper.setVisibility(View.VISIBLE);
+                }
+                else {
+                    depositWrapper.setVisibility(View.GONE);
                     uploadBookInfo.setmIsSold("on");
+                }
                 Log.i("DealTypeSpinner=======",position + "");
+
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent){
@@ -182,6 +212,71 @@ public class UploadActivity extends Activity {
             }
         });
 
+    }
+    @Override protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        imagePicker.onActivityResult(this, requestCode, resultCode, data);
+    }
+
+    @Override public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                                     @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        imagePicker.onRequestPermissionsResult(this, requestCode, permissions, grantResults);
+    }
+
+    private void startCameraOrGallery() {
+        new AlertDialog.Builder(this).setTitle("上传书籍封面")
+                .setItems(new String[] { "从相册中选取图片", "拍照" }, new DialogInterface.OnClickListener() {
+                    @Override public void onClick(DialogInterface dialog, int which) {
+                        // 回调
+                        ImagePicker.Callback callback = new ImagePicker.Callback() {
+                            @Override public void onPickImage(Uri imageUri) {
+                            }
+
+                            @Override public void onCropImage(Uri imageUri) {
+                                bookCover.setImageURI(imageUri);
+//                                File temp = new File("/sdcard/BookHub/");
+//                                if(!temp.exists()){
+//                                    temp.mkdir();
+//                                }
+//                                File file = new File("/sdcard/BookHub/bookCover.jpg");
+//                                try{
+//                                    Bitmap bitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(imageUri));
+//                                    BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(new FileOutputStream(file));
+//                                    bitmap.compress(Bitmap.CompressFormat.JPEG,100,bufferedOutputStream);
+//                                    bufferedOutputStream.flush();
+//                                    bufferedOutputStream.close();
+//                                }catch (IOException e){
+//                                    e.printStackTrace();
+//                                }
+
+                            }
+                            // 自定义裁剪配置
+                            @Override public void cropConfig(CropImage.ActivityBuilder builder) {
+                                builder
+                                        // 是否启动多点触摸
+                                        .setMultiTouchEnabled(false)
+                                        // 设置网格显示模式
+                                        .setGuidelines(CropImageView.Guidelines.OFF)
+                                        // 圆形/矩形
+                                        .setCropShape(CropImageView.CropShape.RECTANGLE)
+                                        // 调整裁剪后的图片最终大小
+                                        .setRequestedSize(UnitConversion.dip2px( UploadActivity.this, 320) ,
+                                                UnitConversion.dip2px( UploadActivity.this, 430))
+                                        // 宽高比
+                                        .setAspectRatio(32 , 43);
+                            }
+                        };
+                        if (which == 0) {
+                            // 从相册中选取图片
+                            imagePicker.startGallery(UploadActivity.this, callback);
+                        } else {
+                            // 拍照
+                            imagePicker.startCamera(UploadActivity.this, callback);
+                        }
+                    }
+                })
+                .show();
     }
 
     public static void actionStart(Context context, String data1, String data2) {

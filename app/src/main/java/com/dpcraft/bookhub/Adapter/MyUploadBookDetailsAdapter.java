@@ -9,15 +9,22 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.dpcraft.bookhub.DataClass.BookDetails;
+import com.dpcraft.bookhub.DataClass.BookDetailsIncludeUser;
+import com.dpcraft.bookhub.DataClass.UserInfo;
 import com.dpcraft.bookhub.R;
+import com.dpcraft.bookhub.UIWidget.Dialog;
 
 /**
  * Created by DPC on 2017/3/14.
  */
-public class BookDetailsAdapter extends RecyclerView.Adapter<BookDetailsAdapter.ViewHolder> {
+public class MyUploadBookDetailsAdapter extends RecyclerView.Adapter<MyUploadBookDetailsAdapter.ViewHolder> {
 
+    public static final int ITEM_TYPE_CONTENT = 1;
+    public static final int ITEM_TYPE_FOOTER = 2;
     private  int itemNum ;
     private BookDetails mBookDetails;
+    private BookDetailsIncludeUser mBookDetailsIncludeUser;
+    private UserInfo mUserInfo;
     private Context mContext;
     static class ViewHolder extends RecyclerView.ViewHolder{
         TextView bookInfoItem;
@@ -27,21 +34,49 @@ public class BookDetailsAdapter extends RecyclerView.Adapter<BookDetailsAdapter.
         }
     }
 
-    public BookDetailsAdapter(BookDetails bookDetails, Context context){
+    public MyUploadBookDetailsAdapter(BookDetailsIncludeUser bookDetailsIncludeUser , Context context){
         mContext = context;
-        mBookDetails = bookDetails;
-        if(bookDetails.getSell()){
-            itemNum = 8;
+        mBookDetailsIncludeUser = bookDetailsIncludeUser;
+        mBookDetails = bookDetailsIncludeUser.getBook();
+        mUserInfo = bookDetailsIncludeUser.getUser();
+        if(bookDetailsIncludeUser.getBook().getSell()){
+            itemNum = 9;
         }
         else {
-            itemNum = 9;
+            itemNum = 10;
         }
     }
 
+
+    @Override
+    public int getItemViewType(int position){
+        if( position == getItemCount() - 1) {
+            return ITEM_TYPE_FOOTER;
+
+        }else{
+            return ITEM_TYPE_CONTENT;
+        }
+    }
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent,int viewType){
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_bookdetails_recycler,parent,false);
         ViewHolder holder = new ViewHolder(view);
+        if(viewType == ITEM_TYPE_FOOTER) {
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if(mUserInfo != null) {
+                        String dialogMessage = "昵称：" + mUserInfo.getNickName() + "\n" + "手机：" + mUserInfo.getPhoneNumber();
+                        Dialog.showDealerMessageDialog("买家信息",dialogMessage,mContext);
+                    }
+                    else{
+                        Dialog.showDialog("暂时没有用户有意向" , "" ,mContext);
+                    }
+
+
+                }
+            });
+        }
         return holder;
     }
     @Override
@@ -81,7 +116,16 @@ public class BookDetailsAdapter extends RecyclerView.Adapter<BookDetailsAdapter.
                     str = "介绍：\n" + mBookDetails.getIntroduction();
                     holder.bookInfoItem.setSingleLine(false);
                     break;
-
+                case 8:
+                    if(mUserInfo == null){
+                    str = "暂时没有用户有意向";
+                }else {
+                        str = "联系对方";
+                    }
+                    holder.bookInfoItem.setGravity(Gravity.CENTER);
+                    holder.bookInfoItem.setBackgroundColor(mContext.getResources().getColor(R.color.red_900));
+                    holder.bookInfoItem.setTextColor(mContext.getResources().getColor(R.color.white));
+                    break;
                 default:
                     str = "N/A";
                     break;
@@ -117,6 +161,16 @@ public class BookDetailsAdapter extends RecyclerView.Adapter<BookDetailsAdapter.
                     str = "介绍: \n" + mBookDetails.getIntroduction();
                     holder.bookInfoItem.setSingleLine(false);
                     break;
+                case 9:
+                    if(mUserInfo == null){
+                        str = "暂时没有用户有意向";
+                    }else {
+                        str = "联系对方";
+                    }
+                    holder.bookInfoItem.setGravity(Gravity.CENTER);
+                    holder.bookInfoItem.setBackgroundColor(mContext.getResources().getColor(R.color.red_900));
+                    holder.bookInfoItem.setTextColor(mContext.getResources().getColor(R.color.white));
+                    break;
                 default:str = "N/A";
                     break;
             }
@@ -124,6 +178,7 @@ public class BookDetailsAdapter extends RecyclerView.Adapter<BookDetailsAdapter.
         holder.bookInfoItem.setText(str);
 
     }
+
     private String getBookTypeName(String indexStr){
         int index = Integer.parseInt(indexStr);
         String[] bookTypeNames = mContext.getResources().getStringArray(R.array.array_book_type);

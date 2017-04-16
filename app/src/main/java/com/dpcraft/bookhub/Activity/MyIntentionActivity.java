@@ -9,17 +9,10 @@ import android.os.Message;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.OrientationHelper;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.Spinner;
-import android.widget.TextView;
 
-import com.dpcraft.bookhub.Adapter.MyUploadRecyclerAdapter;
+import com.dpcraft.bookhub.Adapter.MyIntentionRecyclerAdapter;
 import com.dpcraft.bookhub.Application.MyApplication;
-import com.dpcraft.bookhub.DataClass.BookGetRequestInformation;
 import com.dpcraft.bookhub.DataClass.BookPreview;
 import com.dpcraft.bookhub.DataClass.GetBookResponse;
 import com.dpcraft.bookhub.NetModule.JSONUtil;
@@ -34,28 +27,33 @@ import java.util.List;
 /**
  * Created by DPC on 2017/4/14.
  */
-public class MyUploadActivity extends Activity {
+public class MyIntentionActivity extends Activity {
    private CustomToolbar customToolbar;
-    private RecyclerView myUploadRecyclerView;
-    private MyUploadRecyclerAdapter myUploadRecyclerAdapter;
+    private RecyclerView myIntentionRecyclerView;
+    private MyIntentionRecyclerAdapter myIntentionRecyclerAdapter;
     private List<BookPreview> bookPreviewList;
-    private LinearLayoutManager myUploadLinearLayoutManager;
+    private LinearLayoutManager myIntentionLinearLayoutManager;
     private MyApplication myApplication;
     private int mIndex = 0;
-    private int req = 0;
 
+    private boolean hasMore = true;
+
+    
     private Handler handler= new Handler(){
-        public void handleMessage(Message msg) {
-            if (msg.what == 1 || msg.what == 2) {
-                Log.i("searchJson=========", msg.obj.toString());
-                GetBookResponse getBookResponse = JSONUtil.parseJsonWithGson(msg.obj.toString(), GetBookResponse.class);
-                bookPreviewList = getBookResponse.getData();
-                mIndex += bookPreviewList.size();
-                if (msg.what == 1) {
-                    myUploadRecyclerAdapter.clearBookList();
-                }
-                myUploadRecyclerAdapter.addBookList(bookPreviewList);
+        public void handleMessage(Message msg){
+            Log.i("searchJson=========",msg.obj.toString());
+            GetBookResponse getBookResponse = JSONUtil.parseJsonWithGson( msg.obj.toString(),GetBookResponse.class);
+            bookPreviewList = getBookResponse.getData();
+            mIndex += bookPreviewList.size();
+            if(bookPreviewList.size() == 0){
+                hasMore = false;
+                myIntentionRecyclerView.clearOnScrollListeners();
             }
+            if(msg.what == 1) {
+                myIntentionRecyclerAdapter.clearBookList();
+            }
+            myIntentionRecyclerAdapter.addBookList(bookPreviewList);
+
         }
     };
     @Override
@@ -64,22 +62,26 @@ public class MyUploadActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_upload);
         initWidget();
-        customToolbar.setTitle("我的发布");
-        myUploadRecyclerAdapter = new MyUploadRecyclerAdapter(this);
-        myUploadRecyclerView.setAdapter(myUploadRecyclerAdapter);
+        customToolbar.setTitle("我的有意");
+        myIntentionRecyclerAdapter = new MyIntentionRecyclerAdapter(this);
+        myIntentionRecyclerView.setAdapter(myIntentionRecyclerAdapter);
         //设置固定大小
-        myUploadRecyclerView.setHasFixedSize(true);
+        myIntentionRecyclerView.setHasFixedSize(true);
         //创建线性布局
-        myUploadLinearLayoutManager = new LinearLayoutManager(this);
-        myUploadLinearLayoutManager.setOrientation(OrientationHelper.VERTICAL);
-        myUploadRecyclerView.setLayoutManager(myUploadLinearLayoutManager);
-        myUploadRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+        myIntentionLinearLayoutManager = new LinearLayoutManager(this);
+        myIntentionLinearLayoutManager.setOrientation(OrientationHelper.VERTICAL);
+        myIntentionRecyclerView.setLayoutManager(myIntentionLinearLayoutManager);
+
+        //requestBookList();
+
+        myIntentionRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
 
             @Override
-            public void onScrollStateChanged(RecyclerView recyclerView , int newState) {
+            public void onScrollStateChanged(RecyclerView recyclerView,
+                                             int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
                 if (newState == RecyclerView.SCROLL_STATE_IDLE
-                        && myUploadLinearLayoutManager.findLastVisibleItemPosition() + 1 == myUploadRecyclerAdapter.getItemCount()) {
+                        && myIntentionLinearLayoutManager.findLastVisibleItemPosition() + 1 == myIntentionRecyclerAdapter.getItemCount()) {
 
                    // requestBookList();
                 }
@@ -97,22 +99,20 @@ public class MyUploadActivity extends Activity {
     protected void onResume(){
         super.onResume();
         Log.i("onResume========","onResume");
-        myUploadRecyclerAdapter.clearBookList();
+        myIntentionRecyclerAdapter.clearBookList();
         requestBookList();
     }
 
     private void initWidget(){
         
-        myUploadRecyclerView = (RecyclerView)findViewById(R.id.my_upload_recycler);
+        myIntentionRecyclerView = (RecyclerView)findViewById(R.id.my_upload_recycler);
         customToolbar = (CustomToolbar)findViewById(R.id.ctb_my_upload);
-
     }
     public void requestBookList(  ) {
-        Log.i("requestIsRunning======" ,req + "");
-        req++;
+
         String url = Server.getServerAddress() + "book/user?token=" + myApplication.getToken();
         try {
-            NetUtils.getMyBookList(url ,myApplication.getToken() , false ,handler);
+            NetUtils.getMyBookList(url ,myApplication.getToken() , true ,handler);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -120,7 +120,7 @@ public class MyUploadActivity extends Activity {
 
 
     public static void actionStart(Context context, String data1, String data2) {
-        Intent intent = new Intent(context, MyUploadActivity.class);
+        Intent intent = new Intent(context, MyIntentionActivity.class);
         intent.putExtra("para1", data1);
         intent.putExtra("para2", data2);
         context.startActivity(intent);

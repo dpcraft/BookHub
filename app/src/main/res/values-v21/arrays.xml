@@ -1,16 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="array_book_type">
-        <item>选择书籍分类</item>
-        <item>文学艺术</item>
-        <item>人文社科</item>
-        <item>外语学习</item>
-        <item>计算机编程</item>
+        <item>书籍分类</item>
+        <item>技术书籍</item>
         <item>经济管理</item>
+        <item>认证考试</item>
+        <item>文学艺术</item>
+        <item>外语</item>
+        <item>竞赛</item>
         <item>考研</item>
+        <item>课本</item>
+        <item>其他</item>
     </string-array>
     <string-array name="array_deal_type">
-        <item>选择交易类型</item>
+        <item>交易类型</item>
         <item>出租</item>
         <item>出售</item>
     </string-array>
