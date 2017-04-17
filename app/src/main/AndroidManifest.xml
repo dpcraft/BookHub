@@ -20,7 +20,6 @@
         </activity>
         <activity android:name=".Activity.LoginActivity"
             android:theme="@style/TransparentStatusBarTheme">
-
         </activity>
         <activity android:name=".Activity.SignupActivity"
             android:theme="@style/TransparentStatusBarTheme"
@@ -42,6 +41,12 @@
         <activity android:name=".Activity.MyUploadBookDetailsActivity"/>
         <activity android:name=".Activity.MyIntentionBookDetailsActivity"/>
         <activity android:name=".Activity.ClassificationActivity"/>
+
+        <activity
+            android:name="com.mob.tools.MobUIShell"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:windowSoftInputMode="stateHidden|adjustResize"/>
         <provider
             android:name="android.support.v4.content.FileProvider"
             android:authorities="com.dpcraft.bookhub.fileprovider"
@@ -60,6 +65,18 @@
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.FLASHLIGHT" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+
+
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+
+    <uses-permission android:name="android.permission.RECEIVE_SMS" />
+    <uses-permission android:name="android.permission.READ_SMS" />
+    <uses-permission android:name="android.permission.GET_TASKS" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
 
 </manifest>

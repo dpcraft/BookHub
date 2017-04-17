@@ -8,9 +8,11 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.design.widget.TextInputLayout;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.dpcraft.bookhub.DataClass.User;
 import com.dpcraft.bookhub.NetModule.NetUtils;
@@ -18,6 +20,11 @@ import com.dpcraft.bookhub.R;
 import com.dpcraft.bookhub.UIWidget.CustomToolbar;
 import com.dpcraft.bookhub.UIWidget.Dialog;
 import com.dpcraft.bookhub.Algorithm.ContainsChinese;
+
+import org.json.JSONObject;
+
+import cn.smssdk.EventHandler;
+import cn.smssdk.SMSSDK;
 
 /**
  * Created by DPC on 2017/2/21.
@@ -34,12 +41,28 @@ public class SignupActivity extends Activity {
     private TextInputLayout mVerfCodeWrapper;
     private  Button signupButton, getVerfCodeButton;
     private CustomToolbar customToolbar;
-
-
     private User user;
+    private int  time = 60;
+    private boolean verfCodeIstrue = false;
+
+    private EventHandler eventHandler = new EventHandler(){
+
+        @Override
+        public void afterEvent(int event , int result , Object data){
+            Message msg = new Message();
+            msg.arg1 = event;
+            msg.arg2 = result;
+            msg.obj = data;
+            handler.sendMessage(msg);
+        }
+    };
+
     private Handler handler= new Handler(){
         public void handleMessage(Message msg){
+            if(msg.what == SUCCESS || msg.what == REQUEST_ERROR || msg.what == OPERATION_UNAUTHORIZED ||
+                    msg.what == OBJECT_EXIST){
             try {
+
                 switch (msg.what) {
                     case SUCCESS:
                         Dialog.showSignupSuccessDialog(SignupActivity.this, "恭喜您注册成功");
@@ -57,14 +80,60 @@ public class SignupActivity extends Activity {
                     default:
                         break;
                 }
+
             }catch (Exception e){
                 Dialog.showDialog("获取数据错误"," 数据库错误 !" , SignupActivity.this);
             }
+            }else {
+
+                if(msg.what == -1){
+                    //修改按钮上倒计时
+                    getVerfCodeButton.setText( time + "s");
+                }else  if(msg.what == -2 ){
+                    //修改按钮文字，进行重新发送验证码
+                    getVerfCodeButton.setText("重新发送");
+                    getVerfCodeButton.setClickable(true);
+                    time = 60;
+                }else{
+                    int event = msg.arg1;
+                    int result = msg.arg2;
+                    Object data = msg.getData();
+                    if(event == SMSSDK.EVENT_SUBMIT_VERIFICATION_CODE){
+                        //短信验证成功
+                        //verfCodeIstrue = true;
+                        try {
+                            NetUtils.signup(user, handler);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }else if(event == SMSSDK.EVENT_GET_VERIFICATION_CODE){
+                        Toast.makeText(SignupActivity.this , "验证码已发送" ,Toast.LENGTH_SHORT ).show();
+                    }else if (result == SMSSDK.RESULT_ERROR){
+                        try{
+                            Throwable throwable = (Throwable)data;
+                            throwable.printStackTrace();
+                            JSONObject object = new JSONObject(throwable.getMessage());
+                            String des = object.optString("detail");//错误描述
+                            int status = object.optInt("status");//错误代码
+                            if(status > 0 && !TextUtils.isEmpty(des)){
+                                Toast.makeText(SignupActivity.this , des , Toast.LENGTH_SHORT).show();
+                                return;
+                            }
+                        }catch (Exception e){
+                            e.printStackTrace();
+                        }
+                    }
+
+                }
+
+            }
+
         }
     };
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
+        SMSSDK.initSDK(this , "1d164a6add800" , "f93a74559fa0806eee0ad040cc9cb974");
+        SMSSDK.registerEventHandler(eventHandler);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
         customToolbar = (CustomToolbar)findViewById(R.id.ctb_signup);
@@ -73,6 +142,35 @@ public class SignupActivity extends Activity {
         initWidget();
 
 
+        getVerfCodeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //if(FormatRight()){
+                    SMSSDK.getVerificationCode("86" , "mPhoneNumberWrapper.getEditText().getText().toString().trim()");
+                    getVerfCodeButton.setClickable(false);
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            for (; time > 0; time--) {
+                                handler.sendEmptyMessage(-1);
+                                if (time <= 0) {
+                                    break;
+                                }
+                                try {
+                                    Thread.sleep(1000);
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                            //倒计时结束执行
+                            handler.sendEmptyMessage(-2);
+                        }
+                    }).start();
+                }
+
+            //}
+        });
+
         signupButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -80,26 +178,24 @@ public class SignupActivity extends Activity {
                 user.setNickName(mUsernameWrapper.getEditText().getText().toString().trim());
                 user.setPassWord(mPasswordWrapper.getEditText().getText().toString().trim());
                 user.setPhoneNum(mPhoneNumberWrapper.getEditText().getText().toString().trim());
-                if(canSignup()) {
-                    try {
-                        NetUtils.signup(user, handler);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
+                if(FormatRight() && isVerfCodeValid()) {
+
+                    SMSSDK.submitVerificationCode("86" , mPhoneNumberWrapper.getEditText().getText().toString().trim() ,
+                            mVerfCodeWrapper.getEditText().getText().toString().trim());
+
+
                 }
             }
         });
 
-        getVerfCodeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-
-            }
-        });
 
         //Dialog.showSignupSuccessDialog(SignupActivity.this);
 
+    }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        SMSSDK.unregisterAllEventHandler();
     }
 
 
@@ -175,8 +271,8 @@ public class SignupActivity extends Activity {
 
 
     }
-    private boolean canSignup(){
-        if(isUserNameValid()&&isPasswordValid()&&isRePasswordValid()&&isPhoneNumberValid()&&isVerfCodeValid())
+    private boolean FormatRight(){
+        if(isUserNameValid()&&isPasswordValid()&&isRePasswordValid()&&isPhoneNumberValid())//&&isVerfCodeValid())
             return true;
         else
         return false;

@@ -18,6 +18,11 @@ android {
         }
     }
 }
+repositories{
+    flatDir{
+        dirs 'libs'
+    }
+}
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
@@ -36,6 +41,10 @@ dependencies {
     compile files('libs/core-3.2.1.jar')
     //compile 'com.linchaolong.android:imagepicker:1.1'
     compile 'com.github.bumptech.glide:glide:3.7.0'
+
+    //短信验证码
+    compile files ('libs/MobCommons-2017.0321.1624.jar')
+    compile(name: 'SMSSDK-2.1.4',ext:'aar')
 
 
 }

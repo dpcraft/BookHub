@@ -49,10 +49,6 @@ public class SellFragment extends Fragment{
                     {
                         bookPreviewList = getBookResponse.getData();
                         mIndex += bookPreviewList.size();
-                        if (bookPreviewList.size() == 0) {
-                            hasMore = false;
-                            sellRecyclerView.clearOnScrollListeners();
-                        }
                         if (msg.what == 1) {
                             sellRecyclerAdapter.clearBooklist();
                         }
@@ -153,23 +149,7 @@ public class SellFragment extends Fragment{
         }
     }
     private void refreshBookList(){
-            sellRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-                @Override
-                public void onScrollStateChanged(RecyclerView recyclerView,
-                                                 int newState) {
-                    super.onScrollStateChanged(recyclerView, newState);
-                    if (newState == RecyclerView.SCROLL_STATE_IDLE
-                            && sellLinearLayoutManager.findLastVisibleItemPosition() + 1 == sellRecyclerAdapter.getItemCount()) {
-                        requestBookList(mIndex + "" , false);
-                    }
-                }
 
-                @Override
-                public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                    super.onScrolled(recyclerView, dx, dy);
-                    //int lastVisibleItem = sellLinearLayoutManager.findLastVisibleItemPosition();
-                }
-            });
         new Thread(new Runnable() {
             @Override
             public void run() {
