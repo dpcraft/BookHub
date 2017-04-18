@@ -48,18 +48,18 @@
             app:fabSize="mini" />
     </com.lzp.floatingactionbuttonplus.FabTagLayout>
 
-    <com.lzp.floatingactionbuttonplus.FabTagLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:tagText="分享读书笔记"
-        >
-        <android.support.design.widget.FloatingActionButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-           android:src="@mipmap/ic_notes_48dp"
-            app:backgroundTint="#ff9800"
-            app:fabSize="mini" />
-    </com.lzp.floatingactionbuttonplus.FabTagLayout>
+    <!--<com.lzp.floatingactionbuttonplus.FabTagLayout-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--app:tagText="分享读书笔记"-->
+        <!--&gt;-->
+        <!--<android.support.design.widget.FloatingActionButton-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+           <!--android:src="@mipmap/ic_notes_48dp"-->
+            <!--app:backgroundTint="#ff9800"-->
+            <!--app:fabSize="mini" />-->
+    <!--</com.lzp.floatingactionbuttonplus.FabTagLayout>-->
 
 
 

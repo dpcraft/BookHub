@@ -10,6 +10,7 @@ import android.support.design.widget.TextInputLayout;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -45,17 +46,7 @@ public class SignupActivity extends Activity {
     private int  time = 60;
     private boolean verfCodeIstrue = false;
 
-    private EventHandler eventHandler = new EventHandler(){
-
-        @Override
-        public void afterEvent(int event , int result , Object data){
-            Message msg = new Message();
-            msg.arg1 = event;
-            msg.arg2 = result;
-            msg.obj = data;
-            handler.sendMessage(msg);
-        }
-    };
+    private EventHandler eventHandler ;
 
     private Handler handler= new Handler(){
         public void handleMessage(Message msg){
@@ -85,6 +76,7 @@ public class SignupActivity extends Activity {
                 Dialog.showDialog("获取数据错误"," 数据库错误 !" , SignupActivity.this);
             }
             }else {
+                Log.i("msg.what=======",msg.what + "");
 
                 if(msg.what == -1){
                     //修改按钮上倒计时
@@ -101,10 +93,16 @@ public class SignupActivity extends Activity {
                     if(event == SMSSDK.EVENT_SUBMIT_VERIFICATION_CODE){
                         //短信验证成功
                         //verfCodeIstrue = true;
-                        try {
-                            NetUtils.signup(user, handler);
-                        } catch (Exception e) {
-                            e.printStackTrace();
+                        if(result == SMSSDK.RESULT_COMPLETE) {
+                            try {
+                                NetUtils.signup(user, handler);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+
+                        }
+                        else{
+                            Dialog.showDialog("注册失败", "验证码错误", SignupActivity.this);
                         }
                     }else if(event == SMSSDK.EVENT_GET_VERIFICATION_CODE){
                         Toast.makeText(SignupActivity.this , "验证码已发送" ,Toast.LENGTH_SHORT ).show();
@@ -132,10 +130,21 @@ public class SignupActivity extends Activity {
     };
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        SMSSDK.initSDK(this , "1d164a6add800" , "f93a74559fa0806eee0ad040cc9cb974");
-        SMSSDK.registerEventHandler(eventHandler);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
+        SMSSDK.initSDK(SignupActivity.this , "1d164a6add800" , "f93a74559fa0806eee0ad040cc9cb974");
+        eventHandler = new EventHandler(){
+            @Override
+            public void afterEvent(int event , int result , Object data){
+                Message msg = new Message();
+                msg.arg1 = event;
+                msg.arg2 = result;
+                msg.obj = data;
+                handler.sendMessage(msg);
+            }
+        };
+        SMSSDK.registerEventHandler(eventHandler);
         customToolbar = (CustomToolbar)findViewById(R.id.ctb_signup);
         customToolbar.setTitle("用户注册");
         user = new User();
@@ -146,7 +155,7 @@ public class SignupActivity extends Activity {
             @Override
             public void onClick(View view) {
                 //if(FormatRight()){
-                    SMSSDK.getVerificationCode("86" , "mPhoneNumberWrapper.getEditText().getText().toString().trim()");
+                    SMSSDK.getVerificationCode("86" , mPhoneNumberWrapper.getEditText().getText().toString().trim());
                     getVerfCodeButton.setClickable(false);
                     new Thread(new Runnable() {
                         @Override
