@@ -108,6 +108,7 @@ public class MainActivity extends FragmentActivity {
                     switch (position){
                     case 0:
                         Toast.makeText(MainActivity.this,"Click btn 0 = "+ position,Toast.LENGTH_SHORT).show();
+                        RequestEditorActivity.actionStart(MainActivity.this , "" ,"");
                         break;
                         case 1:
                             if(myApplication.isLogin()){
@@ -126,9 +127,6 @@ public class MainActivity extends FragmentActivity {
                             }else{
                                 LoginActivity.actionStart(MainActivity.this, "MainActivity", "data2");
                             }
-                            break;
-                        case 3:
-                            Toast.makeText(MainActivity.this,"Click btn 3 = "+ position,Toast.LENGTH_SHORT).show();
                             break;
                         default:
                             break;

@@ -88,4 +88,16 @@
     <color name="qr_blue">#FF0099CC</color>
 
 
+
+
+    <color name="colorEnabledAndAllowedButtonBackground">#20e167</color>
+    <color name="colorEnabledAndNotAllowedButtonBackground">#bcf6d1</color>
+    <color name="colorDisabledButtonBackground">#FFFFFF</color>
+    <color name="red">#FFFF0000</color>
+    <color name="green">#FF00FF00</color>
+    <color name="yellow">#FFFFFF00</color>
+    <color name="blue">#FF0000FF</color>
+    <color name="gray">#FF888888</color>
+    <color name="ltGray">#FFCCCCCC</color>
+
 </resources>

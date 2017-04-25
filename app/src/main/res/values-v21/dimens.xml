@@ -5,4 +5,7 @@
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="tb_elevation">3dp</dimen>
 
+
+    <dimen name="editor_min_height">100dp</dimen>
+
 </resources>

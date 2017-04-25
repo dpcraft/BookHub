@@ -6,4 +6,6 @@
     <dimen name="tb_elevation">0dp</dimen>
     <dimen name="font_normal">20sp</dimen>
     <dimen name="font_small">15sp</dimen>
+
+    <dimen name="editor_min_height">100dp</dimen>
 </resources>
