@@ -16,6 +16,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.dpcraft.bookhub.Adapter.MyUploadBookDetailsAdapter;
@@ -39,7 +40,7 @@ public class MyUploadBookDetailsActivity extends Activity {
     private MyApplication myApplication;
     private FloatingActionButton floatingActionButton;
     private Toolbar bookNameToolbar;
-    private boolean isLiked;
+    private boolean isSold;
     private BookDetailsIncludeUser bookDetailsIncludeUser;
     private MyUploadBookDetailsAdapter myUploadBookDetailsAdapter;
     private BookDetails bookDetails;
@@ -59,21 +60,21 @@ public class MyUploadBookDetailsActivity extends Activity {
                     bookNameToolbar.setTitle(bookDetails.getName());
                     myUploadBookDetailsAdapter = new MyUploadBookDetailsAdapter(bookDetailsIncludeUser,MyUploadBookDetailsActivity.this);
                     bookDetailsRecyclerView.setAdapter( myUploadBookDetailsAdapter);
-                    if(bookDetails.getIntention()){
-                        isLiked = true;
+                    if(bookDetails.getSell()){
+                        isSold = true;
                      }
                     else{
-                    isLiked = false;
+                    isSold = false;
                      }
-                    Log.i("userId==============",bookDetails.getUserId());
                     //if(myApplication.isLogin() && mbookDetails.getUserId() == myApplication.getLoginResponseUserInfo().getNickName())
-
                     break;
                 case 002:
                     Dialog.showDialog("dialog", JSONUtil.parseJsonWithGson(msg.obj.toString(),ResponseFromServer.class).getMessage(),MyUploadBookDetailsActivity.this);
                     break;
                 case 301:
-                    Dialog.showDialog("dialog", JSONUtil.parseJsonWithGson(msg.obj.toString(),ResponseFromServer.class).getMessage(),MyUploadBookDetailsActivity.this);
+                    Toast.makeText(MyUploadBookDetailsActivity.this , JSONUtil.parseJsonWithGson(msg.obj.toString(),ResponseFromServer.class).getMessage() , Toast.LENGTH_SHORT).show();
+                    finish();
+                    //Dialog.showDialog("dialog", JSONUtil.parseJsonWithGson(msg.obj.toString(),ResponseFromServer.class).getMessage(),MyUploadBookDetailsActivity.this);
                     break;
                 default:
                     break;
@@ -123,14 +124,14 @@ public class MyUploadBookDetailsActivity extends Activity {
             @Override
             public void onClick(View view) {
                 String intentionUrl = Server.getServerAddress() + "book/deal";
-                if(!isLiked){
+                if(!isSold){
                     floatingActionButton.setImageResource(R.drawable.ic_intention_true);
-                    NetUtils.modifyIntention( intentionUrl , myApplication.getToken() , bookDetails.getId() , false , isLiked , handler);
+                    NetUtils.modifyIntention( intentionUrl , myApplication.getToken() , bookDetails.getId() , false , isSold, handler);
                 }else{
                     floatingActionButton.setImageResource(R.drawable.ic_intention_false);
-                    NetUtils.modifyIntention( intentionUrl , myApplication.getToken() , bookDetails.getId() , false , isLiked , handler);
+                    NetUtils.modifyIntention( intentionUrl , myApplication.getToken() , bookDetails.getId() , false , isSold, handler);
                 }
-                isLiked = !isLiked;
+                isSold = !isSold;
             }
         });
 

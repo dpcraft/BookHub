@@ -97,6 +97,46 @@
 
     </LinearLayout>
     </android.support.v7.widget.CardView>
+    <android.support.v7.widget.CardView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        style="@style/sell_recycler_card_view"
+        android:clickable="true"
+        app:cardCornerRadius="1dp"
+        app:cardElevation="1dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_margin="@dimen/activity_horizontal_margin">
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
+                android:gravity="start"
+                android:text="手机号:"
+                android:textSize="@dimen/font_normal"
+                android:textColor="@color/black"/>
+            <TextView
+                android:id="@+id/tv_phonenumber"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="5"
+                android:gravity="start"
+                android:phoneNumber="true"
+                android:layout_marginStart="30dp"
+                android:textSize="@dimen/font_normal"
+                android:textColor="@color/text_grey"/>
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:src="@drawable/ic_right_arrow"
+                />
+
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
 
     <Button
         android:id="@+id/btn_logout"

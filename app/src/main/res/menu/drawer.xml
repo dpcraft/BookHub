@@ -5,10 +5,10 @@
     >
     <group android:checkableBehavior="single">
 
-        <item
-            android:id="@+id/navigation_item_message"
-            android:icon="@drawable/ic_message"
-            android:title="消息"/>
+        <!--<item-->
+            <!--android:id="@+id/navigation_item_message"-->
+            <!--android:icon="@drawable/ic_message"-->
+            <!--android:title="消息"/>-->
         <item
             android:id="@+id/navigation_item_userInfo"
             android:icon="@drawable/ic_user_info"

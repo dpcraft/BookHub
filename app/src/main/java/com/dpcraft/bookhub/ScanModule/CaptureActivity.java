@@ -37,6 +37,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.dpcraft.bookhub.Activity.UploadActivity;
 import com.dpcraft.bookhub.R;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.Result;
@@ -77,7 +78,7 @@ public class CaptureActivity extends Activity implements Callback {
     private boolean flashLightOpen = false;
     private ImageView backIbtn;
     private ImageButton flashIbtn;
-    private TextView galleryTv;
+    private TextView textViewPass;
 
     /**
      * Called when the activity is first created.
@@ -201,7 +202,7 @@ public class CaptureActivity extends Activity implements Callback {
         backIbtn = (ImageView) findViewById(R.id.back_ibtn);
         viewfinderView = (ViewfinderView) findViewById(R.id.viewfinder_view);
         flashIbtn = (ImageButton) findViewById(R.id.flash_ibtn);
-        galleryTv = (TextView) findViewById(R.id.gallery_tv);
+        textViewPass = (TextView) findViewById(R.id.tv_pass);
 
         backIbtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -220,12 +221,14 @@ public class CaptureActivity extends Activity implements Callback {
                 toggleFlashLight();
             }
         });
-      /*  galleryTv.setOnClickListener(new View.OnClickListener() {
+        textViewPass.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openGallery();
+
+                UploadActivity.actionStart(CaptureActivity.this,"data1","data2");
+                mActivity.finish();
             }
-        });*/
+        });
     }
 
     protected void setViewfinderView(ViewfinderView view) {

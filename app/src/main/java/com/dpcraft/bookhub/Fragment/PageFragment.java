@@ -13,6 +13,9 @@ import android.widget.TextView;
 
 import com.dpcraft.bookhub.R;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class PageFragment extends Fragment {
 
@@ -35,6 +38,7 @@ public class PageFragment extends Fragment {
 
     @Nullable
     @Override
+
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_page, container, false);
         TextView textView = (TextView) view;
@@ -42,5 +46,6 @@ public class PageFragment extends Fragment {
         textView.setText("开发中……");
         return view;
     }
+
 
 }

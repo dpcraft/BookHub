@@ -121,7 +121,7 @@
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:layout_gravity="center"
-        android:id="@+id/wechat_login"
+        android:id="@+id/btn_wechat_login"
         android:background="@color/transparent"
         android:drawableTop="@drawable/ic_wechat"
         android:text="微信登录"

@@ -11,6 +11,7 @@ import android.support.design.widget.TextInputLayout;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.dpcraft.bookhub.Application.MyApplication;
 import com.dpcraft.bookhub.DataClass.LoginResponse;
@@ -33,7 +34,7 @@ public class LoginActivity extends Activity {
     private TextInputLayout mUsernameWrapper;
     private TextInputLayout mPasswordWrapper;
     private CustomToolbar customToolbar;
-    private Button RegisterButton,LoginButton;
+    private Button registerButton, loginButton , weChatButton;
     private MyApplication myApplication ;
     private  String nextActivity,userName,passWord;
     private Timer timer = new Timer();
@@ -93,7 +94,7 @@ public class LoginActivity extends Activity {
         nextActivity = intent.getStringExtra("nextActivity");
 
 
-        RegisterButton.setOnClickListener(new View.OnClickListener() {
+        registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 SignupActivity.actionStart(LoginActivity.this, "data1", "data2");
@@ -114,7 +115,7 @@ public class LoginActivity extends Activity {
 
         Log.i("loginActivity","start");
         user = new User();
-        LoginButton.setOnClickListener(new View.OnClickListener() {
+        loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
@@ -138,6 +139,12 @@ public class LoginActivity extends Activity {
 
         myApplication = (MyApplication)getApplication();
         Log.i(" login activity islogin",myApplication.isLogin().toString());
+        weChatButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(LoginActivity.this , "微信登录暂不可用" , Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
 
@@ -148,11 +155,12 @@ public class LoginActivity extends Activity {
         customToolbar = (CustomToolbar)findViewById(R.id.ctb_login);
         customToolbar.setTitle("用户登录");
 
-        RegisterButton = (Button)findViewById(R.id.btn_register);
+        registerButton = (Button)findViewById(R.id.btn_register);
+        weChatButton = (Button) findViewById(R.id.btn_wechat_login);
 
         mUsernameWrapper = (TextInputLayout) findViewById(R.id.usernameWrapper);
         mPasswordWrapper = (TextInputLayout) findViewById(R.id.passwordWrapper);
-        LoginButton = (Button)findViewById(R.id.btn_login) ;
+        loginButton = (Button)findViewById(R.id.btn_login) ;
 
 
     }

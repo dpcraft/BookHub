@@ -41,6 +41,7 @@
         <activity android:name=".Activity.MyUploadBookDetailsActivity"/>
         <activity android:name=".Activity.MyIntentionBookDetailsActivity"/>
         <activity android:name=".Activity.ClassificationActivity"/>
+        <activity android:name=".Activity.ChangePasswordActivity"/>
 
         <activity
             android:name="com.mob.tools.MobUIShell"

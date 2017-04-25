@@ -154,7 +154,7 @@ public class SignupActivity extends Activity {
         getVerfCodeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //if(FormatRight()){
+                if(FormatRight()){
                     SMSSDK.getVerificationCode("86" , mPhoneNumberWrapper.getEditText().getText().toString().trim());
                     getVerfCodeButton.setClickable(false);
                     new Thread(new Runnable() {
@@ -177,7 +177,7 @@ public class SignupActivity extends Activity {
                     }).start();
                 }
 
-            //}
+            }
         });
 
         signupButton.setOnClickListener(new View.OnClickListener() {

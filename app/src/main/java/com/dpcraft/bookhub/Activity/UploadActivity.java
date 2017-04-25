@@ -19,6 +19,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.dpcraft.bookhub.Algorithm.UnitConversion;
 import com.dpcraft.bookhub.Application.MyApplication;
@@ -60,7 +61,9 @@ public class UploadActivity extends Activity {
         public void handleMessage(Message msg){
             switch ( msg.what){
                 case SUCCESS :
-                    Dialog.showSignupSuccessDialog(UploadActivity.this , "上传成功");
+                    Toast.makeText(UploadActivity.this , "上传成功" ,Toast.LENGTH_SHORT).show();
+                   //ialog.showSignupSuccessDialog(UploadActivity.this , "上传成功");
+                    UploadActivity.this.finish();
                     break;
                 case REQUEST_ERROR:
                     Dialog.showDialog("上传失败", JSONUtil.parseJsonWithGson((String)msg.obj,ResponseFromServer.class).getMessage(),UploadActivity.this);

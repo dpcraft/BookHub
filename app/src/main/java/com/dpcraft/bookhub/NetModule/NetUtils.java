@@ -217,6 +217,38 @@ public class NetUtils {
 
     }
 
+    public static void changePassWord(String token , String oldPassWord , String newPassWord ,final Handler handler)  {
+
+
+            String address = Server.getServerAddress() + "user/update?token=" + token
+                    + "&oldpassword=" + oldPassWord + "&newpassword=" + newPassWord;
+            HttpUtil.sendHttpGetRequest(address, new Callback() {
+                @Override
+                public void onFailure(Call call, IOException e) {
+                    Log.i("onFailure", "onFailure");
+
+                }
+
+                @Override
+                public void onResponse(Call call, okhttp3.Response response) throws IOException {
+                    if (!response.isSuccessful()) {
+                        throw new IOException("Unexpected code " + response);
+
+                    }
+                    String responseBody = response.body().string();
+                    Log.i("okhttp3.response", responseBody);
+                    int code;
+                    code = 2;
+                    Message message = handler.obtainMessage();//创建message的方式，可以更好地被回收
+                    message.what = code;
+                    message.obj = responseBody;
+                    handler.sendMessage(message);
+                }
+
+            });
+
+    }
+
     /*
      * The method used to get details of the book
      *

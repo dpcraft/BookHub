@@ -159,9 +159,9 @@ public class MainActivity extends FragmentActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 int id = item.getItemId();
                 switch (id){
-                    case R.id.navigation_item_message:
-                        //消息点击处理
-                        break;
+//                    case R.id.navigation_item_message:
+//                        //消息点击处理
+//                        break;
                     case R.id.navigation_item_userInfo:
                         //个人信息
                         if(myApplication.isLogin()){

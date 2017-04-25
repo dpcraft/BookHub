@@ -31,4 +31,7 @@ public class CustomToolbar extends LinearLayout{
     public void setTitle(CharSequence title){
         cToolbar.setTitle(title);
     }
+    public Toolbar getcToolbar(){
+        return cToolbar;
+    }
 }

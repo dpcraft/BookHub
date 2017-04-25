@@ -12,6 +12,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -102,11 +103,6 @@ public class UserInfoActivity extends Activity {
         setContentView(R.layout.activity_userinfo);
         initWidget();
         customToolbar.setTitle("个人信息");
-       // if(myApplication.getUserIcon() == null){
-         //   circleUserIcon.setImageResource(R.drawable.default_user_icon);
-       // }else {
-        //circleUserIcon.setImageURI(myApplication.getUserIcon());
-         // }
         Glide.with(this).load(Server.getServerAddress() + "user/photo?token=" + myApplication.getToken())
                 .error(R.drawable.default_user_icon).into(circleUserIcon);
 
