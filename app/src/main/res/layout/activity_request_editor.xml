@@ -9,20 +9,66 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-        <Button
-            android:id="@+id/btn_complete"
+        <com.dpcraft.bookhub.UIWidget.CustomToolbar
+            android:id="@+id/ctb_request"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="完成"/>
+            ></com.dpcraft.bookhub.UIWidget.CustomToolbar>
+    <ScrollView
+        android:id="@+id/scrollview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fadingEdge="none"
+        android:scrollbars="none"
+        xmlns:android="http://schemas.android.com/apk/res/android" >
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
         <EditText
+            android:id="@+id/et_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/shape_search_edit"
-            android:hint="标题"/>
+            android:background="@drawable/shape_request_title_edit"
+            android:singleLine="true"
+            android:maxLength="10"
+            android:hint="想要的书名"
+            android:paddingLeft="10dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="10dp"/>
         <com.dpcraft.bookhub.RichTextEditor.RichEditText
             android:id="@+id/rich_edit_text"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="400dp"
+            android:layout_margin="5dp"
+            android:background="@color/white"
+            />
+        <Button
+            android:id="@+id/btn_complete"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@drawable/shape_rectangle_green"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:text="确认发布"
+            android:textColor="@color/white"/>
+        <WebView
+            android:layout_marginTop="10dp"
+            android:id="@+id/wv_show"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:text=""
+            android:textSize="30sp"/>
+    </LinearLayout>
+    </ScrollView>
     </LinearLayout>
 
     <com.dpcraft.bookhub.RichTextEditor.RichTextActions

@@ -67,6 +67,16 @@ public class Dialog {
         textView.setText(dialogTitle);
 
     }
+    public static void showProgressDialog(Context context,String dialogTitle) {
+
+        final AlertDialog dialog = new AlertDialog.Builder(context).create();
+        dialog.show();
+        Window window =dialog.getWindow();
+        window.setContentView(R.layout.dialog_progress);
+        TextView textView = (TextView) window.findViewById(R.id.tv_success);
+        textView.setText(dialogTitle);
+
+    }
     public static void showLoginSuccessDialog(Context context) {
 
         final Timer timer = new Timer();
@@ -84,6 +94,7 @@ public class Dialog {
         },2000);//延时2s执行
 
     }
+
 
 
     public static void showChangeIconDialog2(final Context context) {
@@ -120,6 +131,7 @@ public class Dialog {
         Log.i("1242",UnitConversion.px2dip(context,1242)+ "");
 
     }
+
     public static void showChangeIconDialog(final Context context) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         LayoutInflater inflater = LayoutInflater.from(context);

@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -15,10 +14,12 @@ import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.dpcraft.bookhub.Algorithm.UnitConversion;
@@ -56,9 +57,11 @@ public class UploadActivity extends Activity {
     private  UploadBookInfo uploadBookInfo;
     private MyApplication myApplication;
     private ImagePicker imagePicker = new ImagePicker();
+    private AlertDialog progressDialog;
 
     private Handler handler= new Handler(){
         public void handleMessage(Message msg){
+            progressDialog.dismiss();
             switch ( msg.what){
                 case SUCCESS :
                     Toast.makeText(UploadActivity.this , "上传成功" ,Toast.LENGTH_SHORT).show();
@@ -99,8 +102,8 @@ public class UploadActivity extends Activity {
                 Bitmap bitmap = bookCover.getDrawingCache();
                 saveBitmapFile(bitmap);
                 bookCover.setDrawingCacheEnabled(false);
-
                 collectBookInfo();
+                showProgressDialog();
                 try {
                     NetUtils.uploadBook(uploadBookInfo, myApplication.getToken(), handler);
                 }catch (Exception e){
@@ -227,6 +230,13 @@ public class UploadActivity extends Activity {
         imagePicker.onRequestPermissionsResult(this, requestCode, permissions, grantResults);
     }
 
+    @Override
+    public void onBackPressed(){
+        Log.i("onBackPressed:", "onBackPressed: ");
+        dismissProgressDialog();
+
+    }
+
     private void startCameraOrGallery() {
         new AlertDialog.Builder(this).setTitle("上传书籍封面")
                 .setItems(new String[] { "从相册中选取图片", "拍照" }, new DialogInterface.OnClickListener() {
@@ -280,6 +290,29 @@ public class UploadActivity extends Activity {
                     }
                 })
                 .show();
+    }
+
+    public void showProgressDialog() {
+
+        progressDialog = new AlertDialog.Builder(this).create();
+        progressDialog.setCancelable(false);
+        progressDialog.show();
+        Window window = progressDialog.getWindow();
+        window.setContentView(R.layout.dialog_progress);
+        TextView textView = (TextView) window.findViewById(R.id.tv_success);
+        textView.setText("上传中……");
+
+    }
+
+    public void dismissProgressDialog() {
+        if (isFinishing()) {
+            Log.i("isFinishing=========", "dismissProgressDialog: ");
+            return;
+        }
+        progressDialog.dismiss();
+        if (null != progressDialog /*&& progressDialog.isShowing()*/) {
+            progressDialog.dismiss();
+        }
     }
 
     public static void actionStart(Context context, String data1, String data2) {
