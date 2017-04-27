@@ -13,6 +13,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
@@ -59,17 +60,30 @@ public class UploadActivity extends Activity {
     private ImagePicker imagePicker = new ImagePicker();
     private AlertDialog progressDialog;
 
+    private DialogInterface.OnKeyListener mOnKeyListener = new DialogInterface.OnKeyListener() {
+        @Override
+        public boolean onKey(DialogInterface dialogInterface, int keyCode, KeyEvent keyEvent) {
+
+            if(keyCode == KeyEvent.KEYCODE_BACK && keyEvent.getAction() == KeyEvent.ACTION_DOWN){
+                dismissProgressDialog();
+            }
+
+            return false;
+        }
+    };
+
     private Handler handler= new Handler(){
         public void handleMessage(Message msg){
             progressDialog.dismiss();
             switch ( msg.what){
                 case SUCCESS :
-                    Toast.makeText(UploadActivity.this , "上传成功" ,Toast.LENGTH_SHORT).show();
+                    Toast.makeText(UploadActivity.this , "发布成功" ,Toast.LENGTH_SHORT).show();
                    //ialog.showSignupSuccessDialog(UploadActivity.this , "上传成功");
                     UploadActivity.this.finish();
                     break;
                 case REQUEST_ERROR:
-                    Dialog.showDialog("上传失败", JSONUtil.parseJsonWithGson((String)msg.obj,ResponseFromServer.class).getMessage(),UploadActivity.this);
+                    progressDialog.dismiss();
+                    Dialog.showDialog("发布失败", JSONUtil.parseJsonWithGson((String)msg.obj,ResponseFromServer.class).getMessage(),UploadActivity.this);
 
                     break;
 
@@ -234,8 +248,11 @@ public class UploadActivity extends Activity {
     public void onBackPressed(){
         Log.i("onBackPressed:", "onBackPressed: ");
         dismissProgressDialog();
+        super.onBackPressed();
 
     }
+
+
 
     private void startCameraOrGallery() {
         new AlertDialog.Builder(this).setTitle("上传书籍封面")
@@ -300,7 +317,8 @@ public class UploadActivity extends Activity {
         Window window = progressDialog.getWindow();
         window.setContentView(R.layout.dialog_progress);
         TextView textView = (TextView) window.findViewById(R.id.tv_success);
-        textView.setText("上传中……");
+        textView.setText("发布中……");
+        progressDialog.setOnKeyListener(mOnKeyListener);
 
     }
 
