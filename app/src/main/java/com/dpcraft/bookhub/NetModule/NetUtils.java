@@ -93,6 +93,38 @@ public class NetUtils {
             }
         });
     }
+
+
+    public static void changePassword(String address ,final Handler handler){
+
+        HttpUtil.sendHttpGetRequest(address, new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Log.i("onFailure","onFailure");
+
+            }
+
+            @Override
+            public void onResponse(Call call, okhttp3.Response response) throws IOException {
+                if (!response.isSuccessful())
+                {
+                    throw new IOException("Unexpected code " + response);
+                }
+                String responseBody =  response.body().string();
+                Log.i("changePWResponse===",responseBody);
+                int code;
+                code = JSONUtil.getResponseCode(responseBody);
+                Message message = handler.obtainMessage();//创建message的方式，可以更好地被回收
+                message.what = code;
+                message.obj = responseBody;
+                handler.sendMessage(message);
+            }
+        });
+
+    }
+
+
+
     public static void uploadBook(UploadBookInfo uploadBookInfo,String token, final Handler handler) throws Exception {
 
         HttpUtil.sendHttpPostRequest(Server.getServerAddress() + "book" ,token , uploadBookInfo, new Callback() {

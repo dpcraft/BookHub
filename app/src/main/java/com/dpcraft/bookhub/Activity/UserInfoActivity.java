@@ -12,6 +12,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
@@ -49,6 +50,7 @@ public class UserInfoActivity extends Activity {
     private CustomToolbar customToolbar;
     private Button logoutButton;
     private CircleImageView circleUserIcon;
+    private CardView securityCardView;
     private TextView userNameTextView,phoneNumberTextView;
     public static final int REQUEST_SUCCESS = 201;
     public static final int REQUEST_FAIL = 400;
@@ -125,6 +127,12 @@ public class UserInfoActivity extends Activity {
                 finish();
             }
         });
+        securityCardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ChangePasswordActivity.actionStart(UserInfoActivity.this, "", "");
+            }
+        });
     }
 
 
@@ -134,6 +142,7 @@ public class UserInfoActivity extends Activity {
         circleUserIcon = (CircleImageView)findViewById(R.id.civ_usericon);
         userNameTextView = (TextView)findViewById(R.id.tv_username);
         phoneNumberTextView = (TextView)findViewById(R.id.tv_phonenumber);
+        securityCardView = (CardView) findViewById(R.id.cv_security);
     }
     @Override protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

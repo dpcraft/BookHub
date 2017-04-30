@@ -328,7 +328,7 @@ public class UploadActivity extends Activity {
             return;
         }
         progressDialog.dismiss();
-        if (null != progressDialog /*&& progressDialog.isShowing()*/) {
+        if (null != progressDialog && progressDialog.isShowing()) {
             progressDialog.dismiss();
         }
     }

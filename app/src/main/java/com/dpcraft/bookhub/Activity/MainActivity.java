@@ -17,8 +17,10 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.support.v4.app.FragmentActivity;
 import android.widget.TextView;
@@ -58,6 +60,18 @@ public class MainActivity extends FragmentActivity {
     private SimpleFragmentPagerAdapter pagerAdapter;
     private Handler handler;
     private static final int REQUEST_QR_CODE = 1;
+    private AlertDialog  progressDialog;
+    private DialogInterface.OnKeyListener mOnKeyListener = new DialogInterface.OnKeyListener() {
+        @Override
+        public boolean onKey(DialogInterface dialogInterface, int keyCode, KeyEvent keyEvent) {
+
+            if(keyCode == KeyEvent.KEYCODE_BACK && keyEvent.getAction() == KeyEvent.ACTION_DOWN){
+                dismissProgressDialog();
+            }
+
+            return false;
+        }
+    };
 
 
    // private FloatingActionButton floatingActionButton;
@@ -83,8 +97,9 @@ public class MainActivity extends FragmentActivity {
                 // TODO Auto-generated method stub
                 super.handleMessage(msg);
                 UploadBookInfo uploadBookInfo= (UploadBookInfo)msg.obj;
-                Intent intent=new Intent(MainActivity.this,UploadActivity.class);
+                Intent intent = new Intent(MainActivity.this,UploadActivity.class);
                 intent.putExtra(UploadBookInfo.class.getName(),uploadBookInfo);
+                dismissProgressDialog();
                 startActivity(intent);
             }
         };
@@ -281,7 +296,9 @@ public class MainActivity extends FragmentActivity {
                 && data != null) {
             String result = data.getStringExtra("result");
             String urlstr="https://api.douban.com/v2/book/isbn/"+result;
+            
             Log.i("OUTPUT",urlstr);
+            showProgressDialog();
             //扫到ISBN后，启动下载线程下载图书信息
             new DownloadThread(urlstr).start();
 
@@ -321,6 +338,28 @@ public class MainActivity extends FragmentActivity {
         });
         builder.setPositiveButton("再看看", null);
         builder.show();
+    }
+    public void showProgressDialog() {
+
+        progressDialog = new AlertDialog.Builder(this).create();
+        progressDialog.setCancelable(false);
+        progressDialog.show();
+        Window window = progressDialog.getWindow();
+        window.setContentView(R.layout.dialog_progress);
+        TextView textView = (TextView) window.findViewById(R.id.tv_success);
+        textView.setText("正在查询书籍信息，请稍等……");
+        progressDialog.setOnKeyListener(mOnKeyListener);
+
+    }
+    public void dismissProgressDialog() {
+        if (isFinishing()) {
+            Log.i("isFinishing=========", "dismissProgressDialog: ");
+            return;
+        }
+        progressDialog.dismiss();
+        if (null != progressDialog && progressDialog.isShowing()) {
+            progressDialog.dismiss();
+        }
     }
 
 

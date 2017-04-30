@@ -49,6 +49,7 @@ public class MyUploadBookDetailsActivity extends Activity {
     private String bookId , imageUrl;
     private BookGetRequestInformation bookGetRequestInformation;
 
+
     private Handler handler= new Handler(){
         public void handleMessage(Message msg){
             switch (msg.what) {
