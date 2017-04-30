@@ -33,8 +33,11 @@ import com.dpcraft.bookhub.PhotoUtil.ImagePicker;
 import com.dpcraft.bookhub.PhotoUtil.cropper.CropImage;
 import com.dpcraft.bookhub.PhotoUtil.cropper.CropImageView;
 import com.dpcraft.bookhub.R;
+import com.dpcraft.bookhub.ScanModule.ScanUtil;
 import com.dpcraft.bookhub.UIWidget.CustomToolbar;
 import com.dpcraft.bookhub.UIWidget.Dialog;
+
+import org.json.JSONException;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -48,6 +51,8 @@ public class UploadActivity extends Activity {
 
     public static final int SUCCESS = 201;
     public static final int REQUEST_ERROR = 400;
+    public static final int DOWNLOAD_COMPLETE = 601;
+    public static final int DOWNLOAD_ERROR = 602;
     private Intent intent;
     private CustomToolbar mCustomToolbar;
     private ImageView bookCover;
@@ -86,7 +91,15 @@ public class UploadActivity extends Activity {
                     Dialog.showDialog("发布失败", JSONUtil.parseJsonWithGson((String)msg.obj,ResponseFromServer.class).getMessage(),UploadActivity.this);
 
                     break;
-
+                case DOWNLOAD_COMPLETE:
+                    dismissProgressDialog();
+                    uploadBookInfo = (UploadBookInfo)msg.obj;
+                    initBookInfo();
+                    break;
+                case DOWNLOAD_ERROR:
+                    dismissProgressDialog();
+                    Toast.makeText(UploadActivity.this, "未查询到相关书籍", Toast.LENGTH_SHORT).show();
+                    break;
                 default:
                     break;
             }
@@ -99,6 +112,7 @@ public class UploadActivity extends Activity {
         setContentView(R.layout.activity_upload);
         initWidget();
         mCustomToolbar.setTitle("发布书籍");
+        downloadBookInfo();
         initBookInfo();
         setSpinnerListener();
         bookCover.setOnClickListener(new View.OnClickListener() {
@@ -117,7 +131,7 @@ public class UploadActivity extends Activity {
                 saveBitmapFile(bitmap);
                 bookCover.setDrawingCacheEnabled(false);
                 collectBookInfo();
-                showProgressDialog();
+                showProgressDialog("发布中……");
                 try {
                     NetUtils.uploadBook(uploadBookInfo, myApplication.getToken(), handler);
                 }catch (Exception e){
@@ -162,14 +176,25 @@ public class UploadActivity extends Activity {
         uploadButton = (Button)findViewById(R.id.btn_upload);
 
     }
-    private void initBookInfo(){
+    private void downloadBookInfo(){
         intent=getIntent();
-        uploadBookInfo = (UploadBookInfo)intent.getParcelableExtra(UploadBookInfo.class.getName());
-        if(uploadBookInfo != null) {
-            bookCover.setImageBitmap(uploadBookInfo.getBitmap());
-            Log.i("bookcoverWidth===",uploadBookInfo.getBitmap().getWidth() + "");
-            Log.i("bookcoverHeight===",uploadBookInfo.getBitmap().getHeight() + "");
+        String ISBN = intent.getStringExtra("ISBN");
 
+        // uploadBookInfo = (UploadBookInfo)intent.getParcelableExtra(UploadBookInfo.class.getName());
+        if(ISBN != null && !ISBN.equals("")) {
+
+            String urlstr="https://api.douban.com/v2/book/isbn/"+ ISBN;
+
+            showProgressDialog("正在查询书籍信息，请稍等……");
+            //扫到ISBN后，启动下载线程下载图书信息
+            new DownloadThread(urlstr).start();
+            Log.i("OUTPUT",urlstr);
+        }
+    }
+    private void initBookInfo(){
+
+            if(uploadBookInfo != null){
+            bookCover.setImageBitmap(uploadBookInfo.getBitmap());
             bookNameWrapper.getEditText().setText(uploadBookInfo.getTitle());
             authorWrapper.getEditText().setText(uploadBookInfo.getAuthor());
             publishHouseWrapper.getEditText().setText(uploadBookInfo.getPublishHouse());
@@ -309,7 +334,7 @@ public class UploadActivity extends Activity {
                 .show();
     }
 
-    public void showProgressDialog() {
+    public void showProgressDialog(String title) {
 
         progressDialog = new AlertDialog.Builder(this).create();
         progressDialog.setCancelable(false);
@@ -317,14 +342,13 @@ public class UploadActivity extends Activity {
         Window window = progressDialog.getWindow();
         window.setContentView(R.layout.dialog_progress);
         TextView textView = (TextView) window.findViewById(R.id.tv_success);
-        textView.setText("发布中……");
+        textView.setText(title);
         progressDialog.setOnKeyListener(mOnKeyListener);
 
     }
 
     public void dismissProgressDialog() {
         if (isFinishing()) {
-            Log.i("isFinishing=========", "dismissProgressDialog: ");
             return;
         }
         progressDialog.dismiss();
@@ -335,8 +359,35 @@ public class UploadActivity extends Activity {
 
     public static void actionStart(Context context, String data1, String data2) {
         Intent intent = new Intent(context, UploadActivity.class);
-        intent.putExtra("para", data1);
+        intent.putExtra("ISBN", data1);
         intent.putExtra("para2", data2);
         context.startActivity(intent);
+    }
+
+
+
+    private class DownloadThread extends Thread
+    {
+        String url=null;
+        public DownloadThread(String urlstr)
+        {
+            url=urlstr;
+        }
+        public void run()
+        {
+
+             String result= ScanUtil.Download(url);
+            UploadBookInfo book = null;
+            Message msg= Message.obtain();
+            if(result.equals("error")){
+                msg.what = DOWNLOAD_ERROR;
+            }else {
+                book = new ScanUtil().parseUploadBookInfo(result);
+                msg.what = DOWNLOAD_COMPLETE;
+            }
+            //给主线程UI界面发消息，提醒下载信息，解析信息完毕
+            msg.obj = book;
+            handler.sendMessage(msg);
+        }
     }
 }

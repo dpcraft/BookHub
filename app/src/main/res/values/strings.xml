@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">BookHub</string>
     <string name="title">BookHub</string>
-    <string name="scan_failed">没有查询到相关书籍</string>
+    <string name="scan_failed">扫码失败</string>
     <string name="crop_image_activity_title"/>
     <string name="crop_image_menu_crop">确定</string>
     <string name="crop_image_menu_rotate_left">Rotate counter clockwise</string>

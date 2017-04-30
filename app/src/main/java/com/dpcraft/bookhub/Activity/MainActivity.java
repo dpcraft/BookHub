@@ -61,18 +61,6 @@ public class MainActivity extends FragmentActivity {
     private Handler handler;
     private static final int REQUEST_QR_CODE = 1;
     private AlertDialog  progressDialog;
-    private DialogInterface.OnKeyListener mOnKeyListener = new DialogInterface.OnKeyListener() {
-        @Override
-        public boolean onKey(DialogInterface dialogInterface, int keyCode, KeyEvent keyEvent) {
-
-            if(keyCode == KeyEvent.KEYCODE_BACK && keyEvent.getAction() == KeyEvent.ACTION_DOWN){
-                dismissProgressDialog();
-            }
-
-            return false;
-        }
-    };
-
 
    // private FloatingActionButton floatingActionButton;
 
@@ -90,19 +78,6 @@ public class MainActivity extends FragmentActivity {
        //透明导航栏
         //getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
         initWidget();
-        //扫码用的handler
-        handler = new Handler(){
-            @Override
-            public void handleMessage(Message msg) {
-                // TODO Auto-generated method stub
-                super.handleMessage(msg);
-                UploadBookInfo uploadBookInfo= (UploadBookInfo)msg.obj;
-                Intent intent = new Intent(MainActivity.this,UploadActivity.class);
-                intent.putExtra(UploadBookInfo.class.getName(),uploadBookInfo);
-                dismissProgressDialog();
-                startActivity(intent);
-            }
-        };
 
         myApplication = (MyApplication)getApplication();
         //setActivityMenuColor(this);
@@ -295,37 +270,14 @@ public class MainActivity extends FragmentActivity {
                 && requestCode == REQUEST_QR_CODE
                 && data != null) {
             String result = data.getStringExtra("result");
-            String urlstr="https://api.douban.com/v2/book/isbn/"+result;
-            
-            Log.i("OUTPUT",urlstr);
-            showProgressDialog();
-            //扫到ISBN后，启动下载线程下载图书信息
-            new DownloadThread(urlstr).start();
-
-            // Toast.makeText(MainActivity.this, result, Toast.LENGTH_SHORT).show();
+            UploadActivity.actionStart(MainActivity.this, result, "");
+        }
+        else{
+            UploadActivity.actionStart(MainActivity.this,"", "");
         }
     }
 
-    private class DownloadThread extends Thread
-    {
-        String url=null;
-        public DownloadThread(String urlstr)
-        {
-            url=urlstr;
-        }
-        public void run()
-        {
-            String result= ScanUtil.Download(url);
-            Log.i("OUTPUT", "download over");
-            UploadBookInfo book=new ScanUtil().parseUploadBookInfo(result);
-            Log.i("OUTPUT", "parse over");
-            //给主线程UI界面发消息，提醒下载信息，解析信息完毕
-            Message msg= Message.obtain();
-            msg.obj=book;
-            handler.sendMessage(msg);
-            Log.i("OUTPUT","send over");
-        }
-    }
+
     public  void showExitDialog() {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -339,29 +291,6 @@ public class MainActivity extends FragmentActivity {
         builder.setPositiveButton("再看看", null);
         builder.show();
     }
-    public void showProgressDialog() {
-
-        progressDialog = new AlertDialog.Builder(this).create();
-        progressDialog.setCancelable(false);
-        progressDialog.show();
-        Window window = progressDialog.getWindow();
-        window.setContentView(R.layout.dialog_progress);
-        TextView textView = (TextView) window.findViewById(R.id.tv_success);
-        textView.setText("正在查询书籍信息，请稍等……");
-        progressDialog.setOnKeyListener(mOnKeyListener);
-
-    }
-    public void dismissProgressDialog() {
-        if (isFinishing()) {
-            Log.i("isFinishing=========", "dismissProgressDialog: ");
-            return;
-        }
-        progressDialog.dismiss();
-        if (null != progressDialog && progressDialog.isShowing()) {
-            progressDialog.dismiss();
-        }
-    }
-
 
 
     public static void actionStart(Context context, String data1, String data2){

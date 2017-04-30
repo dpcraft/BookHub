@@ -32,6 +32,7 @@ public class ScanUtil {
             }
         }catch (Exception e) {
             e.printStackTrace();
+            result = "error";
         }
         return  result;
     }
