@@ -33,7 +33,7 @@ import java.util.List;
 /**
  * Created by DPC on 2017/4/14.
  */
-public class ClassificationActivity extends Activity {
+public class ClassificationActivity extends BaseActivity {
     private Toolbar classificationToolbar;
     private RecyclerView classificationRecyclerView;
     private SearchResultRecyclerAdapter searchResultRecyclerAdapter;

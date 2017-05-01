@@ -29,7 +29,7 @@ import java.util.TimerTask;
 /**
  * Created by DPC on 2017/2/18.
  */
-public class LoginActivity extends Activity {
+public class LoginActivity extends BaseActivity {
     private User user ;
     private TextInputLayout mUsernameWrapper;
     private TextInputLayout mPasswordWrapper;

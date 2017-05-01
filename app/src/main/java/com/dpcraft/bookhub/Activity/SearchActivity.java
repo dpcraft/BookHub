@@ -12,7 +12,7 @@ import com.dpcraft.bookhub.SearchModule.SearchView;
 /**
  * Created by DPC on 2017/4/2.
  */
-public class SearchActivity extends Activity{
+public class SearchActivity extends BaseActivity{
     private SearchView  searchView;
 
     @Override

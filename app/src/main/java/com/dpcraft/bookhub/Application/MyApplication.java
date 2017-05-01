@@ -11,13 +11,26 @@ import com.dpcraft.bookhub.DataClass.LoginResponseUserInfo;
  * Created by DPC on 2017/3/6.
  */
 public class MyApplication extends Application{
+
+
+    private static MyApplication mMyApplication;
+    private boolean isNetWorkConnected;
     private Boolean loginStatus;
-    private String nextActivity;
+
 
     private LoginResponseUserInfo loginResponseUserInfo;
 
     private String token;
+
+    public boolean isNetWorkConnected() {
+        return isNetWorkConnected;
+    }
+
+    public void setNetWorkConnected(boolean netWorkConnected) {
+        isNetWorkConnected = netWorkConnected;
+    }
     public void setLoginStatus(Boolean loginStatus){
+
         this.loginStatus = loginStatus;
     }
 
@@ -42,12 +55,16 @@ public class MyApplication extends Application{
     public void setLoginResponseUserInfo(LoginResponseUserInfo loginResponseUserInfo) {
         this.loginResponseUserInfo = loginResponseUserInfo;
     }
+    public static MyApplication getInstance(){
+        return mMyApplication;
+    }
 
     @Override
     public void onCreate(){
         super.onCreate();
+        mMyApplication = this;
+        isNetWorkConnected = false;
         loginStatus = false;
-        nextActivity = null;
         token = "";
         loginResponseUserInfo = new LoginResponseUserInfo();
         Log.i("APPLICATION","application is rebuild.");

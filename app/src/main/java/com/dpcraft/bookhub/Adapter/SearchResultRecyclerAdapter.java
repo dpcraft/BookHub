@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.dpcraft.bookhub.Activity.BookDetailsActivity;
+import com.dpcraft.bookhub.Application.MyApplication;
 import com.dpcraft.bookhub.DataClass.BookPreview;
 import com.dpcraft.bookhub.NetModule.Server;
 import com.dpcraft.bookhub.R;
@@ -74,6 +75,7 @@ public class SearchResultRecyclerAdapter extends RecyclerView.Adapter<RecyclerVi
     public void onBindViewHolder(RecyclerView.ViewHolder holder,int position){
         //holder.item_tv.setText(mTitle[position]);
         if(holder instanceof FooterViewHolder){
+
             if(!hasMore ){
                 Log.i("mBooklist.size=====",mBookList.size() + "");
 
@@ -85,12 +87,14 @@ public class SearchResultRecyclerAdapter extends RecyclerView.Adapter<RecyclerVi
                     ((FooterViewHolder) holder).footerText.setText("没有更多书籍");
                 }
 
-                //((FooterViewHolder)holder).footerText.setTextColor(R.color.red_900);
-
-                //mContext.
+            }else if(!MyApplication.getInstance().isNetWorkConnected()){
+                Log.i("网络未连接", "SellRecyclerAdapter ");
+                ((FooterViewHolder)holder).footerProgressBar.setVisibility(View.GONE);
+                ((FooterViewHolder)holder).footerText.setText(R.string.network_connection_unavailable);
+            }else{
+                ((FooterViewHolder)holder).footerProgressBar.setVisibility(View.VISIBLE);
+                ((FooterViewHolder)holder).footerText.setText(R.string.request_more_list);
             }
-
-
         }
         else{
             BookPreview bookPreview = mBookList.get(position);
@@ -164,8 +168,10 @@ public class SearchResultRecyclerAdapter extends RecyclerView.Adapter<RecyclerVi
     public void addBookList(List<BookPreview> bookList){
 
         mBookList.addAll(bookList);
-        if (bookList.size() < 5){
+        if (bookList.size() == 0){
             hasMore = false;
+        }else {
+            hasMore = true;
         }
 
 
@@ -176,6 +182,7 @@ public class SearchResultRecyclerAdapter extends RecyclerView.Adapter<RecyclerVi
     public void clearBookList(){
 
         mBookList.clear();
+        hasMore = true;
     }
 
     public List<BookPreview> getmBookList() {

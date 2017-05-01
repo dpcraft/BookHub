@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.dpcraft.bookhub.Activity.MyIntentionBookDetailsActivity;
+import com.dpcraft.bookhub.Application.MyApplication;
 import com.dpcraft.bookhub.DataClass.BookPreview;
 import com.dpcraft.bookhub.NetModule.Server;
 import com.dpcraft.bookhub.R;
@@ -74,13 +75,18 @@ public class MyIntentionRecyclerAdapter extends RecyclerView.Adapter<RecyclerVie
     public void onBindViewHolder(RecyclerView.ViewHolder holder,int position){
         //holder.item_tv.setText(mTitle[position]);
         if(holder instanceof FooterViewHolder){
-            if(mBookList.size() == 0){
+            if(!MyApplication.getInstance().isNetWorkConnected()){
+                ((FooterViewHolder)holder).footerProgressBar.setVisibility(View.GONE);
+                ((FooterViewHolder)holder).footerText.setText(R.string.network_connection_unavailable);
+            }else if(mBookList.size() == 0){
                 ((FooterViewHolder)holder).footerProgressBar.setVisibility(View.GONE);
                 ((FooterViewHolder)holder).footerText.setText("没有任何书籍符合您的要求");
             }else {
                 ((FooterViewHolder) holder).footerProgressBar.setVisibility(View.GONE);
-                ((FooterViewHolder) holder).footerText.setText("没有更多书籍");
+                ((FooterViewHolder) holder).footerText.setText(R.string.no_more_list);
             }
+
+
 //            if(!hasMore ){
 //                Log.i("mBooklist.size=====",mBookList.size() + "");
 //

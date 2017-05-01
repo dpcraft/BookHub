@@ -34,7 +34,7 @@ import java.util.List;
 /**
  * Created by DPC on 2017/4/14.
  */
-public class MyUploadActivity extends Activity {
+public class MyUploadActivity extends BaseActivity {
    private CustomToolbar customToolbar;
     private RecyclerView myUploadRecyclerView;
     private MyUploadRecyclerAdapter myUploadRecyclerAdapter;

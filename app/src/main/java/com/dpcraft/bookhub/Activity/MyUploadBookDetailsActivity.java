@@ -36,7 +36,7 @@ import com.dpcraft.bookhub.UIWidget.Dialog;
 /**
  * Created by DPC on 2017/3/8.
  */
-public class MyUploadBookDetailsActivity extends Activity {
+public class MyUploadBookDetailsActivity extends BaseActivity {
     private MyApplication myApplication;
     private FloatingActionButton floatingActionButton;
     private Toolbar bookNameToolbar;

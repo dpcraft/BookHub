@@ -11,7 +11,7 @@ import com.dpcraft.bookhub.R;
 /**
  * Created by DPC on 2017/4/15.
  */
-public class AboutActivity extends Activity{
+public class AboutActivity extends BaseActivity{
     private TextView title , content;
     @Override
     protected void onCreate(Bundle savedInstanceState) {

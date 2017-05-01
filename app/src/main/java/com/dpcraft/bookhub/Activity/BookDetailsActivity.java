@@ -32,7 +32,7 @@ import com.dpcraft.bookhub.UIWidget.Dialog;
 /**
  * Created by DPC on 2017/3/8.
  */
-public class BookDetailsActivity extends Activity {
+public class BookDetailsActivity extends BaseActivity {
     private MyApplication myApplication;
     private FloatingActionButton floatingActionButton;
     private Toolbar bookNameToolbar;

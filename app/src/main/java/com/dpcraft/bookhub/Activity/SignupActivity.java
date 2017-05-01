@@ -30,7 +30,7 @@ import cn.smssdk.SMSSDK;
 /**
  * Created by DPC on 2017/2/21.
  */
-public class SignupActivity extends Activity {
+public class SignupActivity extends BaseActivity {
     public static final int SUCCESS = 201;
     public static final int REQUEST_ERROR = 400;
     public static final int OPERATION_UNAUTHORIZED = 401;

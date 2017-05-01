@@ -44,7 +44,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 /**
  * Created by DPC on 2017/3/7.
  */
-public class UserInfoActivity extends Activity {
+public class UserInfoActivity extends BaseActivity {
     private UserInfo userInfo ;
     private MyApplication myApplication;
     private CustomToolbar customToolbar;

@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.dpcraft.bookhub.Activity.BookDetailsActivity;
 import com.dpcraft.bookhub.Activity.MyUploadBookDetailsActivity;
+import com.dpcraft.bookhub.Application.MyApplication;
 import com.dpcraft.bookhub.DataClass.BookPreview;
 import com.dpcraft.bookhub.NetModule.Server;
 import com.dpcraft.bookhub.R;
@@ -75,13 +76,17 @@ public class MyUploadRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.V
     public void onBindViewHolder(RecyclerView.ViewHolder holder,int position){
         //holder.item_tv.setText(mTitle[position]);
         if(holder instanceof FooterViewHolder){
-            if(mBookList.size() == 0){
+            if(!MyApplication.getInstance().isNetWorkConnected()){
+                ((FooterViewHolder)holder).footerProgressBar.setVisibility(View.GONE);
+                ((FooterViewHolder)holder).footerText.setText(R.string.network_connection_unavailable);
+            }else if(mBookList.size() == 0){
                 ((FooterViewHolder)holder).footerProgressBar.setVisibility(View.GONE);
                 ((FooterViewHolder)holder).footerText.setText("您尚未发布任何书籍书籍");
             }else {
                 ((FooterViewHolder) holder).footerProgressBar.setVisibility(View.GONE);
                 ((FooterViewHolder) holder).footerText.setText("没有更多书籍");
             }
+
 //            if(!hasMore ){
 //                Log.i("mBooklist.size=====",mBookList.size() + "");
 //

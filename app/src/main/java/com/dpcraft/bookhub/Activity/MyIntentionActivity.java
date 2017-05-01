@@ -27,7 +27,7 @@ import java.util.List;
 /**
  * Created by DPC on 2017/4/14.
  */
-public class MyIntentionActivity extends Activity {
+public class MyIntentionActivity extends BaseActivity {
    private CustomToolbar customToolbar;
     private RecyclerView myIntentionRecyclerView;
     private MyIntentionRecyclerAdapter myIntentionRecyclerAdapter;

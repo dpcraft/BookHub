@@ -25,7 +25,7 @@ import com.dpcraft.bookhub.UIWidget.Dialog;
 /**
  * Created by DPC on 2017/4/21.
  */
-public class ChangePasswordActivity  extends Activity {
+public class ChangePasswordActivity  extends BaseActivity {
     private TextInputLayout oldPassWordWrapper , passWordWrapper ,rePassWordWrapper;
     private Button submitButton;
     private CustomToolbar toolbar;

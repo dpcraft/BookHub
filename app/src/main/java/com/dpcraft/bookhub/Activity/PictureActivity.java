@@ -19,7 +19,7 @@ import com.dpcraft.bookhub.R;
  * Created by DPC on 2017/3/27.
  */
 
-public class PictureActivity extends Activity{
+public class PictureActivity extends BaseActivity{
 
     final private ImagePicker  imagePicker = new ImagePicker();
     private ImageView picture;

@@ -22,5 +22,5 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:text="正在加载更多"/>
+        android:text="@string/request_more_list"/>
 </LinearLayout>

@@ -4,8 +4,9 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 //import android.support.design.widget.FloatingActionButton;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
 import android.os.Handler;
-import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
@@ -17,10 +18,8 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Gravity;
-import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
 import android.widget.Button;
 import android.support.v4.app.FragmentActivity;
 import android.widget.TextView;
@@ -29,17 +28,15 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.dpcraft.bookhub.Adapter.SimpleFragmentPagerAdapter;
 import com.dpcraft.bookhub.Application.MyApplication;
-import com.dpcraft.bookhub.DataClass.UploadBookInfo;
-import com.dpcraft.bookhub.NetModule.NetUtils;
+import com.dpcraft.bookhub.NetModule.NetState;
+import com.dpcraft.bookhub.NetModule.NetWorkStateReceiver;
 import com.dpcraft.bookhub.NetModule.Server;
 import com.dpcraft.bookhub.R;
 import com.dpcraft.bookhub.ScanModule.CaptureActivity;
-import com.dpcraft.bookhub.ScanModule.ScanUtil;
 import com.lzp.floatingactionbuttonplus.FabTagLayout;
 import com.lzp.floatingactionbuttonplus.FloatingActionButtonPlus;
 
 
-import cn.smssdk.SMSSDK;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MainActivity extends FragmentActivity {
@@ -56,11 +53,9 @@ public class MainActivity extends FragmentActivity {
     private TextView textViewNavUsername;
     private CircleImageView circleImageViewNavUserIcon;
     private MyApplication myApplication;
-    private SwipeRefreshLayout requestSwipeRefreshLayout;
     private SimpleFragmentPagerAdapter pagerAdapter;
-    private Handler handler;
     private static final int REQUEST_QR_CODE = 1;
-    private AlertDialog  progressDialog;
+    private NetWorkStateReceiver mNetWorkStateReceiver;
 
    // private FloatingActionButton floatingActionButton;
 
@@ -216,6 +211,16 @@ public class MainActivity extends FragmentActivity {
     @Override
     protected void onResume(){
         super.onResume();
+        NetState.isConnection(MainActivity.this);
+        if(mNetWorkStateReceiver == null){
+            mNetWorkStateReceiver = new NetWorkStateReceiver();
+        }
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
+        registerReceiver(mNetWorkStateReceiver, intentFilter);
+
+
+        Log.i("MAIN网络连接检测", "注册事件");
         if(myApplication.isLogin()){
             Log.i(" resume  islogin",myApplication.isLogin().toString());
             textViewNavUsername.setText(myApplication.getLoginResponseUserInfo().getNickName());
@@ -240,6 +245,13 @@ public class MainActivity extends FragmentActivity {
             startLoginButton.setVisibility(View.VISIBLE);
 
         }
+    }
+
+    @Override
+    protected void onPause(){
+        unregisterReceiver(mNetWorkStateReceiver);
+        Log.i("MAIN网络连接检测", "注销事件");
+        super.onPause();
     }
 
     @Override

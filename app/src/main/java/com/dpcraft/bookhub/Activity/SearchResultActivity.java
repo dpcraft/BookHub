@@ -32,7 +32,7 @@ import java.util.List;
 /**
  * Created by DPC on 2017/4/14.
  */
-public class SearchResultActivity extends Activity {
+public class SearchResultActivity extends BaseActivity {
     private Toolbar searchToolbar;
     private Button searchButton;
     private TextView searchEditTextView;
@@ -42,7 +42,7 @@ public class SearchResultActivity extends Activity {
     private List<BookPreview> bookPreviewList;
     private LinearLayoutManager searchLinearLayoutManager;
     private Spinner dealTypeSpinner , orderSpinner;
-    private int mIndex = 0;
+    private int mIndex = 0 ,mLastIndex = 0;
     private final int length = 5;
     private String keyword;
     
@@ -101,9 +101,11 @@ public class SearchResultActivity extends Activity {
                                              int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
                 if (newState == RecyclerView.SCROLL_STATE_IDLE
-                        && searchLinearLayoutManager.findLastVisibleItemPosition() + 1 == searchResultRecyclerAdapter.getItemCount()) {
+                        && searchLinearLayoutManager.findLastVisibleItemPosition() + 1 == searchResultRecyclerAdapter.getItemCount()
+                        && mLastIndex < mIndex) {
 
                     requestBookList(mIndex + "" , false);
+                    mLastIndex = mIndex;
                 }
             }
 

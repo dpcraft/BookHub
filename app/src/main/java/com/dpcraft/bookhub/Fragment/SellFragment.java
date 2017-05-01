@@ -34,7 +34,7 @@ public class SellFragment extends Fragment{
     private SwipeRefreshLayout sellSwipeRefreshLayout;
     private BookGetRequestInformation bookGetRequestInformation;
     private  List<BookPreview> bookPreviewList;
-    private int mIndex = 0;
+    private int mIndex = 0,mLastIndex = 0;
     private final int length = 5;
     private boolean hasMore = true;
     public final int SUCCESS = 201;
@@ -98,9 +98,10 @@ public class SellFragment extends Fragment{
                                              int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
                 if (newState == RecyclerView.SCROLL_STATE_IDLE
-                        && sellLinearLayoutManager.findLastVisibleItemPosition() + 1 == sellRecyclerAdapter.getItemCount()) {
-
+                        && sellLinearLayoutManager.findLastVisibleItemPosition() + 1 == sellRecyclerAdapter.getItemCount()
+                        && mLastIndex < mIndex) {
                     requestBookList(mIndex + "" , false);
+                    mLastIndex = mIndex;
                 }
             }
 
@@ -132,7 +133,6 @@ public class SellFragment extends Fragment{
             @Override
             public void onRefresh() {
                 refreshBookList();
-
             }
         });
 
@@ -154,6 +154,7 @@ public class SellFragment extends Fragment{
             @Override
             public void run() {
                 mIndex = 0;
+                mLastIndex = 0;
                requestBookList(mIndex + "" , true);
                 getActivity().runOnUiThread(new Runnable() {
                     @Override

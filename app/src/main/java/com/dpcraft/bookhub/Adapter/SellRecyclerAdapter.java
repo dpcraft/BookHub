@@ -16,6 +16,7 @@ import com.bumptech.glide.Glide;
 import com.dpcraft.bookhub.Activity.BookDetailsActivity;
 import com.dpcraft.bookhub.Activity.ClassificationActivity;
 import com.dpcraft.bookhub.Activity.MyUploadActivity;
+import com.dpcraft.bookhub.Application.MyApplication;
 import com.dpcraft.bookhub.DataClass.BookPreview;
 import com.dpcraft.bookhub.NetModule.Server;
 import com.dpcraft.bookhub.R;
@@ -195,10 +196,17 @@ public class SellRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         }else if(holder instanceof FooterViewHolder){
             if(!hasMore){
                 ((FooterViewHolder)holder).footerProgressBar.setVisibility(View.GONE);
-                ((FooterViewHolder)holder).footerText.setText("没有更多书籍");
+                ((FooterViewHolder)holder).footerText.setText(R.string.no_more_list);
                 //((FooterViewHolder)holder).footerText.setTextColor(R.color.red_900);
 
                 //mContext.
+            }else if(!MyApplication.getInstance().isNetWorkConnected()){
+                Log.i("网络未连接", "SellRecyclerAdapter ");
+                ((FooterViewHolder)holder).footerProgressBar.setVisibility(View.GONE);
+                ((FooterViewHolder)holder).footerText.setText(R.string.network_connection_unavailable);
+            }else{
+                ((FooterViewHolder)holder).footerProgressBar.setVisibility(View.VISIBLE);
+                ((FooterViewHolder)holder).footerText.setText(R.string.request_more_list);
             }
 
         }
@@ -293,6 +301,8 @@ public class SellRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         mBookList.addAll(bookList);
         if (bookList.size() == 0){
             hasMore = false;
+        }else {
+            hasMore = true;
         }
 
 
@@ -302,6 +312,7 @@ public class SellRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     }
     public void clearBooklist(){
         mBookList.clear();
+        hasMore = true;
     }
     public List<BookPreview> getmBookList() {
         return mBookList;

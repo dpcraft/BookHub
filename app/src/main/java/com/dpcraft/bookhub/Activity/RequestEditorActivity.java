@@ -21,7 +21,7 @@ import com.dpcraft.bookhub.UIWidget.Dialog;
 /**
  * Created by DPC on 2017/4/25.
  */
-public class RequestEditorActivity extends Activity{
+public class RequestEditorActivity extends BaseActivity{
 
     private CustomToolbar mCustomToolbar;
     private TextView mTextView;

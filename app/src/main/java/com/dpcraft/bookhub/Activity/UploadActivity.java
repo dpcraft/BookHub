@@ -47,7 +47,7 @@ import java.io.IOException;
 /**
  * Created by DPC on 2017/4/4.
  */
-public class UploadActivity extends Activity {
+public class UploadActivity extends BaseActivity {
 
     public static final int SUCCESS = 201;
     public static final int REQUEST_ERROR = 400;
