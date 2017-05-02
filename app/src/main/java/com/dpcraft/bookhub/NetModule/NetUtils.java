@@ -6,6 +6,8 @@ import android.util.Log;
 
 import com.dpcraft.bookhub.DataClass.BookGetRequestInformation;
 import com.dpcraft.bookhub.DataClass.LoginResponse;
+import com.dpcraft.bookhub.DataClass.RequestBookInfo;
+import com.dpcraft.bookhub.DataClass.RequestGetRequestInformation;
 import com.dpcraft.bookhub.DataClass.ResponseFromServer;
 import com.dpcraft.bookhub.DataClass.UploadBookInfo;
 import com.dpcraft.bookhub.DataClass.User;
@@ -190,6 +192,42 @@ public class NetUtils {
        });
 
     }
+    public static void getRequestPreviewList(RequestGetRequestInformation requestGetRequestInformation , final boolean refresh , final Handler handler)  {
+
+
+        HttpUtil.sendHttpGetRequest(requestGetRequestInformation.generateURL(), new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Log.i("onFailure","onFailure");
+
+            }
+
+            @Override
+            public void onResponse(Call call, okhttp3.Response response) throws IOException {
+                if (!response.isSuccessful())
+                {
+                    throw new IOException("Unexpected code " + response);
+
+                }
+                Log.i("RRBcode===========" , response.code() + "");
+                String responseBody =  response.body().string();
+                Log.i("okhttp3.response",responseBody);
+                int code;
+                if (refresh) {
+                    code = 1;
+                } else {
+                    code = 2;
+                }
+
+                Message message = handler.obtainMessage();//创建message的方式，可以更好地被回收
+                message.what = code;
+                message.obj = responseBody;
+                Log.i("message.obj=======" , message.obj.toString());
+                handler.sendMessage(message);
+            }
+        });
+
+    }
 
     /*
     *isMyIntention 为true时获取我的意向，为false时获取我的发布
@@ -305,6 +343,35 @@ public class NetUtils {
                 String responseBody =  response.body().string();
                 Log.i("okhttp3.response",responseBody);
                 int code = 201;
+                Message message = handler.obtainMessage();//创建message的方式，可以更好地被回收
+                message.what = code;
+                message.obj = responseBody;
+                handler.sendMessage(message);
+            }
+        });
+
+    }
+
+    public static void getRequestDetails(String address, final Handler handler)  {
+
+
+        HttpUtil.sendHttpGetRequest(address, new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Log.i("onFailure","onFailure");
+
+            }
+
+            @Override
+            public void onResponse(Call call, okhttp3.Response response) throws IOException {
+                if (!response.isSuccessful())
+                {
+                    throw new IOException("Unexpected code " + response);
+
+                }
+                String responseBody =  response.body().string();
+                Log.i("okhttp3.response",responseBody);
+                int code = JSONUtil.getResponseCode(responseBody);
                 Message message = handler.obtainMessage();//创建message的方式，可以更好地被回收
                 message.what = code;
                 message.obj = responseBody;
@@ -434,6 +501,33 @@ public class NetUtils {
             }
         });
 
+    }
+
+
+    public static void uploadRequestBook(RequestBookInfo requestBookInfo, String token, final Handler handler) throws Exception {
+
+        HttpUtil.sendHttpPostRequest(Server.getServerAddress() + "bw" ,token , requestBookInfo, new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Log.i("upload error", "error" );
+            }
+
+            @Override
+            public void onResponse(Call call, okhttp3.Response response) throws IOException {
+                String responseBody = response.body().string();
+                Log.i("login code",response.code() + "");
+                Log.i("response.body",responseBody);
+                //int code = JSONUtil.parseJsonWithGson(responseBody,ResponseFromServer.class).getCode();
+                int code = JSONUtil.getResponseCode(responseBody);
+                Log.i("JSON code",code+"");
+                Message message = handler.obtainMessage();//创建message的方式，可以更好地被回收
+                message.what = code;
+                message.obj = responseBody;
+                Log.i("uploadmessage.obj",message.obj.toString());
+                handler.sendMessage(message);
+
+            }
+        });
     }
 
     public static void downloadImage(){

@@ -2,6 +2,7 @@ package com.dpcraft.bookhub.NetModule;
 
 import android.util.Log;
 
+import com.dpcraft.bookhub.DataClass.RequestBookInfo;
 import com.dpcraft.bookhub.DataClass.UploadBookInfo;
 import com.dpcraft.bookhub.DataClass.User;
 
@@ -162,6 +163,25 @@ public class HttpUtil {
         client.newCall(request).enqueue(callback);
 
     }
+
+    public static void sendHttpPostRequest(final String address, String token, final RequestBookInfo requestBookInfo, final okhttp3.Callback callback){
+        OkHttpClient client = new OkHttpClient();
+        RequestBody requestBody;
+        Log.i("requestaddress =====",address);
+        requestBody =  new FormBody.Builder()
+                .add("token", token)
+                .add("bwtitle", requestBookInfo.getRequestTitle())
+                .add("bwbody", requestBookInfo.getRequestBody())
+                .build();
+        okhttp3.Request request = new okhttp3.Request.Builder()
+                .url(address)
+                .post(requestBody)
+                .build();
+        client.newCall(request).enqueue(callback);
+
+    }
+
+
     public static void sendHttpPostRequest(final String address,String token, final okhttp3.Callback callback){
         Log.i("post url",address);
 

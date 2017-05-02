@@ -203,6 +203,14 @@ public class LoginActivity extends BaseActivity {
                 MyIntentionActivity.actionStart(LoginActivity.this, "data1", "data2");
                 finish();
                 break;
+            case "RequestEditorActivity":
+                RequestEditorActivity.actionStart(LoginActivity.this, "", "");
+                finish();
+                break;
+            case "UploadActivity":
+                UploadActivity.actionStart(LoginActivity.this,"data1","data2");
+                finish();
+                break;
             default:
                 MainActivity.actionStart(LoginActivity.this,"data1","data2");
                 finish();

@@ -5,17 +5,17 @@ import com.google.gson.annotations.SerializedName;
 import java.util.List;
 
 /**
- * Created by DPC on 2017/3/23.
+ * Created by DPC on 2017/5/2.
  */
-public class GetBookResponse {
+public class GetRequestPreviewResponse {
+
     @SerializedName("code")
     private int code ;
     @SerializedName("message")
     private String message;
-
-
     @SerializedName("data")
-    private List<BookPreview> data;
+    private List<RequestPreview> data;
+
     public int getCode() {
         return code;
     }
@@ -31,16 +31,13 @@ public class GetBookResponse {
     public void setMessage(String message) {
         this.message = message;
     }
-    public List<BookPreview> getData() {
+
+    public List<RequestPreview> getData() {
         return data;
     }
 
-    public void setData(List<BookPreview> data) {
+    public void setData(List<RequestPreview> data) {
         this.data = data;
     }
-
-
-
-
 
 }

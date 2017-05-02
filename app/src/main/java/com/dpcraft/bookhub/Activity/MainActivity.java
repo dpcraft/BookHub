@@ -92,8 +92,11 @@ public class MainActivity extends FragmentActivity {
             public void onItemClick(FabTagLayout tagView, int position) {
                     switch (position){
                     case 0:
-                        Toast.makeText(MainActivity.this,"Click btn 0 = "+ position,Toast.LENGTH_SHORT).show();
-                        RequestEditorActivity.actionStart(MainActivity.this , "" ,"");
+                        if(myApplication.isLogin()){
+                            RequestEditorActivity.actionStart(MainActivity.this, "", "");
+                        }else {
+                            LoginActivity.actionStart(MainActivity.this, "RequestEditorActivity", "data2");
+                        }
                         break;
                         case 1:
                             if(myApplication.isLogin()){
@@ -110,7 +113,7 @@ public class MainActivity extends FragmentActivity {
                             if(myApplication.isLogin()){
                                 UploadActivity.actionStart(MainActivity.this,"data1","data2");
                             }else{
-                                LoginActivity.actionStart(MainActivity.this, "MainActivity", "data2");
+                                LoginActivity.actionStart(MainActivity.this, "UploadActivity", "data2");
                             }
                             break;
                         default:

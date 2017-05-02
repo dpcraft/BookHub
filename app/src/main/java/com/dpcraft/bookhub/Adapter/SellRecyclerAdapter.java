@@ -299,7 +299,7 @@ public class SellRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     public void addBookList(List<BookPreview> bookList){
         mBookList.addAll(bookList);
-        if (bookList.size() == 0){
+        if (bookList.size() < 5){
             hasMore = false;
         }else {
             hasMore = true;

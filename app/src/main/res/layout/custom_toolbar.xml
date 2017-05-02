@@ -12,7 +12,6 @@
         app:navigationIcon="@drawable/ic_back_white"
         app:titleTextAppearance="@android:style/TextAppearance.Material.Title"
         app:titleTextColor="@color/white"
-        app:title="自定义toolbar"
         app:titleMarginStart="0dp"
         app:layout_scrollFlags="scroll"
         xmlns:app="http://schemas.android.com/apk/res-auto"

@@ -64,7 +64,7 @@ public class NetWorkStateReceiver extends BroadcastReceiver {
             }
         }
         if(connected){
-            Toast.makeText(context, "网络已连接", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(context, "网络已连接", Toast.LENGTH_SHORT).show();
             MyApplication.getInstance().setNetWorkConnected(true);
         }
     }

@@ -1,23 +1,74 @@
 package com.dpcraft.bookhub.Fragment;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.OrientationHelper;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.dpcraft.bookhub.Adapter.RequestRecyclerAdapter;
+import com.dpcraft.bookhub.DataClass.GetRequestPreviewResponse;
+import com.dpcraft.bookhub.DataClass.RequestGetRequestInformation;
+import com.dpcraft.bookhub.DataClass.RequestPreview;
+import com.dpcraft.bookhub.NetModule.JSONUtil;
+import com.dpcraft.bookhub.NetModule.NetUtils;
 import com.dpcraft.bookhub.R;
+import com.dpcraft.bookhub.UIWidget.Dialog;
+
+import java.util.List;
 
 /**
  * Created by DPC on 2017/2/11.
  */
 public class RequestFragment extends Fragment{
     private RecyclerView requestRecyclerView;
-    private RecyclerView.Adapter requestRecyclerAdapter;
+    private RequestRecyclerAdapter requestRecyclerAdapter;
     private LinearLayoutManager requestLinearLayoutManager;
+
+    private SwipeRefreshLayout requestSwipeRefreshLayout;
+    private RequestGetRequestInformation mRequestGetRequestInformation;
+    private List<RequestPreview> mRequestPreviewList;
+    private int mIndex = 0,mLastIndex = 0;
+    private final int length = 5;
+    private boolean hasMore = true;
+    public final int SUCCESS = 201;
+    public final int FAIL = 400;
+    private Handler handler= new Handler(){
+        public void handleMessage(Message msg){
+            if(msg.what == 1 || msg.what == 2) {
+                try {
+                    GetRequestPreviewResponse getRequestPreviewResponse = JSONUtil.parseJsonWithGson(msg.obj.toString(),GetRequestPreviewResponse.class);
+                    switch (getRequestPreviewResponse.getCode()){
+                        case SUCCESS:
+                        {
+                            mRequestPreviewList = getRequestPreviewResponse.getData();
+                            mIndex += mRequestPreviewList.size();
+                            if (msg.what == 1) {
+                                requestRecyclerAdapter.clearRequestPreviewList();
+                            }
+                            requestRecyclerAdapter.addRequestPreviewList(mRequestPreviewList);
+                        }
+                        break;
+                        case FAIL:
+                            Dialog.showDialog("获取数据错误",getRequestPreviewResponse.getMessage(),getActivity());
+                            break;
+                        default:
+                            break;
+                    }
+                }catch (Exception e){
+                    Dialog.showDialog("获取数据错误"," 数据库错误 !",getActivity());
+                }
+
+            }
+
+        }
+    };
     public RequestFragment(){}
     public static RequestFragment newInstance() {
         RequestFragment RequestFragment = new RequestFragment();
@@ -34,7 +85,43 @@ public class RequestFragment extends Fragment{
     }
     public void onActivityCreated(Bundle savedInstanceState){
         super.onActivityCreated(savedInstanceState);
+        mRequestGetRequestInformation = new RequestGetRequestInformation();
         requestRecyclerView = (RecyclerView)getActivity().findViewById(R.id.request_recycler);
+        requestRecyclerAdapter = new RequestRecyclerAdapter(getActivity());
+        requestRecyclerView.setAdapter(requestRecyclerAdapter);
+        requestBookList(mIndex + "" , false);
+        //上拉刷新
+        requestRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView,
+                                             int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                if (newState == RecyclerView.SCROLL_STATE_IDLE
+                        && requestLinearLayoutManager.findLastVisibleItemPosition() + 1 == requestRecyclerAdapter.getItemCount()
+                        && mLastIndex < mIndex) {
+                    requestBookList(mIndex + "" , false);
+                    mLastIndex = mIndex;
+                }
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                //int lastVisibleItem = sellLinearLayoutManager.findLastVisibleItemPosition();
+            }
+        });
+        requestSwipeRefreshLayout = (SwipeRefreshLayout) getActivity().findViewById(R.id.sell_swipe_refresh);
+        //设置进度圈的变化颜色
+        requestSwipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.colorPrimary),
+                getResources().getColor(R.color.red_900));
+        requestSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                refreshBookList();
+            }
+        });
+
         //设置固定大小
         requestRecyclerView.setHasFixedSize(true);
 
@@ -42,13 +129,37 @@ public class RequestFragment extends Fragment{
         requestLinearLayoutManager = new LinearLayoutManager(getActivity());
         requestLinearLayoutManager.setOrientation(OrientationHelper.VERTICAL);
         requestRecyclerView.setLayoutManager(requestLinearLayoutManager);
-        //添加分割线
-        // requestRecyclerView.addItemDecoration(new RecycleViewDivider(getActivity(),requestLinearLayoutManager.VERTICAL,10,
-        // ContextCompat.getColor(getActivity(),R.color.blue_500)));
-        // requestRecyclerView.addItemDecoration(new RecycleViewDivider(getActivity(),requestLinearLayoutManager.VERTICAL,R.drawable.divider_shape));
-        requestRecyclerAdapter = new RequestRecyclerAdapter(getActivity());
-        requestRecyclerView.setAdapter(requestRecyclerAdapter);
+    }
 
 
+    public void requestBookList(String index , boolean refresh) {
+
+        mRequestGetRequestInformation.setLength(length + "");
+        mRequestGetRequestInformation.setFrom(index);
+        Log.i("generateURL()", mRequestGetRequestInformation.generateURL());
+        try {
+            NetUtils.getRequestPreviewList(mRequestGetRequestInformation , refresh , handler);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    private void refreshBookList(){
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                mIndex = 0;
+                mLastIndex = 0;
+                requestBookList(mIndex + "" , true);
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        //此处处理刷新事件
+                        requestSwipeRefreshLayout.setRefreshing(false);
+
+                    }
+                });
+            }
+        }).start();
     }
 }

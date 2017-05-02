@@ -1,15 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView
+
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    style="@style/sell_recycler_card_view"
-    android:clickable="true"
-    app:cardCornerRadius="1dp"
-    app:cardElevation="1dp">
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">\
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <com.dpcraft.bookhub.UIWidget.CustomToolbar
+            android:id="@+id/ctb_request"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            ></com.dpcraft.bookhub.UIWidget.CustomToolbar>
+    <android.support.v7.widget.CardView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        style="@style/sell_recycler_card_view"
+        android:clickable="true"
+        app:cardCornerRadius="1dp"
+        app:cardElevation="1dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -26,7 +38,6 @@
                 app:civ_border_color="@color/white"
                 android:src="@drawable/default_user_icon"
                 />
-
             <TextView
                 android:id="@+id/tv_user_name"
                 android:layout_width="match_parent"
@@ -38,15 +49,16 @@
                 android:layout_marginTop="10dp"
                 android:textSize="@dimen/font_small"/>
         </LinearLayout>
-
-       <TextView
-           android:id="@+id/tv_request_title"
-           android:layout_width="match_parent"
-           android:layout_height="wrap_content"
-           android:padding="5dp"
-           android:singleLine="true"
-           android:text="求一本TCP/IP第四版"
-           android:textSize="@dimen/font_normal"/>
+        <TextView
+            android:id="@+id/tv_request_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/shape_request_title_edit"
+            android:singleLine="true"
+            android:maxLength="10"
+            android:paddingLeft="10dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="10dp"/>
         <TextView
             android:id="@+id/tv_date"
             android:layout_width="match_parent"
@@ -57,7 +69,14 @@
             android:layout_gravity="center_vertical"
             android:layout_marginTop="2dp"
             android:textSize="@dimen/font_small"/>
-
-
+        <WebView
+            android:layout_marginTop="10dp"
+            android:id="@+id/wb_request_body"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            />
     </LinearLayout>
-</android.support.v7.widget.CardView>
+    </android.support.v7.widget.CardView>
+    </LinearLayout>
+
+
