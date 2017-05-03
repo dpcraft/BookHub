@@ -1,16 +1,22 @@
-package com.dpcraft.bookhub.Fragment;
+package com.dpcraft.bookhub.Activity;
+
+import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v4.app.Fragment;
-import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.OrientationHelper;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import com.dpcraft.bookhub.Adapter.RequestRecyclerAdapter;
 import com.dpcraft.bookhub.DataClass.GetRequestPreviewResponse;
@@ -24,14 +30,17 @@ import com.dpcraft.bookhub.UIWidget.Dialog;
 import java.util.List;
 
 /**
- * Created by DPC on 2017/2/11.
+ * Created by DPC on 2017/5/3.
  */
-public class RequestFragment extends Fragment{
-    private RecyclerView requestRecyclerView;
+public class SearchRequestResultActivity extends BaseActivity{
+
+    private RecyclerView searchRecyclerView;
     private RequestRecyclerAdapter requestRecyclerAdapter;
     private LinearLayoutManager requestLinearLayoutManager;
-
-    private SwipeRefreshLayout requestSwipeRefreshLayout;
+    private Button searchButton;
+    private TextView searchTextView;
+    private Toolbar searchToolbar;
+    private String keyword;
     private RequestGetRequestInformation mRequestGetRequestInformation;
     private List<RequestPreview> mRequestPreviewList;
     private int mIndex = 0,mLastIndex = 0;
@@ -55,42 +64,42 @@ public class RequestFragment extends Fragment{
                         }
                         break;
                         case FAIL:
-                            Dialog.showDialog("获取数据错误",getRequestPreviewResponse.getMessage(),getActivity());
+                            Dialog.showDialog("获取数据错误",getRequestPreviewResponse.getMessage(),SearchRequestResultActivity.this);
                             break;
                         default:
                             break;
                     }
                 }catch (Exception e){
-                    Dialog.showDialog("获取数据错误"," 数据库错误 !",getActivity());
+                    Dialog.showDialog("获取数据错误"," 数据库错误 !",SearchRequestResultActivity.this);
                 }
 
             }
 
         }
     };
-    public RequestFragment(){}
-    public static RequestFragment newInstance() {
-        RequestFragment RequestFragment = new RequestFragment();
-        return RequestFragment;
-    }
+    
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-    }
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_request, container, false);
-        return view;
-    }
-    public void onActivityCreated(Bundle savedInstanceState){
-        super.onActivityCreated(savedInstanceState);
+        setContentView(R.layout.activity_search_request_result);
+        initWidget();
+        searchToolbar.setNavigationIcon(R.drawable.ic_back_simple_black);
+        searchToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
+        requestRecyclerAdapter = new RequestRecyclerAdapter(this);
+        searchRecyclerView.setAdapter(requestRecyclerAdapter);
+        Intent intent = getIntent();
+        keyword = intent.getStringExtra("KEYWORD");
+        searchTextView.setText(keyword);
         mRequestGetRequestInformation = new RequestGetRequestInformation();
-        requestRecyclerView = (RecyclerView)getActivity().findViewById(R.id.request_recycler);
-        requestRecyclerAdapter = new RequestRecyclerAdapter(getActivity());
-        requestRecyclerView.setAdapter(requestRecyclerAdapter);
+        mRequestGetRequestInformation.setKeyWord(keyword);
         requestRequestList(mIndex + "" , false);
         //上拉刷新
-        requestRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+        searchRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
 
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView,
@@ -110,24 +119,23 @@ public class RequestFragment extends Fragment{
                 //int lastVisibleItem = sellLinearLayoutManager.findLastVisibleItemPosition();
             }
         });
-        requestSwipeRefreshLayout = (SwipeRefreshLayout) getActivity().findViewById(R.id.request_swipe_refresh);
-        //设置进度圈的变化颜色
-        requestSwipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.colorPrimary),
-                getResources().getColor(R.color.red_900));
-        requestSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                refreshRequestList();
-            }
-        });
+        
 
         //设置固定大小
-        requestRecyclerView.setHasFixedSize(true);
+        searchRecyclerView.setHasFixedSize(true);
 
         //创建线性布局
-        requestLinearLayoutManager = new LinearLayoutManager(getActivity());
+        requestLinearLayoutManager = new LinearLayoutManager(this);
         requestLinearLayoutManager.setOrientation(OrientationHelper.VERTICAL);
-        requestRecyclerView.setLayoutManager(requestLinearLayoutManager);
+        searchRecyclerView.setLayoutManager(requestLinearLayoutManager);
+
+        searchTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SearchActivity.actionStart( SearchRequestResultActivity.this , keyword ,"true");
+                finish();
+            }
+        });
     }
 
 
@@ -135,30 +143,26 @@ public class RequestFragment extends Fragment{
 
         mRequestGetRequestInformation.setLength(length + "");
         mRequestGetRequestInformation.setFrom(index);
-        Log.i("generateURL()", mRequestGetRequestInformation.generateURL());
+        Log.i("RgenerateURL()===", mRequestGetRequestInformation.generateURL());
         try {
             NetUtils.getRequestPreviewList(mRequestGetRequestInformation , refresh , handler);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-    private void refreshRequestList(){
 
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                mIndex = 0;
-                mLastIndex = 0;
-                requestRequestList(mIndex + "" , true);
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        //此处处理刷新事件
-                        requestSwipeRefreshLayout.setRefreshing(false);
 
-                    }
-                });
-            }
-        }).start();
+    public void initWidget(){
+        searchToolbar = (Toolbar) findViewById(R.id.tb_search);
+        searchButton = (Button)findViewById(R.id.btn_search);
+        searchTextView = (TextView) findViewById(R.id.tv_search_edit);
+        searchRecyclerView = (RecyclerView)findViewById(R.id.search_result_recycler);
+    }
+
+    public static void actionStart(Context context, String data1, String data2) {
+        Intent intent = new Intent(context, SearchRequestResultActivity.class);
+        intent.putExtra("KEYWORD", data1);
+        intent.putExtra("para2", data2);
+        context.startActivity(intent);
     }
 }

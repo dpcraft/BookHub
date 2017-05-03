@@ -107,7 +107,7 @@ public class RequestRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             ((ContentViewHolder)holder).title.setText(requestPreview.getRequestBookInfo().getRequestTitle());
             ((ContentViewHolder)holder).date.setText(requestPreview.getRequestBookInfo().getDate());
             ((ContentViewHolder)holder).setRequestId(requestPreview.getRequestBookInfo().getRequestId());
-            String imageUrl = Server.getServerAddress() + "bw/image?bwid=" + requestPreview.getRequestBookInfo().getRequestId() + "&reduce=true";
+            String imageUrl = Server.getServerAddress() + "bw/image?bwid=" + requestPreview.getRequestBookInfo().getRequestId() + "&reduce=";
             Glide.with(mContext).load(imageUrl).error(R.drawable.default_user_icon).into(((ContentViewHolder)holder).circleUserIcon);
 
              }

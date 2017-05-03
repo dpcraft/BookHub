@@ -9,7 +9,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
     <android.support.v7.widget.Toolbar
-        android:id="@+id/tb_classification"
+        android:id="@+id/tb_search"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fitsSystemWindows="true"
@@ -22,6 +22,7 @@
             android:layout_width="240dp"
             android:layout_height="35dp"
             android:singleLine="true"
+            android:drawableStart="@drawable/ic_search_black"
             android:background="@drawable/shape_search_edit"/>
         <Button
             android:id="@+id/btn_search"

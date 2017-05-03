@@ -1,6 +1,5 @@
 package com.dpcraft.bookhub.Activity;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,9 +13,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.Spinner;
-import android.widget.TextView;
 
 import com.dpcraft.bookhub.Adapter.SearchResultRecyclerAdapter;
 import com.dpcraft.bookhub.DataClass.BookGetRequestInformation;
@@ -127,9 +124,9 @@ public class ClassificationActivity extends BaseActivity {
 
     private void initWidget(){
 
-        classificationToolbar = (Toolbar) findViewById(R.id.tb_classification);
+        classificationToolbar = (Toolbar) findViewById(R.id.tb_search);
         
-        classificationRecyclerView = (RecyclerView)findViewById(R.id.classification_recycler);
+        classificationRecyclerView = (RecyclerView)findViewById(R.id.search_result_recycler);
         dealTypeSpinner = (Spinner)findViewById(R.id.spin_deal_type);
         orderSpinner = (Spinner)findViewById(R.id.spin_order);
 

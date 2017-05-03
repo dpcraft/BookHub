@@ -53,25 +53,25 @@
             android:id="@+id/tv_request_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/shape_request_title_edit"
+            android:textColor="@color/black"
+            android:textSize="@dimen/font_normal"
+            android:textStyle="bold"
             android:singleLine="true"
-            android:maxLength="10"
             android:paddingLeft="10dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="10dp"/>
+            android:gravity="center"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="5dp"/>
         <TextView
             android:id="@+id/tv_date"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="end"
             android:singleLine="true"
-            android:text="2017-05-02"
             android:layout_gravity="center_vertical"
-            android:layout_marginTop="2dp"
             android:textSize="@dimen/font_small"/>
         <WebView
             android:layout_marginTop="10dp"
-            android:id="@+id/wb_request_body"
+            android:id="@+id/wv_request_body"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             />

@@ -30,8 +30,8 @@ dependencies {
     compile 'com.android.support:appcompat-v7:25.1.0'
     compile 'com.android.support:design:25.1.0'
     compile 'com.android.support:cardview-v7:25.1.0'
-    compile 'com.oguzdev:CircularFloatingActionMenu:1.0.2'
-    compile 'com.wenwenwen888:searchbox:1.0.0'
+   // compile 'com.oguzdev:CircularFloatingActionMenu:1.0.2'
+    //compile 'com.wenwenwen888:searchbox:1.0.0'
     compile 'com.google.code.gson:gson:2.6.2'
     compile 'com.lzp.floatingactionbutton:floatingactionbuttonplus:1.0.0'
     //圆形头像
@@ -40,9 +40,9 @@ dependencies {
     compile files('libs/core-3.2.1.jar')
     compile 'com.github.bumptech.glide:glide:3.7.0'
     //富文本编辑器
-    //compile 'com.fiberlink.maas360.android:richtexteditor:0.1.1'
     //短信验证码
     compile files ('libs/MobCommons-2017.0321.1624.jar')
     compile(name: 'SMSSDK-2.1.4',ext:'aar')
+
 
 }

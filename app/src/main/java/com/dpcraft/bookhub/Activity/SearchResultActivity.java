@@ -1,6 +1,5 @@
 package com.dpcraft.bookhub.Activity;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -127,10 +126,10 @@ public class SearchResultActivity extends BaseActivity {
 
     private void initWidget(){
 
-        searchToolbar = (Toolbar) findViewById(R.id.tb_classification);
+        searchToolbar = (Toolbar) findViewById(R.id.tb_search);
         searchButton = (Button)findViewById(R.id.btn_search);
         searchEditTextView = (TextView) findViewById(R.id.tv_search_edit);
-        searchRecyclerView = (RecyclerView)findViewById(R.id.classification_recycler);
+        searchRecyclerView = (RecyclerView)findViewById(R.id.search_result_recycler);
         dealTypeSpinner = (Spinner)findViewById(R.id.spin_deal_type);
         orderSpinner = (Spinner)findViewById(R.id.spin_order);
 

@@ -145,9 +145,10 @@ public class MainActivity extends FragmentActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 int id = item.getItemId();
                 switch (id){
-//                    case R.id.navigation_item_message:
-//                        //消息点击处理
-//                        break;
+                    case R.id.navigation_item_message:
+                        //消息点击处理
+                        MyRequestActivity.actionStart(MainActivity.this, "", "");
+                        break;
                     case R.id.navigation_item_userInfo:
                         //个人信息
                         if(myApplication.isLogin()){
@@ -197,7 +198,12 @@ public class MainActivity extends FragmentActivity {
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                SearchActivity.actionStart(MainActivity.this,"","data2");
+                if(pagerAdapter.getCurrentPosition() == 0){
+                    SearchActivity.actionStart(MainActivity.this,"","");
+                }else{
+                    SearchActivity.actionStart(MainActivity.this,"","true");
+                }
+
 
             }
         });

@@ -9,7 +9,7 @@ a<android.support.design.widget.AppBarLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
     <android.support.v7.widget.Toolbar
-        android:id="@+id/tb_classification"
+        android:id="@+id/tb_search"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fitsSystemWindows="true"
@@ -51,7 +51,7 @@ a<android.support.design.widget.AppBarLayout
             />
     </LinearLayout>
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/classification_recycler"
+        android:id="@+id/search_result_recycler"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"

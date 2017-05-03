@@ -44,6 +44,8 @@
         <activity android:name=".Activity.ChangePasswordActivity"/>
         <activity android:name=".Activity.RequestEditorActivity"/>
         <activity android:name=".Activity.RequestDetailsActivity"/>
+        <activity android:name=".Activity.SearchRequestResultActivity"/>
+        <activity android:name=".Activity.MyRequestActivity"/>
 
         <activity
             android:name="com.mob.tools.MobUIShell"

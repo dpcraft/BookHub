@@ -8,6 +8,7 @@ import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,8 +20,8 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.dpcraft.bookhub.Activity.SearchRequestResultActivity;
 import com.dpcraft.bookhub.Activity.SearchResultActivity;
 import com.dpcraft.bookhub.R;
 
@@ -29,6 +30,15 @@ import com.dpcraft.bookhub.R;
  */
 public class SearchView extends LinearLayout {
 
+    public boolean isRequest() {
+        return isRequest;
+    }
+
+    public void setRequest(boolean request) {
+        isRequest = request;
+    }
+
+    private boolean isRequest;//用来分辨是搜索求书还是搜索租售
     private Context context;
 
     /*UI组件*/
@@ -151,7 +161,7 @@ public class SearchView extends LinearLayout {
                         queryData("");
                     }
                     //根据输入的内容模糊查询商品，并跳转到另一个界面，这个需要根据需求实现
-                    Toast.makeText(context, "点击搜索", Toast.LENGTH_SHORT).show();
+                   // Toast.makeText(context, "点击搜索", Toast.LENGTH_SHORT).show();
 
                 }
                 return false;
@@ -170,7 +180,11 @@ public class SearchView extends LinearLayout {
                 TextView textView = (TextView) view.findViewById(android.R.id.text1);
                 String name = textView.getText().toString();
                 et_search.setText(name);
-                SearchResultActivity.actionStart( context , et_search.getText().toString().trim() , "data2");
+                if(isRequest()){
+                    SearchRequestResultActivity.actionStart(context, et_search.getText().toString().trim(), "");
+                }else {
+                    SearchResultActivity.actionStart(context, et_search.getText().toString().trim(), "");
+                }
                 Activity activity = (Activity)context;
                 activity.finish();
 
@@ -195,7 +209,13 @@ public class SearchView extends LinearLayout {
                 }
                 //根据输入的内容模糊查询商品，并跳转到另一个界面，这个根据需求实现
 
-                SearchResultActivity.actionStart( context , et_search.getText().toString().trim() , "data2");
+                if(isRequest()){
+
+                    SearchRequestResultActivity.actionStart(context, et_search.getText().toString().trim(), "");
+
+                }else {
+                    SearchResultActivity.actionStart(context, et_search.getText().toString().trim(), "");
+                }
                 Activity activity = (Activity)context;
                 activity.finish();
 
@@ -223,7 +243,7 @@ public class SearchView extends LinearLayout {
         tv_tip = (TextView) findViewById(R.id.tv_tip);
         listView = (SearchListView) findViewById(R.id.listView);
         searchButton = (Button) findViewById(R.id.btn_search);
-        searchToolbar = (Toolbar)findViewById(R.id.tb_classification);
+        searchToolbar = (Toolbar)findViewById(R.id.tb_search);
     }
 
     /*插入数据*/

@@ -5,10 +5,7 @@
     >
     <group android:checkableBehavior="single">
 
-        <!--<item-->
-            <!--android:id="@+id/navigation_item_message"-->
-            <!--android:icon="@drawable/ic_message"-->
-            <!--android:title="消息"/>-->
+
         <item
             android:id="@+id/navigation_item_userInfo"
             android:icon="@drawable/ic_user_info"
@@ -23,6 +20,10 @@
             android:id="@+id/navigation_item_like"
             android:icon="@drawable/ic_like"
             android:title="我的有意" />
+        <item
+        android:id="@+id/navigation_item_message"
+        android:icon="@drawable/ic_message"
+        android:title="我的求书"/>
         <item
             android:id="@+id/navigation_item_about"
             android:icon="@drawable/ic_about"

@@ -10,15 +10,13 @@ import android.webkit.WebView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.dpcraft.bookhub.Adapter.BookDetailsAdapter;
-import com.dpcraft.bookhub.DataClass.GetBookDetailsIncludeUserResponse;
-import com.dpcraft.bookhub.DataClass.GetBookDetailsResponse;
 import com.dpcraft.bookhub.DataClass.GetRequestDetailsResponse;
 import com.dpcraft.bookhub.DataClass.ResponseFromServer;
 import com.dpcraft.bookhub.NetModule.JSONUtil;
 import com.dpcraft.bookhub.NetModule.NetUtils;
 import com.dpcraft.bookhub.NetModule.Server;
 import com.dpcraft.bookhub.R;
+import com.dpcraft.bookhub.UIWidget.CustomToolbar;
 import com.dpcraft.bookhub.UIWidget.Dialog;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -28,6 +26,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
  */
 public class RequestDetailsActivity extends BaseActivity{
     private String requestId;
+    private CustomToolbar mCustomToolbar;
     private CircleImageView userIcon;
     private TextView userName ,requestTitle, date;
     private WebView requestBody;
@@ -38,6 +37,7 @@ public class RequestDetailsActivity extends BaseActivity{
                 case 201:
                     Log.i("json",msg.obj.toString());
                     GetRequestDetailsResponse getRequestDetailsResponse = JSONUtil.parseJsonWithGson(msg.obj.toString(), GetRequestDetailsResponse.class);
+                    mCustomToolbar.setTitle(getRequestDetailsResponse.getData().getRequestBookInfo().getRequestTitle());
                     userName.setText(getRequestDetailsResponse.getData().getUserInfo().getNickName());
                     requestTitle.setText(getRequestDetailsResponse.getData().getRequestBookInfo().getRequestTitle());
                     date.setText(getRequestDetailsResponse.getData().getRequestBookInfo().getDate());
@@ -69,17 +69,18 @@ public class RequestDetailsActivity extends BaseActivity{
     }
 
     private void initWidget(){
+        mCustomToolbar = (CustomToolbar)findViewById(R.id.ctb_request);
         userIcon = (CircleImageView)findViewById(R.id.civ_user_icon);
         userName = (TextView)findViewById(R.id.tv_user_name);
         date = (TextView)findViewById(R.id.tv_date);
         requestTitle = (TextView)findViewById(R.id.tv_request_title);
-        requestBody = (WebView)findViewById(R.id.wb_request_body);
+        requestBody = (WebView)findViewById(R.id.wv_request_body);
 
     }
     private void initRequestDetails(){
 
         NetUtils.getRequestDetails(Server.getServerAddress() + "bw/get?token=&bwid=" + requestId, handler);
-        String imageUrl = Server.getServerAddress() + "bw/image?bwid=" + requestId + "&reduce=true";
+        String imageUrl = Server.getServerAddress() + "bw/image?bwid=" + requestId + "&reduce=";
         Glide.with(this).load(imageUrl).error(R.drawable.default_user_icon).into(userIcon);
     }
 
