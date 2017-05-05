@@ -63,7 +63,7 @@ public class BookDetailsActivity extends BaseActivity {
                     Log.i("userId==============",mbookDetails.getUserId());
                     break;
                 case 002:
-                    Dialog.showDialog("dialog", JSONUtil.parseJsonWithGson(msg.obj.toString(),ResponseFromServer.class).getMessage(),BookDetailsActivity.this);
+                    Dialog.showDialog("", JSONUtil.parseJsonWithGson(msg.obj.toString(),ResponseFromServer.class).getMessage(),BookDetailsActivity.this);
                     break;
                 default:
                     break;

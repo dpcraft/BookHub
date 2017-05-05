@@ -21,7 +21,7 @@
             android:icon="@drawable/ic_like"
             android:title="我的有意" />
         <item
-        android:id="@+id/navigation_item_message"
+        android:id="@+id/navigation_item_request"
         android:icon="@drawable/ic_message"
         android:title="我的求书"/>
         <item

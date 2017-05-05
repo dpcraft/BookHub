@@ -371,7 +371,36 @@ public class NetUtils {
                 }
                 String responseBody =  response.body().string();
                 Log.i("okhttp3.response",responseBody);
-                int code = JSONUtil.getResponseCode(responseBody);
+                int code = 1;//JSONUtil.getResponseCode(responseBody);
+                Message message = handler.obtainMessage();//创建message的方式，可以更好地被回收
+                message.what = code;
+                message.obj = responseBody;
+                handler.sendMessage(message);
+            }
+        });
+
+    }
+
+    public static void deleteRequest(String token,String requestId, final Handler handler)  {
+
+
+        HttpUtil.sendHttpPostRequestDelete(token, requestId, new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Log.i("onFailure","onFailure");
+
+            }
+
+            @Override
+            public void onResponse(Call call, okhttp3.Response response) throws IOException {
+                if (!response.isSuccessful())
+                {
+                    throw new IOException("Unexpected code " + response);
+
+                }
+                String responseBody =  response.body().string();
+                Log.i("okhttp3.response",responseBody);
+                int code = 2;//JSONUtil.getResponseCode(responseBody);
                 Message message = handler.obtainMessage();//创建message的方式，可以更好地被回收
                 message.what = code;
                 message.obj = responseBody;

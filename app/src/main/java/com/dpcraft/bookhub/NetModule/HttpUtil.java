@@ -233,6 +233,28 @@ public class HttpUtil {
 
     }
 
+
+    public static void sendHttpPostRequestDelete( String token,String requestId ,final okhttp3.Callback callback){
+        final String address = Server.getServerAddress() + "bw/get";
+        Log.i("post url",address);
+
+        OkHttpClient client = new OkHttpClient();
+        RequestBody requestBody;
+
+            requestBody = new FormBody.Builder()
+                    .add("token",token)
+                    .add("bwid",requestId)
+                    .build();
+
+
+        okhttp3.Request request = new okhttp3.Request.Builder()
+                .url(address)
+                .post(requestBody)
+                .build();
+        client.newCall(request).enqueue(callback);
+
+    }
+
     public static void sendHttpPostRequest2(final String address,final String stringToWrite,final HttpCallBackListener listener){
         new Thread(new Runnable() {
             @Override

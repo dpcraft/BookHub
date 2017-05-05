@@ -6,14 +6,12 @@ import android.content.Intent;
 //import android.support.design.widget.FloatingActionButton;
 import android.content.IntentFilter;
 import android.net.ConnectivityManager;
-import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.os.Bundle;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -23,7 +21,6 @@ import android.view.View;
 import android.widget.Button;
 import android.support.v4.app.FragmentActivity;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.dpcraft.bookhub.Adapter.SimpleFragmentPagerAdapter;
@@ -145,9 +142,14 @@ public class MainActivity extends FragmentActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 int id = item.getItemId();
                 switch (id){
-                    case R.id.navigation_item_message:
-                        //消息点击处理
-                        MyRequestActivity.actionStart(MainActivity.this, "", "");
+                    case R.id.navigation_item_request:
+                        //我的求书
+                        if(myApplication.isLogin()){
+                            MyRequestActivity.actionStart(MainActivity.this, "", "");
+                        }else{
+                            LoginActivity.actionStart(MainActivity.this, "MyRequestActivity", "data2");
+                        }
+
                         break;
                     case R.id.navigation_item_userInfo:
                         //个人信息
@@ -306,7 +308,11 @@ public class MainActivity extends FragmentActivity {
         builder.setNegativeButton("残忍离去", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                finish();
+                Intent intent = new Intent(Intent.ACTION_MAIN);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.addCategory(Intent.CATEGORY_HOME);
+                startActivity(intent);
+                //finish();
             }
         });
         builder.setPositiveButton("再看看", null);

@@ -211,6 +211,10 @@ public class LoginActivity extends BaseActivity {
                 UploadActivity.actionStart(LoginActivity.this,"data1","data2");
                 finish();
                 break;
+            case "MyRequestActivity":
+                MyRequestActivity.actionStart(LoginActivity.this, "", "");
+                finish();
+                break;
             default:
                 MainActivity.actionStart(LoginActivity.this,"data1","data2");
                 finish();

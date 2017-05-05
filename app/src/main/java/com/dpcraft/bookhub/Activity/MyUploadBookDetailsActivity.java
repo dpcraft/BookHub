@@ -70,7 +70,7 @@ public class MyUploadBookDetailsActivity extends BaseActivity {
                     //if(myApplication.isLogin() && mbookDetails.getUserId() == myApplication.getLoginResponseUserInfo().getNickName())
                     break;
                 case 002:
-                    Dialog.showDialog("dialog", JSONUtil.parseJsonWithGson(msg.obj.toString(),ResponseFromServer.class).getMessage(),MyUploadBookDetailsActivity.this);
+                    Dialog.showDialog("", JSONUtil.parseJsonWithGson(msg.obj.toString(),ResponseFromServer.class).getMessage(),MyUploadBookDetailsActivity.this);
                     break;
                 case 301:
                     Toast.makeText(MyUploadBookDetailsActivity.this , JSONUtil.parseJsonWithGson(msg.obj.toString(),ResponseFromServer.class).getMessage() , Toast.LENGTH_SHORT).show();

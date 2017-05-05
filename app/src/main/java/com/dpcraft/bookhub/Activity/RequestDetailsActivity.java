@@ -33,24 +33,27 @@ public class RequestDetailsActivity extends BaseActivity{
 
     private Handler handler= new Handler(){
         public void handleMessage(Message msg){
-            switch (msg.what) {
-                case 201:
-                    Log.i("json",msg.obj.toString());
-                    GetRequestDetailsResponse getRequestDetailsResponse = JSONUtil.parseJsonWithGson(msg.obj.toString(), GetRequestDetailsResponse.class);
-                    mCustomToolbar.setTitle(getRequestDetailsResponse.getData().getRequestBookInfo().getRequestTitle());
-                    userName.setText(getRequestDetailsResponse.getData().getUserInfo().getNickName());
-                    requestTitle.setText(getRequestDetailsResponse.getData().getRequestBookInfo().getRequestTitle());
-                    date.setText(getRequestDetailsResponse.getData().getRequestBookInfo().getDate());
-                    requestBody.loadDataWithBaseURL(null , getRequestDetailsResponse.getData().getRequestBookInfo().getRequestBody(),"text/html","UTF-8",null);
-                    break;
-                case 400:
-                    Dialog.showDialog("dialog", JSONUtil.parseJsonWithGson(msg.obj.toString(),ResponseFromServer.class).getMessage(),RequestDetailsActivity.this);
-                    break;
-                default:
-                    break;
+
+                if(msg.what == 1){
+                    switch (JSONUtil.getResponseCode(msg.obj.toString())){
+                        case 201:
+                        Log.i("json",msg.obj.toString());
+                        GetRequestDetailsResponse getRequestDetailsResponse = JSONUtil.parseJsonWithGson(msg.obj.toString(), GetRequestDetailsResponse.class);
+                        mCustomToolbar.setTitle(getRequestDetailsResponse.getData().getRequestBookInfo().getRequestTitle());
+                        userName.setText(getRequestDetailsResponse.getData().getUserInfo().getNickName());
+                        requestTitle.setText(getRequestDetailsResponse.getData().getRequestBookInfo().getRequestTitle());
+                        date.setText(getRequestDetailsResponse.getData().getRequestBookInfo().getDate());
+                        requestBody.loadDataWithBaseURL(null , getRequestDetailsResponse.getData().getRequestBookInfo().getRequestBody(),"text/html","UTF-8",null);
+                        break;
+                        case 400:
+                            Dialog.showDialog("", JSONUtil.parseJsonWithGson(msg.obj.toString(),ResponseFromServer.class).getMessage(),RequestDetailsActivity.this);
+                            break;
+                        default:
+                            break;
+                    }
+                }
 
 
-            }
 
         }
     };

@@ -65,7 +65,7 @@ public class MyIntentionBookDetailsActivity extends BaseActivity {
                     Log.i("userId==============",bookDetails.getUserId());
                     break;
                 case 002:
-                    Dialog.showDialog("dialog", JSONUtil.parseJsonWithGson(msg.obj.toString(),ResponseFromServer.class).getMessage(),MyIntentionBookDetailsActivity.this);
+                    Dialog.showDialog("", JSONUtil.parseJsonWithGson(msg.obj.toString(),ResponseFromServer.class).getMessage(),MyIntentionBookDetailsActivity.this);
                     break;
                 default:
                     break;

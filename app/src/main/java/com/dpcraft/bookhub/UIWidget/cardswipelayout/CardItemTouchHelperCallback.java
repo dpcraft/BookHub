@@ -4,6 +4,7 @@ import android.graphics.Canvas;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.util.Log;
 import android.view.View;
 
 import java.util.List;
@@ -102,6 +103,8 @@ public class CardItemTouchHelperCallback<T> extends ItemTouchHelper.Callback {
                     view.setScaleX(1 - index * CardConfig.DEFAULT_SCALE + Math.abs(ratio) * CardConfig.DEFAULT_SCALE);
                     view.setScaleY(1 - index * CardConfig.DEFAULT_SCALE + Math.abs(ratio) * CardConfig.DEFAULT_SCALE);
                     view.setTranslationY((index - Math.abs(ratio)) * itemView.getMeasuredHeight() / CardConfig.DEFAULT_TRANSLATE_Y);
+//                    view.setElevation((position -1) *  CardConfig.DEFAULT_ELEVATION + Math.abs(ratio) * CardConfig.DEFAULT_ELEVATION);
+                    //Log.i(position + "===========", (index % 3) *  CardConfig.DEFAULT_ELEVATION + Math.abs(ratio) * CardConfig.DEFAULT_ELEVATION + "");
                 }
             } else {
                 // 当数据源个数小于或等于最大显示数时
@@ -111,6 +114,7 @@ public class CardItemTouchHelperCallback<T> extends ItemTouchHelper.Callback {
                     view.setScaleX(1 - index * CardConfig.DEFAULT_SCALE + Math.abs(ratio) * CardConfig.DEFAULT_SCALE);
                     view.setScaleY(1 - index * CardConfig.DEFAULT_SCALE + Math.abs(ratio) * CardConfig.DEFAULT_SCALE);
                     view.setTranslationY((index - Math.abs(ratio)) * itemView.getMeasuredHeight() / CardConfig.DEFAULT_TRANSLATE_Y);
+//                    view.setElevation((position -1) *  CardConfig.DEFAULT_ELEVATION + Math.abs(ratio) * CardConfig.DEFAULT_ELEVATION);
                 }
             }
             if (mListener != null) {

@@ -18,6 +18,10 @@ public final class CardConfig {
      */
     public static final int DEFAULT_TRANSLATE_Y = 14;
     /**
+     * 卡片Y轴偏移量时按照14等分计算
+     */
+    public static final int DEFAULT_ELEVATION = 5;
+    /**
      * 卡片滑动时默认倾斜的角度
      */
     public static final float DEFAULT_ROTATE_DEGREE = 15f;
