@@ -86,7 +86,7 @@ public class MyRequestActivity extends BaseActivity{
     }
 
     public void initWidget(){
-        mCustomToolbar = (CustomToolbar)findViewById(R.id.ctb_request);
+        mCustomToolbar = (CustomToolbar)findViewById(R.id.ctb_my_request);
         mCustomToolbar.setTitle("我的求书");
         mRecyclerView = (RecyclerView)findViewById(R.id.my_request_recycler);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
