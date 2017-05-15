@@ -83,7 +83,7 @@
                     android:id="@+id/et_book_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="书名"
+                    android:hint="书名 *"
                     android:singleLine="true"/>
 
             </android.support.design.widget.TextInputLayout>
@@ -229,7 +229,7 @@
                     android:id="@+id/et_price"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="价格"
+                    android:hint="价格 *"
                     android:singleLine="true"/>
             </android.support.design.widget.TextInputLayout>
             <android.support.design.widget.TextInputLayout
@@ -246,7 +246,7 @@
                     android:id="@+id/et_deposit"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="押金"
+                    android:hint="押金 *"
                     android:singleLine="true"/>
             </android.support.design.widget.TextInputLayout>
                 </LinearLayout>

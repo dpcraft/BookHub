@@ -113,9 +113,10 @@ public class MyUploadBookDetailsActivity extends BaseActivity {
                 int menuItemId = item.getItemId();
                 if(menuItemId == R.id.action_delete){
                    showDeleteDialog();
-                }else if(menuItemId == R.id.action_edit){
-                    //跳转到编辑页面
                 }
+//                else if(menuItemId == R.id.action_edit){
+//                    //跳转到编辑页面
+//                }
                 return false;
             }
         });

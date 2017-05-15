@@ -14,15 +14,15 @@
 
         <item
             android:id="@+id/navigation_item_upload"
-            android:icon="@drawable/ic_history"
-            android:title="我的发布" />
+            android:icon="@drawable/ic_my_upload_24dp"
+            android:title="我的书籍" />
         <item
             android:id="@+id/navigation_item_like"
-            android:icon="@drawable/ic_like"
+            android:icon="@drawable/ic_my_intention"
             android:title="我的有意" />
         <item
         android:id="@+id/navigation_item_request"
-        android:icon="@drawable/ic_message"
+        android:icon="@drawable/ic_history"
         android:title="我的求书"/>
         <item
             android:id="@+id/navigation_item_about"

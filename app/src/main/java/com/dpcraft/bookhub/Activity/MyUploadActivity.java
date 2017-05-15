@@ -64,7 +64,7 @@ public class MyUploadActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_upload);
         initWidget();
-        customToolbar.setTitle("我的发布");
+        customToolbar.setTitle("我的书籍");
         myUploadRecyclerAdapter = new MyUploadRecyclerAdapter(this);
         myUploadRecyclerView.setAdapter(myUploadRecyclerAdapter);
         //设置固定大小

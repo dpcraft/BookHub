@@ -31,7 +31,6 @@ public class SellRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     public static final int ITEM_TYPE_HEADER = 0;
     public static final int ITEM_TYPE_CONTENT = 1;
     public static final int ITEM_TYPE_FOOTER = 2;
-
     private LayoutInflater mInflater;
     private int itemNum = 0;
     private boolean hasMore = true;

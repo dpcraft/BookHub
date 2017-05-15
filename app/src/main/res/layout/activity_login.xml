@@ -32,7 +32,7 @@
             android:id="@+id/edt_username"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="用户名/手机号"/>
+            android:hint="用户名"/>
 
     </android.support.design.widget.TextInputLayout>
     <android.support.design.widget.TextInputLayout
