@@ -7,70 +7,141 @@
     app:cardCornerRadius="1dp"
     app:cardElevation="1dp"
     >
-    <GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:orientation="horizontal"
+    <!--<GridLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+        <!--android:orientation="horizontal"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:rowCount="2"-->
+        <!--android:columnCount="4"-->
+        <!--android:layout_margin="5dp"-->
+        <!--android:useDefaultMargins="false">-->
+       <!--<Button-->
+           <!--android:id="@+id/btn_1"-->
+           <!--style="@style/book_class_button"-->
+           <!--android:drawableTop="@drawable/ic_btn1"-->
+           <!--android:background="@color/transparent"-->
+           <!--android:layout_margin="10dp"-->
+           <!--android:text="技术书籍" />-->
+        <!--<Button-->
+            <!--android:id="@+id/btn_2"-->
+            <!--style="@style/book_class_button"-->
+            <!--android:drawableTop="@drawable/ic_btn2"-->
+            <!--android:background="@color/transparent"-->
+            <!--android:layout_margin="10dp"-->
+            <!--android:text="经济管理"/>-->
+        <!--<Button-->
+            <!--android:id="@+id/btn_3"-->
+            <!--style="@style/book_class_button"-->
+            <!--android:drawableTop="@drawable/ic_btn3"-->
+            <!--android:background="@color/transparent"-->
+            <!--android:layout_margin="10dp"-->
+            <!--android:text="认证考试"/>-->
+        <!--<Button-->
+            <!--android:id="@+id/btn_4"-->
+            <!--style="@style/book_class_button"-->
+            <!--android:drawableTop="@drawable/ic_btn4"-->
+            <!--android:background="@color/transparent"-->
+            <!--android:layout_marginBottom="10dp"-->
+            <!--android:text="文学艺术"/>-->
+        <!--<Button-->
+            <!--android:id="@+id/btn_5"-->
+            <!--style="@style/book_class_button"-->
+            <!--android:drawableTop="@drawable/ic_btn5"-->
+            <!--android:background="@color/transparent"-->
+            <!--android:layout_margin="10dp"-->
+            <!--android:text="外语"/>-->
+        <!--<Button-->
+            <!--android:id="@+id/btn_6"-->
+            <!--style="@style/book_class_button"-->
+            <!--android:drawableTop="@drawable/ic_btn6"-->
+            <!--android:background="@color/transparent"-->
+            <!--android:layout_margin="10dp"-->
+            <!--android:text="竞赛"/>-->
+        <!--<Button-->
+            <!--android:id="@+id/btn_7"-->
+            <!--style="@style/book_class_button"-->
+            <!--android:drawableTop="@drawable/ic_btn7"-->
+            <!--android:background="@color/transparent"-->
+            <!--android:layout_margin="10dp"-->
+            <!--android:text="考研"/>-->
+        <!--<Button-->
+            <!--android:id="@+id/btn_8"-->
+            <!--style="@style/book_class_button"-->
+            <!--android:drawableTop="@drawable/ic_btn8"-->
+            <!--android:background="@color/transparent"-->
+            <!--android:layout_margin="10dp"-->
+            <!--android:text="课本"/>-->
+
+    <!--</GridLayout>-->
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:useDefaultMargins="false">
+        <LinearLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:orientation="horizontal">
+            <Button
+                android:id="@+id/btn_1"
+                style="@style/book_class_button"
+                android:drawableTop="@drawable/ic_btn1"
+                android:background="@color/transparent"
+                android:text="技术书籍" />
+            <Button
+                android:id="@+id/btn_2"
+                style="@style/book_class_button"
+                android:drawableTop="@drawable/ic_btn2"
+                android:background="@color/transparent"
+                android:text="经济管理"/>
+            <Button
+                android:id="@+id/btn_3"
+                style="@style/book_class_button"
+                android:drawableTop="@drawable/ic_btn3"
+                android:background="@color/transparent"
+                android:text="认证考试"/>
+            <Button
+                android:id="@+id/btn_4"
+                style="@style/book_class_button"
+                android:drawableTop="@drawable/ic_btn4"
+                android:background="@color/transparent"
+                android:text="文学艺术"/>
+
+        </LinearLayout>
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:rowCount="2"
-        android:columnCount="4"
         android:layout_margin="5dp"
-        android:useDefaultMargins="false">
-       <Button
-           android:id="@+id/btn_1"
-           style="@style/book_class_button"
-           android:drawableTop="@drawable/ic_btn1"
-           android:background="@color/transparent"
-           android:layout_margin="10dp"
-           android:text="技术书籍" />
-        <Button
-            android:id="@+id/btn_2"
-            style="@style/book_class_button"
-            android:drawableTop="@drawable/ic_btn2"
-            android:background="@color/transparent"
-            android:layout_margin="10dp"
-            android:text="经济管理"/>
-        <Button
-            android:id="@+id/btn_3"
-            style="@style/book_class_button"
-            android:drawableTop="@drawable/ic_btn3"
-            android:background="@color/transparent"
-            android:layout_margin="10dp"
-            android:text="认证考试"/>
-        <Button
-            android:id="@+id/btn_4"
-            style="@style/book_class_button"
-            android:drawableTop="@drawable/ic_btn4"
-            android:background="@color/transparent"
-            android:layout_marginBottom="10dp"
-            android:text="文学艺术"/>
+        android:orientation="horizontal">
+
         <Button
             android:id="@+id/btn_5"
             style="@style/book_class_button"
             android:drawableTop="@drawable/ic_btn5"
             android:background="@color/transparent"
-            android:layout_margin="10dp"
             android:text="外语"/>
         <Button
             android:id="@+id/btn_6"
             style="@style/book_class_button"
             android:drawableTop="@drawable/ic_btn6"
             android:background="@color/transparent"
-            android:layout_margin="10dp"
             android:text="竞赛"/>
         <Button
             android:id="@+id/btn_7"
             style="@style/book_class_button"
             android:drawableTop="@drawable/ic_btn7"
             android:background="@color/transparent"
-            android:layout_margin="10dp"
             android:text="考研"/>
         <Button
             android:id="@+id/btn_8"
             style="@style/book_class_button"
             android:drawableTop="@drawable/ic_btn8"
             android:background="@color/transparent"
-            android:layout_margin="10dp"
             android:text="课本"/>
+       </LinearLayout>
 
-    </GridLayout>
+    </LinearLayout>
 </android.support.v7.widget.CardView>
