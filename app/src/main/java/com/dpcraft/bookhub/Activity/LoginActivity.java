@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.dpcraft.bookhub.Algorithm.AESCoder;
 import com.dpcraft.bookhub.Application.MyApplication;
 import com.dpcraft.bookhub.DataClass.LoginResponse;
 import com.dpcraft.bookhub.DataClass.ResponseFromServer;
@@ -108,7 +109,13 @@ public class LoginActivity extends BaseActivity {
             userName = sharedPreferences.getString("user_name","");
             passWord = sharedPreferences.getString("password","");
             mUsernameWrapper.getEditText().setText(userName);
-            mPasswordWrapper.getEditText().setText(passWord);
+
+            try {
+                mPasswordWrapper.getEditText().setText(AESCoder.decrypt(passWord));
+            }catch (Exception e){
+                e.printStackTrace();
+                Log.i("解密异常","解密异常");
+            }
 
         }
 
@@ -171,7 +178,12 @@ public class LoginActivity extends BaseActivity {
         if(code == LOGIN_SUCCESS) {
             editor.putBoolean("remember_password", true);
             editor.putString("user_name", userName);
-            editor.putString("password", passWord);
+            try {
+                editor.putString("password", AESCoder.encrypt(passWord));
+            }catch (Exception e){
+                e.printStackTrace();
+                Log.i("加密异常","加密异常");
+            }
         }
         else{
             editor.clear();
